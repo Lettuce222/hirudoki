@@ -34,6 +34,7 @@
 | [0008](0008-pin-runtime-and-dependency-versions.md) | Accepted | Ruby 3.4.12・Rails 8.1.4.1・PostgreSQL 18を固定する |
 | [0009](0009-use-rspec-capybara-and-red-green-refactor.md) | Accepted | RSpec・Capybara・SeleniumでTDDを行う |
 | [0010](0010-use-a-private-submission-repository.md) | Accepted | 個人の非公開リポジトリで準備し提出時に採点者へ共有する |
+| [0011](0011-retain-vips-after-image-processing-upgrade.md) | Accepted | image_processing 2系への更新でVipsの直接依存を維持する |
 
 
 
