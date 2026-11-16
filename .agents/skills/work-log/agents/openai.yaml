@@ -1,0 +1,4 @@
+interface:
+  display_name: "Work Log"
+  short_description: "Track Hirudoki time without parallel double-counting"
+  default_prompt: "Use $work-log to record this Hirudoki project work."
