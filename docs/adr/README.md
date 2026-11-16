@@ -35,6 +35,8 @@
 | [0009](0009-use-rspec-capybara-and-red-green-refactor.md) | Accepted | RSpec・Capybara・SeleniumでTDDを行う |
 | [0010](0010-use-a-private-submission-repository.md) | Accepted | 個人の非公開リポジトリで準備し提出時に採点者へ共有する |
 | [0011](0011-retain-vips-after-image-processing-upgrade.md) | Accepted | image_processing 2系への更新でVipsの直接依存を維持する |
+| [0012](0012-deploy-with-blueprint-ci-gate-and-persistent-disk.md) | Accepted | BlueprintとDB/画像Diskの分離で本番を構築する |
+| [0013](0013-gate-deploys-on-tested-ci-checks.md) | Accepted | CI成功を本番反映の条件とする |
 
 
 
