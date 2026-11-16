@@ -41,6 +41,7 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 gem "image_processing", "~> 2.2"
 gem "ruby-vips", "~> 2.3", require: false
+gem "devise", "~> 5.0", ">= 5.0.4"
 
 group :development, :test do
   # Test framework for TDD and acceptance-level system specs
