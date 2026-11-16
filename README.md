@@ -59,6 +59,8 @@ PDFの要件・受入確認方法・Linearチケットの対応は [要件対応
 
 RenderのBlueprintで `render.yaml` を読み込みます。buildは `bin/render-build.sh`、pre-deployは `bin/render-pre-deploy.sh`、起動はPumaです。`/up` はDB接続を含むヘルスチェックです。DB接続情報とSECRET_KEY_BASEはRenderが生成・注入します。
 
+本番URL: https://hirudoki.onrender.com/ 。検証記録は [Walking Skeleton](docs/testing/walking-skeleton.md) を参照してください。
+
 Active Storageの3テーブルは、画像メタデータ・添付関連・variant管理のために追加しています。PDF指定の業務8テーブルの代わりではありません。現段階の画像配線確認では業務用の仮テーブルは作りません。
 
 認証された本番シェルから `bin/rails runner script/storage-smoke.rb` を実行すると、同じblobを再利用して保存済み画像を検証し、表示用pathとチェックサムを出力します。これは公開のアップロード機能ではありません。後続の弁当管理ではPNG/JPEG/WebP・5MB以下の入力制約と画像なし時の代替表示を実装します。
