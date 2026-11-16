@@ -5,7 +5,9 @@
 - [x] 実ブラウザのsystem specを追加し実行失敗を確認（matcher誤用とBrave/driver不一致を検出。業務実装のRedとは別の基盤診断）
 - [x] Capybaraとheadless Chromeを設定してPC・モバイルを実行（Green）
 - [x] setupを整理し、全3specがGreenのまま（Refactor）
-- [ ] 同じsystem specをGitHub Actions上で実行
+- [x] 同じsystem specをGitHub Actions上で実行（[CI 43836448516](https://github.com/Lettuce222/hirudoki/actions/runs/43836448516)、コミットdc81bb5、全4ジョブ成功）
+
+確認日: 2026-11-16。Ruby 3.4.12 / PostgreSQL 18 / headless Chromeでローカル3 examples, 0 failures。CIでもtest・lint・scan_ruby・scan_jsが成功。Braveのdriver不一致はChromeへ統一して解消した。
 
 ## 仕様ごとの進め方
 
