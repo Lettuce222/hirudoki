@@ -9,7 +9,10 @@
 - 支払い方法: ユーザーが登録完了。Billingを再読込し未登録表示が消えたことを確認。カード情報をリポジトリへ残さない。
 - GitHub接続: 個人のLettuce222をGit Deployment Credentialsで確認済み。新規Web ServiceのSource Codeで`Lettuce222 / hirudoki`だけが選択肢に表示されることを確認した。
 - リージョン: ADR 0003どおりSingapore。WebとPostgreSQLを同リージョンで作成し、内部接続URLを使う。
-- この準備段階ではWeb/DB/Diskはまだ作成していない。
+- Walking Skeletonでユーザー承認後にWeb/DB/Diskを作成済み。作成画面の概算は月額$13.55。
+- 本番URL: https://hirudoki.onrender.com/
+- Blueprint: `exs-dbtcrqjm8hqs73ai0l60`、Web: `srv-dbtcth0ae00c73acmsm0`、DB: `dpg-dbtct60ae00c73acltn0-a`。
+- 実デプロイ結果・DB/画像保持・異常系の証跡は`docs/testing/walking-skeleton.md`を参照する。
 
 ## デプロイ時の確認
 

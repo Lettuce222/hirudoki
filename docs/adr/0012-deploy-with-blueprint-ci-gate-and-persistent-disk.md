@@ -15,6 +15,7 @@
 - mainのCIが成功した場合だけ自動デプロイする（checksPass）。初回作成時も対象commitのCI成功を確認する。
 - buildでは依存取得とassets:precompileのみ。pre-deployでDB migrationを行い、画像Diskには触らない。
 - 画像は実行中のインスタンスでActive Storageへアップロードし、`/opt/render/project/src/storage`へ保存する。
+- 画像の受入方針はPNG/JPEG/WebP・5MB以下とする。公開フォームでの検証と代替表示は後続の弁当管理・献立表示で実装する。Walking Skeletonでは認証済みシェル専用の検証画像を使う。
 - SECRET_KEY_BASEはRenderで生成し、接続情報と同様に環境変数で渡す。現在は外部サービスの暗号化credentialsを使わないためmaster.keyを転送しない。
 - ヘルスチェックは最小のDBクエリを含む。DB接続失敗は503とし詳細を外部へ出さない。
 - 認証されたシェル専用のsmoke scriptでActive StorageのDBレコード・ファイルを往復し、再デプロイ後に同じID/key/チェックサムを確認する。
