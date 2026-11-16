@@ -13,6 +13,8 @@
 
 image_processing 2.2.0を採用し、従来のVipsを維持するためGemfileにruby-vips 2.3系を直接指定する。Gemfile.lockで実バージョンを固定する。既存Dockerfileのlibvipsと整合させる。
 
+`require: false`で、従来の間接依存時と同様に画像処理時だけロードする。通常のRails起動・JavaScript監査にもlibvipsを必須ロードしない。直接依存化した際のCIでlibvips不在による起動失敗を検出し、この遅延ロードを明示した。
+
 ## Alternatives considered
 
 - 依存を追加しない: 画像処理時にLoadErrorとなるため採用しない。
