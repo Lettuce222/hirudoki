@@ -39,6 +39,7 @@ Follow the visual design guidance in [unslop by Damir Sokolovsky](https://github
 - Keep review HTML and its supporting materials in the ignored tmp/ux directory only during initial alignment. Record the approved journey and revision in Linear before implementing it. The shipped code and specs are the source of truth. If the agreed experience changes, review that change before implementation. Prototype preparation and time passing are not approval. Internal changes without a UX change do not need this gate; Markdown/Mermaid may accompany the HTML as supporting material.
 - Treat discussion questions as requests for explanation, not as rejection, approval, or instructions to change a decision. Explain the rationale and options; change an agreed policy only when the user explicitly requests or approves the change. Mark unresolved proposals clearly.
 
+- 利用者に資料を案内するときは、日本語で読める一次資料を優先する。
 - Record significant technical and process decisions in `docs/adr/`.
 - Keep implementation progress, time budgets, dependencies, and pending decisions in the Linear project `ひるどき 技術試験`.
 - An accepted decision is not complete until its ADR and Linear issue agree.
