@@ -16,6 +16,7 @@
 | app内のクラス・モジュール・定数名の各名前空間要素をService/Presenterで終えない | 同spec。既存RuboCopのRuby ASTを解析し、宣言と定数代入を検査 |
 | specのグループ内で定数・クラス・モジュールを直接定義しない | RSpec/LeakyConstantDeclaration |
 | グループの外側のローカル変数をexample内の共有データにしない | RSpec/LeakyLocalVariable |
+| Controllerの `params.expect` による属性の宣言と `params` 由来の `permit` をprivateな `*_params` メソッドにまとめる。識別子などの単一値はアクションで取得できる | Hirudoki/StrongParametersMethod |
 | モデルの一意性バリデーションに対応するDBのunique indexを用意する | Rails/UniqueValidationWithoutIndex |
 
 rubocop-rspec 3.10系を開発・テスト依存として採用し、上記2つのcopだけを有効にする。exampleの入力データはletを使う。example生成用のループ変数、example内の計算結果、期待値のリテラルまで一律にlet化することは要求しない。定数の差し替えを検証するstub_constも許容する。

@@ -9,7 +9,7 @@ class RegistrationsController < ApplicationController
   end
 
   def create
-    @user = RegistrationInvitation.register!(params[:token], params.expect(user: [ :name, :phone, :password, :password_confirmation ]))
+    @user = RegistrationInvitation.register!(params[:token], registration_params)
     reset_session
     sign_in(:user, @user)
     redirect_to profile_path, notice: "利用者登録が完了しました。", status: :see_other
@@ -21,6 +21,10 @@ class RegistrationsController < ApplicationController
   end
 
   private
+
+  def registration_params
+    params.expect(user: [ :name, :phone, :password, :password_confirmation ])
+  end
 
   def protect_registration_link
     no_store

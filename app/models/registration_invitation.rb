@@ -3,7 +3,7 @@ class RegistrationInvitation < ApplicationRecord
   LINK_LIFETIME = 30.minutes
 
   belongs_to :user, optional: true
-  scope :unused, -> { where(user_id: nil) }
+  scope :pending, -> { where(user_id: nil) }
 
   normalizes :email, with: ->(value) { value.strip.downcase }
   validates :email, presence: true, format: { with: Devise.email_regexp }, length: { maximum: 254 }
@@ -27,7 +27,7 @@ class RegistrationInvitation < ApplicationRecord
   end
 
   def self.from_link(token)
-    unused.find_by_token_for(:registration, token) if token.is_a?(String) && token.present?
+    pending.find_by_token_for(:registration, token) if token.is_a?(String) && token.present?
   end
 
   def signed_link
@@ -38,7 +38,7 @@ class RegistrationInvitation < ApplicationRecord
     raise ActiveRecord::RecordNotFound unless token.is_a?(String)
 
     transaction do
-      invitation = unused.lock.find_by_token_for(:registration, token) || raise(ActiveRecord::RecordNotFound)
+      invitation = pending.lock.find_by_token_for(:registration, token) || raise(ActiveRecord::RecordNotFound)
       user = User.create!(details.merge(email: invitation.email))
       invitation.update!(user: user)
       user

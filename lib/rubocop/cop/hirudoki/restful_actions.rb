@@ -1,10 +1,10 @@
-require "rubocop"
+require_relative "method_visibility"
 
 module RuboCop
   module Cop
     module Hirudoki
       class RestfulActions < Base
-        include VisibilityHelp
+        include MethodVisibility
 
         MSG = "Public method `%<method>s` must be a standard REST action. Extract a resource or make the helper private."
         ACTIONS = %i[index show new create edit update destroy].freeze
@@ -17,20 +17,6 @@ module RuboCop
           return unless method_visibility(node) == :public
 
           add_offense(node.loc.name, message: format(MSG, method: node.method_name))
-        end
-
-        private
-
-        def method_visibility(node)
-          declaration = visibility_inline_on_def?(node.parent) ? node.parent : node
-          modifier = declaration.right_siblings.reverse.find do |sibling|
-            visibility_inline_on_method_name?(sibling, method_name: node.method_name)
-          end
-          return modifier.method_name if modifier
-          return node.parent.method_name if visibility_inline_on_def?(node.parent)
-          return :private if node.method_name == :initialize
-
-          node_visibility(node)
         end
       end
     end

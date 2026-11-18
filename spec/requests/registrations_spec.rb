@@ -24,6 +24,16 @@ RSpec.describe "メール確認による利用者登録", type: :request do
     expect(response.body).to include("有効なメールアドレスを入力してください")
   end
 
+  it "トークンが欠けていると確認メールの再申請を案内する" do
+    get new_registration_path
+    expect(response).to redirect_to(new_registration_invitation_path)
+
+    expect { post registration_path, params: { user: details } }.not_to change(User, :count)
+    expect(response).to redirect_to(new_registration_invitation_path)
+    follow_redirect!
+    expect(response.body).to include("確認メールを再度お申し込みください")
+  end
+
   it "未確認の利用者は登録もマイページの閲覧もできない" do
     expect { post registration_path, params: { token: "invalid", user: details } }.not_to change(User, :count)
     expect(response).to redirect_to(new_registration_invitation_path)
