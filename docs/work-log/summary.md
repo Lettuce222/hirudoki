@@ -1,16 +1,19 @@
 # Work Log Summary
 
-Generated at: 2026-11-16T17:37:18+09:00
+Generated at: 2026-11-19T05:44:35+09:00
 
-Total: 69.1 minutes (1.15 hours)
+Total: 197.3 minutes (3.29 hours)
 
 ## By category
 
 | Category | Minutes | Hours |
 |---|---:|---:|
-| documentation | 0.1 | 0.00 |
-| mixed | 61.6 | 1.03 |
-| planning | 7.5 | 0.12 |
+| decision | 53.0 | 0.88 |
+| documentation | 9.5 | 0.16 |
+| implementation | 0.2 | 0.00 |
+| mixed | 117.5 | 1.96 |
+| planning | 9.0 | 0.15 |
+| setup | 8.0 | 0.13 |
 
 ## Entries
 
@@ -22,6 +25,15 @@ Total: 69.1 minutes (1.15 hours)
 | 2026-11-16T17:10:44+09:00 | 2026-11-16T17:11:37+09:00 | 0.9 | mixed | LET-20, LET-23 | no | 親フォルダの記録ルールとRails基盤の検証・Linear同期 | 親フォルダからもログを記録するルールを補完し、Rails基盤のローカルテストとLinear進捗を同期した |
 | 2026-11-16T17:26:52+09:00 | 2026-11-16T17:27:02+09:00 | 0.2 | planning | LET-20 | no | LET-20の目的とLinearでの要件追跡方法を説明する | LET-20は時間記録と要件漏れ防止の管理タスクであり、要件・受入条件・検証結果が追えればLinearで要件管理を賄えると説明 |
 | 2026-11-16T17:30:02+09:00 | 2026-11-16T17:37:18+09:00 | 7.3 | planning | LET-20 | no | PDFの全要件と利用者向け確認条件・Linearチケットの対応表を作成する | PDF仕様→受入確認方法→Linearの対応表と実装後の証跡欄を作成し、管理準備タスクLET-20を完了した |
+| 2026-11-16T17:44:33+09:00 | 2026-11-16T18:10:13+09:00 | 25.7 | mixed | LET-11, LET-12, LET-14, LET-21, LET-22 | no | 準備・設計マイルストーンの残作業を完了する | 準備・設計の残4件（LET-12/14/21/22）を完了。Ruby3.4.12固定、実ブラウザPC/モバイル全3specとGitHub CI全4ジョブ成功、個人privateリポジトリとRender支払い・GitHub接続確認。ADR0008〜0010と手順を記録し文書PR#5もCI成功。 |
+| 2026-11-16T18:11:47+09:00 | 2026-11-16T18:19:49+09:00 | 8.0 | setup | LET-21, LET-25 | no | 作成済みの全PRを確認しマージする | PR#1〜#5を全件マージ、未マージ0件。image_processing2のVips依存維持と遅延ロードを修正しADR0011へ記録。ローカルmainは7b72791へ同期、最終main CI43838589975の4ジョブすべて成功。 |
+| 2026-11-16T18:25:04+09:00 | 2026-11-16T18:55:20+09:00 | 30.3 | mixed | LET-23, LET-24, LET-25, LET-27 | no | Walking Skeletonを本番で稼働させCIと画像永続化を確認する | Walking Skeleton全6件をDone。PR#6〜#8をマージ。本番https://hirudoki.onrender.comを公開しPC/モバイル、DBヘルス、DB/画像書込み・公開配信、別インスタンスへの自動再デプロイ後の同一blob/SHA256保持を確認。承認済みpre-deploy失敗で旧版維持を確認し一時フラグ削除。CI全4ジョブ成功、ローカル6spec成功。 |
+| 2026-11-18T17:27:00+09:00 | 2026-11-18T18:20:00+09:00 | 53.0 | decision | LET-12 | yes | 設計ルールの検討と決定（services禁止・フォームオブジェクトはモデル・ADR運用・プレゼンター不採用） | 本人の設計方針を確定し叩き台v2を作成。ADR 0009・tdd.mdとの食い違い（service spec）を発見 |
+| 2026-11-18T18:29:40+09:00 | 2026-11-18T18:30:19+09:00 | 0.7 | documentation | LET-12 | no | 設計ルールの決定をADR 0009・tdd.md・既存specへ反映する | ADR 0009・tdd.mdのservice spec前提をmodel specへ修正。既存specの定数をlet化（health）と名前付き定義（systemのviewport）へ。設計ルール決定版v3を確定 |
+| 2026-11-18T18:32:54+09:00 | 2026-11-18T18:36:41+09:00 | 3.8 | documentation | LET-12 | no | Linearチケットの共通DoDからservice spec前提の文言を外す | Linear全44チケットを確認し、共通DoDのservice spec前提を26件（DoD 25件＋LET-12の推奨）すべてmodel/request/system specへ修正。残存ゼロを検証 |
+| 2026-11-18T18:40:13+09:00 | 2026-11-18T18:40:25+09:00 | 0.2 | implementation | LET-12 | no | 検証ファーストの原則を取り入れ、設計ルールを検証するspecを置く | 検証ファーストの原則（potetoさん）を設計ルールへ追加。RuboCopで表現できない構造ルールを検証するspec/design_rules_spec.rbを新設（services禁止・Service命名禁止） |
+| 2026-11-19T05:26:04+09:00 | 2026-11-19T05:31:04+09:00 | 5.0 | documentation | LET-12 | yes | AGENTS.mdに設計ルールの要点を追加する（Muse経由Codex CLI、推定） | PR #9コメント https://github.com/Lettuce222/hirudoki/pull/9#issuecomment-6990757224 に約5分・推定との記載あり。コミット51cd2a2の05:31:04 JSTを終了点とし5分を逆算。開始・終了の作業境界は実測でなく、開始時刻05:26:04は便宜上の推定。Ruby不在で未記録だった作業を補完。 |
+| 2026-11-19T05:40:48+09:00 | 2026-11-19T05:42:20+09:00 | 1.6 | planning |  | no | 11月18日・19日のMuse経由Codex CLI作業記録を調査する | Muse経由の作業はPR #9に残っていることを確認。昨日の時間記録あり、今朝の変更はコミット履歴あり・時間記録なしと区別した |
 
 ## Notes
 
@@ -40,4 +52,29 @@ Total: 69.1 minutes (1.15 hours)
 ### 2026-11-16T17:30:02+09:00 — PDFの全要件と利用者向け確認条件・Linearチケットの対応表を作成する
 
 - 2026-11-16T17:37:18+09:00: PDF全11ページを抽出・画像確認し、101項目とLinear全44件の対応表を作成。全要件IDの一意性・参照リンクを検証。LET-20をDone、LET-18に10:00境界の表現差、LET-46に証跡照合ルールを反映。READMEとAGENTSから対応表へ導線を追加。
+
+### 2026-11-16T17:44:33+09:00 — 準備・設計マイルストーンの残作業を完了する
+
+- 2026-11-16T17:55:46+09:00: Ruby 3.4.12へ固定しローカル依存をvendor/bundleに移行。全3spec（実ブラウザPC・モバイル含む）とRuboCop成功。個人の非公開GitHubリポジトリ作成。pushはworkflowスコープ不足、権限追加は自動レビューに拒否されユーザー承認待ち。Render個人ログインは確認、カード登録待ち。
+- 2026-11-16T18:02:45+09:00: Renderカード登録はユーザー完了、Billing再読込で未登録表示なし。bundler-auditとimportmap auditは脆弱性0。GitHub CLI workflow追加はユーザー許可済みだが組織SSOを含むContinueが自動レビュー拒否、ユーザーへ個人認証操作を依頼。Render Git Deployment Credentials接続も手動完了待ち。
+- 2026-11-16T18:09:23+09:00: GitHub CLI追加認証はユーザー完了しmainへpush成功。CI 43836448516のtest/lint/scan_ruby/scan_js全4ジョブ成功。Renderの個人Git Deployment CredentialsとSource CodeでLettuce222/hirudokiだけ選択可能を実確認。LET-12/14/21/22はDone。確認結果の文書PR #5を作成。
+
+### 2026-11-16T18:11:47+09:00 — 作成済みの全PRを確認しマージする
+
+- 2026-11-16T18:15:40+09:00: 初回一覧はPR#1〜#5の5件、各4CIジョブ成功を確認。文書#5とActions更新#1/#2/#3をマージ済み。#4はimage_processing2で任意依存化されたruby-vipsを直接依存に戻し、ADR0011とLET-27へ記録してCI再検証中。
+- 2026-11-16T18:17:45+09:00: PR#4の直接依存化でruby-vipsがRails起動時にlibvipsをロードしCI失敗。従来の間接依存と同じ遅延ロードにするrequire:falseで修正し、ローカル全3spec成功。更新後CIを確認中。
+- 2026-11-16T18:19:03+09:00: PR#1〜#5を全件マージ。未マージPR一覧は空。PR#4の修正後CI43838354997は全4ジョブ成功。ローカルmainを7b72791へfast-forwardし既存作業ログを保持。マージ後mainのCIを最終確認。
+
+### 2026-11-16T18:25:04+09:00 — Walking Skeletonを本番で稼働させCIと画像永続化を確認する
+
+- 2026-11-16T18:32:50+09:00: 受入specのRedはCI43839858719で確認。ActiveStorage migrationとDBヘルスを実装しローカル6 examples/0 failures、RuboCop33 files、Brakeman0warnings、production assets build成功。開発DBのblob1/key/4166bytesとSHA256の往復確認。Render BlueprintでSingapore・最小paid Web/DB・Disk1GB・checksPassを準備。
+- 2026-11-16T18:36:53+09:00: ユーザーが月額13.55USDの本番リソース作成を明示承認。main7263c9eのCI43840809678が全成功し、Render Blueprint exs-dbtcrqjm8hqs73ai0l60でSingapore Web/DB/Diskの作成を開始。
+- 2026-11-16T18:40:16+09:00: 本番https://hirudoki.onrender.com が公開。PC1280x900とモバイル390x844で表示・横幅を確認。初回buildとpre-deploy成功をログで確認。Web srv-dbtcth0ae00c73acmsm0、DB dpg-dbtct60ae00c73acltn0-a、deploy dep-dbtcthoae00c73acmuv0。
+- 2026-11-16T18:45:32+09:00: ユーザーが本番への一時的なDEPLOYMENT_FAILURE_PROBE=1追加・意図的失敗・解除を明示承認。Renderへ保存してrebuild/deployを開始。原本と同SHA256の画像を公開URLからHTTP200で取得済み。
+- 2026-11-16T18:47:37+09:00: 意図的pre-deploy失敗dep-dbtd14lckfvc73egaap0（exit1、DB変更前）の後も/upと保存画像がHTTP200、SHA256一致。検証フラグを削除しSave only、行数0を確認。成功CIのPR#7をmainへ反映しpush起点の自動再デプロイを確認する。
+- 2026-11-16T18:54:17+09:00: main0882537がAuto-DeployでLive、新インスタンスd28tjで既存blob ID1/key/SHA256維持、画像と/upをHTTP200で再確認。Rollbackリンク経路を確認。Walking SkeletonのLET-11/13/23/24/25/27すべてDone。最終証跡PR#8を作成しCI確認中。
+
+### 2026-11-19T05:40:48+09:00 — 11月18日・19日のMuse経由Codex CLI作業記録を調査する
+
+- 2026-11-19T05:42:20+09:00: PR #9（docs/align-design-rules）を確認。11/18の時間ログ4件・計57.66分（53分は推定）、11/19 05:31 JSTのAGENTS.md更新コミットを確認。今朝の時間ログ追加はPRに含まれない。PRは未マージでローカルmainにも未反映。
 

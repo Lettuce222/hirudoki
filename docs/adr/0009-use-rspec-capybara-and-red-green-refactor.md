@@ -11,7 +11,7 @@ PDFはmodel specとsystem specを要求する。ユーザーは全ての開発�
 
 ## Decision
 
-- RSpec Rails 8を基盤とし、model/service/request/systemの各層を責務で使い分ける。
+- RSpec Rails 8を基盤とし、model/request/systemの各層を責務で使い分ける。業務はドメインモデルとして表現するため、service specは作らない。
 - system specはCapybara＋Selenium＋headless Chromeを標準とする。PCとモバイルのviewportを検証する。
 - ローカルとCIはChromeを使用する。Selenium Managerが対応driverを管理する。既存Braveも比較したが、実機検証でbrowser 155とdriver 157の不一致が出たため標準に採用しない。
 - FactoryBotで必要最小限のデータを作り、Rails time helpersで時刻を固定する。
@@ -29,7 +29,7 @@ PDFはmodel specとsystem specを要求する。ユーザーは全ての開発�
 
 ## Consequences
 
-実ブラウザとdriverの初回取得が必要になる。速度重視の業務ルールはmodel/service specで検証し、system specは利用者の主要シナリオに集中する。品質・モバイル・テストを後工程へ分離しない。
+実ブラウザとdriverの初回取得が必要になる。速度重視の業務ルールはmodel specで検証し、system specは利用者の主要シナリオに集中する。品質・モバイル・テストを後工程へ分離しない。
 
 ## Sources
 
