@@ -1,9 +1,5 @@
-<section class="mx-auto flex min-h-[70vh] max-w-5xl items-center px-6 py-16">
-  <div class="max-w-2xl">
-    <p class="mb-3 text-sm font-semibold tracking-widest text-emerald-700">DAILY BENTO DELIVERY</p>
-    <h1 class="text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">ひるどき</h1>
-    <p class="mt-6 text-lg leading-8 text-slate-600">
-      今日の献立から選んだお弁当を、自宅やオフィスへお届けします。
-    </p>
-  </div>
-</section>
+<% content_for :title, "ひるどき｜お弁当の注文" %>
+<%= image_tag "salmon-bento.jpg", width: 900, height: 563, class: "bento-photo", alt: "焼き鮭、玉子焼き、から揚げを詰めたのり弁当" %>
+<h1><span class="visually-hidden">ひるどき｜</span>日替わりのお弁当を、<br>自宅や職場へ。</h1>
+<p>献立の写真と価格を見て、お届け日に合わせて注文できます。ご注文には利用者登録が必要です。</p>
+<%= link_to "利用者登録", new_registration_invitation_path, class: "primary" %>

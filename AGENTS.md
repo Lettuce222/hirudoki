@@ -35,7 +35,7 @@ Follow the visual design guidance in [unslop by Damir Sokolovsky](https://github
 ## Decisions and progress
 
 - Before implementing a UX change, prepare a simple interactive HTML prototype for the affected ticket, with brief explanations and one main successful journey. Align on the screen order, inputs, and destination; do not turn the prototype into an exhaustive error or boundary-case simulator. Work out detailed validation and error conditions with TDD when implementing the product.
-- Link the prototype from Linear and obtain the user's explicit review approval before implementing the production flow. Record the approval and prototype revision. If the agreed experience changes, review that change before implementation. Prototype preparation and time passing are not approval. Internal changes without a UX change do not need this gate; Markdown/Mermaid may accompany the HTML as supporting material.
+- Keep review HTML and its supporting materials in the ignored tmp/ux directory only during initial alignment. Record the approved journey and revision in Linear before implementing it. The shipped code and specs are the source of truth. If the agreed experience changes, review that change before implementation. Prototype preparation and time passing are not approval. Internal changes without a UX change do not need this gate; Markdown/Mermaid may accompany the HTML as supporting material.
 - Treat discussion questions as requests for explanation, not as rejection, approval, or instructions to change a decision. Explain the rationale and options; change an agreed policy only when the user explicitly requests or approves the change. Mark unresolved proposals clearly.
 
 - Record significant technical and process decisions in `docs/adr/`.

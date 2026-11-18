@@ -1,0 +1,9 @@
+<% content_for :title, "メールアドレスの入力｜ひるどき" %>
+<h1 class="visually-hidden">メールアドレスの入力</h1>
+<p>登録用のリンクを受け取るメールアドレスを入力してください。</p>
+<% if @error %><p role="alert"><%= @error %></p><% end %>
+<%= form_with url: registration_invitation_path do |form| %>
+  <%= form.label :email, "メールアドレス" %>
+  <%= form.email_field :email, value: params[:email], required: true, autocomplete: "email" %>
+  <%= form.submit "確認メール送信", class: "primary" %>
+<% end %>

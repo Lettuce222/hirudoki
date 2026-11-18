@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   root "home#show"
+  devise_for :users, skip: :all
+  resource :registration_invitation, only: %i[new create show]
+  resource :registration, only: %i[new create]
+  resource :profile, only: :show
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

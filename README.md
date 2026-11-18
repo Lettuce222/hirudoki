@@ -66,3 +66,11 @@ Active Storageの3テーブルは、画像メタデータ・添付関連・varia
 認証された本番シェルから `bin/rails runner script/storage-smoke.rb` を実行すると、同じblobを再利用して保存済み画像を検証し、表示用pathとチェックサムを出力します。これは公開のアップロード機能ではありません。後続の弁当管理ではPNG/JPEG/WebP・5MB以下の入力制約と画像なし時の代替表示を実装します。
 
 Deviseは依存を導入済みで、利用者・管理者の認証モデルと画面は後続タスクで実装します。
+
+## 利用者登録とメール
+
+利用者はメールのリンクを開いてから氏名・電話番号・パスワードを登録します。未確認の利用者を users に作らず、再送間隔と最新リンクの世代を保持するため、registration_invitations を追加しました。メールアドレスごとの行をロックし、送信成功時に世代を更新します。登録と同じトランザクションで使用済みの行を削除します。リンクは30分有効、同一アドレスへの再送は1分後からです。
+
+開発時のメールは tmp/mail に保存します。本番では Render の Environment に MAIL_FROM（確認済みの送信元）、SMTP_USERNAME、SMTP_PASSWORD を設定します。初期設定は smtp-relay.brevo.com の587番ポートでSTARTTLSを使います。別の配信先を使う場合は SMTP_ADDRESS と SMTP_PORT で指定できます。メール内のURLは Render の RENDER_EXTERNAL_HOSTNAME を使います。
+
+トップの弁当写真は[毒島みるく撮影の鮭のり弁当（CC0）](https://commons.wikimedia.org/wiki/File:Nori_bento_with_grilled_salmon_lunch_box_of_Lawson.jpg)です。

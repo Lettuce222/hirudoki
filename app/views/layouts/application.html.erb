@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
     <title><%= content_for(:title) || "Hirudoki" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -24,7 +24,10 @@
   </head>
 
   <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+    <header class="site-header"><%= link_to "ひるどき", root_path %></header>
+    <main class="content">
+      <% if notice %><p role="status"><%= notice %></p><% end %>
+      <% if alert %><p role="alert"><%= alert %></p><% end %>
       <%= yield %>
     </main>
   </body>

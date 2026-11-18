@@ -39,3 +39,6 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Temporary UX review materials belong in tmp/ux.
+/docs/ux/

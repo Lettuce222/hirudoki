@@ -169,6 +169,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | Q-007・Q-009（基盤部分） | DB不通時503、Active Storage往復のmodel spec、PC/モバイルsystem spec。CIで意図したRed→Green | /up200。業務モデルの検証は各後続スライスで追加 | 2026-11-16 / 7263c9e | LET-11・LET-25。CI 43839858719→43840809678 |
 | Q-008（トップ画面のみ） | PC1280×900・モバイル390×844のsystem spec | 本番でも同サイズで表示し、横はみ出しなし | 2026-11-16 / 7263c9e | LET-23。その他の画面は未実装 |
 | Q-003（DB/画像永続化部分） | storage_round_trip_spec、script/storage-smoke.rb | 初回配置→pre-deploy失敗→自動再デプロイ後も同じblob ID/key/SHA256、画像と/upは200 | 2026-11-16 / 7263c9e→0882537 | LET-13・LET-24・LET-27。詳細はdocs/testing/walking-skeleton.md |
+| F-001・F-002（一意性）・D-002 | spec/models/registration_invitation_spec.rb、spec/requests/registrations_spec.rb、spec/system/registration_spec.rb。確認メール経由の登録、旧URLの失効、必須項目の修正、登録直後のセッションを確認 | 本番SMTP配送と受信後の登録は未確認 | 2026-11-19 / 利用者登録PR | [LET-26] |
 
 ## チケット索引
 

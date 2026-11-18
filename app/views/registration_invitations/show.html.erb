@@ -1,0 +1,5 @@
+<% content_for :title, "送信案内｜ひるどき" %>
+<h1>確認メールをご確認ください</h1>
+<p><%= @email %> に届いたメールを開き、本文のリンクから登録を続けてください。</p>
+<p>メールが届かない場合は、1分ほど待ってから再送してください。</p>
+<%= button_to "確認メール再送", registration_invitation_path, params: { email: @email }, class: "secondary" %>
