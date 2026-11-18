@@ -1,7 +1,9 @@
 require "rails_helper"
 
 RSpec.describe "Home", type: :system do
-  [ [ "desktop", 1280, 900 ], [ "mobile", 390, 844 ] ].each do |name, width, height|
+  viewports = [ [ "desktop", 1280, 900 ], [ "mobile", 390, 844 ] ]
+
+  viewports.each do |name, width, height|
     it "shows the application name on #{name}" do
       page.current_window.resize_to(width, height)
       visit root_path
