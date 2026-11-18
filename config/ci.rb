@@ -7,6 +7,7 @@ CI.run do
   step "Tests", "bundle exec rspec"
 
   step "Style: Ruby", "bin/rubocop"
+  step "Style: Ruby comments", "bin/check-ruby-comments"
 
   step "Security: Gem audit", "bin/bundler-audit"
   step "Security: Importmap vulnerability audit", "bin/importmap audit"

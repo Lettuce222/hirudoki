@@ -84,6 +84,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -102,4 +104,9 @@ jobs:
 
       - name: Lint code for consistent style
         run: bin/rubocop -f github
+
+      - name: Check that new Ruby comments are in Japanese
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: bin/check-ruby-comments "$BASE_SHA"
 

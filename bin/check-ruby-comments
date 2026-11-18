@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+require "open3"
+require "ripper"
+
+def git(*arguments)
+  output, status = Open3.capture2("git", *arguments)
+  abort "git #{arguments.first} に失敗しました" unless status.success?
+
+  output
+end
+
+def prose_comments(source)
+  Ripper.lex(source).filter_map do |(line, _column), event, token|
+    next unless %i[on_comment on_embdoc].include?(event)
+
+    text = token.delete_prefix("#").strip
+    next if token.start_with?("#!") && line == 1
+    next if text.match?(/\A(?:-\*-\s*)?(?:encoding|coding|frozen_string_literal|warn_indent|shareable_constant_value|typed|rubocop|SPDX-License-Identifier):/)
+    next if text.match?(/\A:[a-z_]+:/)
+
+    [ line, text ]
+  end
+end
+
+Dir.chdir(File.expand_path("..", __dir__))
+
+base = ARGV.fetch(0) do
+  if system("git", "show-ref", "--verify", "--quiet", "refs/remotes/origin/main")
+    git("merge-base", "HEAD", "origin/main").strip
+  else
+    "HEAD"
+  end
+end
+
+changes = git("diff", "--name-status", "-z", "--find-renames", "--diff-filter=AMRT", base, "--").split("\0")
+files = {}
+until changes.empty?
+  status = changes.shift
+  path = changes.shift
+  if status.start_with?("R")
+    files[changes.shift] = path
+  else
+    files[path] = status == "A" ? nil : path
+  end
+end
+git("ls-files", "--others", "--exclude-standard", "-z").split("\0").each { |path| files[path] = nil }
+
+offenses = files.sort.flat_map do |path, previous_path|
+  next [] unless File.file?(path) && !File.symlink?(path)
+  ruby_binstub = path.start_with?("bin/") && File.extname(path).empty?
+  next [] unless path.match?(/\.(?:rb|rake|ru)\z/) || %w[Gemfile Rakefile].include?(path) || ruby_binstub
+
+  source = File.read(path)
+  next [] if ruby_binstub && !source.lines.first.to_s.match?(/\A#!.*\bruby\b/)
+
+  previous = previous_path ? git("show", "#{base}:#{previous_path}") : ""
+  previous_comments = prose_comments(previous).map(&:last).tally
+
+  prose_comments(source).filter_map do |line, text|
+    if previous_comments.fetch(text, 0).positive?
+      previous_comments[text] -= 1
+      next
+    end
+    next unless text.match?(/\p{L}/) && !text.match?(/[\p{Hiragana}\p{Katakana}\p{Han}]/)
+
+    "#{path}:#{line}: コードコメントは日本語で書いてください"
+  end
+end
+
+abort offenses.join("\n") unless offenses.empty?
