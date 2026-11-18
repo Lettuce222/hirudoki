@@ -18,7 +18,7 @@ RSpec.describe RegistrationInvitation, type: :model do
     travel 60.seconds
     last = described_class.deliver_to!(address).signed_link
     expect(described_class.from_link(first)).to be_nil
-    user = described_class.from_link(last).register!(last, details)
+    user = described_class.register!(last, details)
     expect(user).to be_persisted
     expect(user.valid_password?("sample-password")).to be(true)
     expect(described_class.from_link(last)).to be_nil
@@ -36,7 +36,7 @@ RSpec.describe RegistrationInvitation, type: :model do
     old_link = invitation.signed_link
     travel 1.minute
     new_link = described_class.deliver_to!(address).signed_link
-    expect { invitation.register!(old_link, details) }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { described_class.register!(old_link, details) }.to raise_error(ActiveRecord::RecordNotFound)
     expect(described_class.from_link(new_link)).to be_present
   end
 

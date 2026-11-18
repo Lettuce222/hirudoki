@@ -10,7 +10,7 @@ class RegistrationInvitation < ApplicationRecord
     candidate = new(email: address)
     candidate.validate!
     transaction do
-      # Concurrent first requests must acquire the same row lock as resends.
+      # 初回の申請が重なっても、再送時と同じ行をロックする。
       insert_all([ { email: candidate.email } ], unique_by: :email)
       invitation = lock.find_by!(email: candidate.email)
       unless User.exists?(email: invitation.email) || invitation.sent_at&.after?(RESEND_INTERVAL.ago)
@@ -29,11 +29,13 @@ class RegistrationInvitation < ApplicationRecord
     generate_token_for(:registration)
   end
 
-  def register!(token, details)
-    with_lock do
-      raise ActiveRecord::RecordNotFound unless self.class.from_link(token) == self
-      user = User.create!(details.merge(email: email))
-      destroy!
+  def self.register!(token, details)
+    raise ActiveRecord::RecordNotFound unless token.is_a?(String)
+
+    transaction do
+      invitation = lock.find_by_token_for(:registration, token) || raise(ActiveRecord::RecordNotFound)
+      user = User.create!(details.merge(email: invitation.email))
+      invitation.destroy!
       user
     end
   end

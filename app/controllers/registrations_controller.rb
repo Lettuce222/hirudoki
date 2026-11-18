@@ -1,12 +1,15 @@
 class RegistrationsController < ApplicationController
-  before_action :load_invitation
+  before_action :protect_registration_link
 
   def new
-    @user = User.new
+    invitation = RegistrationInvitation.from_link(params[:token])
+    return redirect_to_new_registration_invitation unless invitation
+
+    @user = User.new(email: invitation.email)
   end
 
   def create
-    @user = @invitation.register!(params[:token], params.expect(user: [ :name, :phone, :password, :password_confirmation ]))
+    @user = RegistrationInvitation.register!(params[:token], params.expect(user: [ :name, :phone, :password, :password_confirmation ]))
     reset_session
     sign_in(:user, @user)
     redirect_to profile_path, notice: "利用者登録が完了しました。", status: :see_other
@@ -14,19 +17,17 @@ class RegistrationsController < ApplicationController
     @user = error.record
     render :new, status: :unprocessable_content
   rescue ActiveRecord::RecordNotFound, ActiveRecord::RecordNotUnique
-    expired_link
+    redirect_to_new_registration_invitation
   end
 
   private
 
-  def load_invitation
+  def protect_registration_link
     no_store
     response.headers["Referrer-Policy"] = "no-referrer"
-    @invitation = RegistrationInvitation.from_link(params[:token])
-    expired_link unless @invitation
   end
 
-  def expired_link
+  def redirect_to_new_registration_invitation
     redirect_to new_registration_invitation_path, alert: "リンクが無効です。確認メールを再度お申し込みください。", status: :see_other
   end
 end
