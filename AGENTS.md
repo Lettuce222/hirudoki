@@ -18,16 +18,15 @@ Before doing project work, read and follow `.agents/skills/work-log/SKILL.md`.
 
 Decided by the author on 2026-11-18. Sources: the author's design policy, texta.fm episode 3 "Low-Code Development", and 『パーフェクト Ruby on Rails』 Part 5. The acceptance bar for this assignment is that the author can explain every line of the final code. Prefer simple code over clever code; if a line cannot be explained plainly, simplify or rewrite it.
 
-- Never add non-standard Rails directories or layers. In particular, never create `app/services/`. This is enforced by `spec/design_rules_spec.rb`.
 - Model facts, not procedures. Represent an operation as creating a domain record (for example, a payment is a Payment record that gets created, not a payment service that runs). Design resources so controller actions stay within the standard seven where possible.
 - Fat Model, Skinny Controller. Express queries as model scopes and class methods. Put validations in the model and duplicate them with DB constraints.
 - The tools from Part 5 are normal tools, not exceptions: value objects, models not backed by a database table, form objects, concerns, and callback objects. Form objects are models and live in `app/models`.
-- If a service-like object is truly needed, place it in `app/models` as a domain model with a noun name. Never name anything `Service`. This is also enforced by `spec/design_rules_spec.rb`.
-- Do not use presenters for now.
-- Tests: define constants with `let`. Write each `it` description as a simple sentence that reads as the specification. Keep the test pyramid in mind.
+- Tests: write each `it` description as a simple sentence that reads as the specification. Keep the test pyramid in mind.
 - Writing split (t-wada): How goes in code, What goes in tests, Why goes in commit messages, Why not goes in code comments.
 - ADRs sparingly: only for architecture-wide decisions, decisions not tied to a specific file, and library adoption. The latest decision must be understandable from the latest code alone.
 - Verification: verify through correct linters and tests, not through adversarial review of generated code. When a rule can be enforced by RuboCop or a spec, enforce it there instead of relying on review.
+
+Run `bin/rubocop` and `bundle exec rspec`. Machine-checkable design rules live in `.rubocop.yml` and `spec/design_rules_spec.rb`.
 
 ## Decisions and progress
 

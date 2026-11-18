@@ -37,6 +37,7 @@
 | [0011](0011-retain-vips-after-image-processing-upgrade.md) | Accepted | image_processing 2系への更新でVipsの直接依存を維持する |
 | [0012](0012-deploy-with-blueprint-ci-gate-and-persistent-disk.md) | Accepted | BlueprintとDB/画像Diskの分離で本番を構築する |
 | [0013](0013-gate-deploys-on-tested-ci-checks.md) | Accepted | CI成功を本番反映の条件とする |
+| [0014](0014-enforce-design-rules-with-static-checks.md) | Accepted | 機械判定できる設計ルールをRuboCopと構造specへ移す |
 
 
 
