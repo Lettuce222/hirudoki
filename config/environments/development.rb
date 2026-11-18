@@ -31,7 +31,7 @@ Rails.application.configure do
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
-  # Open tmp/mail in development to follow the same registration link locally.
+  # 開発環境では tmp/mail に保存したメールから登録を確認する。
   config.action_mailer.delivery_method = :file
   config.action_mailer.file_settings = { location: Rails.root.join("tmp/mail") }
   config.action_mailer.raise_delivery_errors = true
