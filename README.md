@@ -71,6 +71,6 @@ Deviseは依存を導入済みで、利用者・管理者の認証モデルと�
 
 利用者はメールのリンクを開いてから氏名・電話番号・パスワードを登録します。未確認の利用者を users に作らず、再送間隔と最新リンクの世代を保持するため、registration_invitations を追加しました。メールアドレスごとの行をロックし、送信成功時に世代を更新します。登録と同じトランザクションで招待に利用者を紐づけ、その後はリンクを使えなくします。招待の created_at と sent_at に初回発行と最終送信の日時が残り、利用者の created_at から登録日時を確認できます。リンクは30分有効、同一アドレスへの再送は1分後からです。登録用パスワードは半角英数字・記号で6〜72文字とし、空白は使えません。
 
-開発時のメールは tmp/mail に保存します。本番では Render の Environment に MAIL_FROM（確認済みの送信元）、SMTP_USERNAME、SMTP_PASSWORD を設定します。初期設定は smtp-relay.brevo.com の587番ポートでSTARTTLSを使います。別の配信先を使う場合は SMTP_ADDRESS と SMTP_PORT で指定できます。メール内のURLは Render の RENDER_EXTERNAL_HOSTNAME を使います。
+送信元の MAIL_FROM はアプリの起動時に読み込むため、変更後は再起動してください。未設定時の送信元は`ひるどき <registration@example.test>`です。開発時のメールは tmp/mail に保存します。本番では Render の Environment に MAIL_FROM（確認済みの送信元）、SMTP_USERNAME、SMTP_PASSWORD を設定します。初期設定は smtp-relay.brevo.com の587番ポートでSTARTTLSを使います。別の配信先を使う場合は SMTP_ADDRESS と SMTP_PORT で指定できます。メール内のURLは Render の RENDER_EXTERNAL_HOSTNAME を使います。
 
 トップの弁当写真は[毒島みるく撮影の鮭のり弁当（CC0）](https://commons.wikimedia.org/wiki/File:Nori_bento_with_grilled_salmon_lunch_box_of_Lawson.jpg)です。
