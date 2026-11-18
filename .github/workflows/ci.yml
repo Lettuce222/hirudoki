@@ -34,7 +34,7 @@ jobs:
         run: |
           bin/rails db:prepare
           bin/rails tailwindcss:build
-      - name: Run model, request, service and browser specs
+      - name: Run specs
         run: bundle exec rspec
       - name: Upload browser failure evidence
         if: failure()
