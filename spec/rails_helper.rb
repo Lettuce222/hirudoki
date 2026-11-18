@@ -46,6 +46,20 @@ RSpec.configure do |config|
       options.add_argument("--disable-dev-shm-usage")
     end
   end
+
+  config.prepend_after(type: :system) do
+    next unless Capybara::Session.instance_created?
+
+    # Chrome 158 rejects the wildcard origin Capybara uses to clear browser data.
+    session = Capybara.current_session
+    begin
+      session.server&.wait_for_pending_requests
+      session.raise_server_error!
+    ensure
+      session.quit
+    end
+  end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')

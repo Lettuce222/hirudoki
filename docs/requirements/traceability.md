@@ -169,6 +169,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | Q-007・Q-009（基盤部分） | DB不通時503、Active Storage往復のmodel spec、PC/モバイルsystem spec。CIで意図したRed→Green | /up200。業務モデルの検証は各後続スライスで追加 | 2026-11-16 / 7263c9e | LET-11・LET-25。CI 43839858719→43840809678 |
 | Q-008（トップ画面のみ） | PC1280×900・モバイル390×844のsystem spec | 本番でも同サイズで表示し、横はみ出しなし | 2026-11-16 / 7263c9e | LET-23。その他の画面は未実装 |
 | Q-003（DB/画像永続化部分） | storage_round_trip_spec、script/storage-smoke.rb | 初回配置→pre-deploy失敗→自動再デプロイ後も同じblob ID/key/SHA256、画像と/upは200 | 2026-11-16 / 7263c9e→0882537 | LET-13・LET-24・LET-27。詳細はdocs/testing/walking-skeleton.md |
+| Q-008・Q-009（ホームのアクセシビリティ） | `spec/system/home_spec.rb`でPC・モバイルにaxeを実行。言語未指定で両方失敗し、修正後はChrome 158で全20例成功 | 本番反映前 | 2026-11-19 / ローカル | [LET-25の検証記録](https://linear.app/lettuce222/issue/LET-25#comment-d61b2737-2aef-4e32-962a-f5191b629164) |
 
 ## チケット索引
 
