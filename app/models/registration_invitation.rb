@@ -2,6 +2,9 @@ class RegistrationInvitation < ApplicationRecord
   RESEND_INTERVAL = 1.minute
   LINK_LIFETIME = 30.minutes
 
+  belongs_to :user, optional: true
+  scope :unused, -> { where(user_id: nil) }
+
   normalizes :email, with: ->(value) { value.strip.downcase }
   validates :email, presence: true, format: { with: Devise.email_regexp }, length: { maximum: 254 }
   generates_token_for(:registration, expires_in: LINK_LIFETIME) { generation }
@@ -9,11 +12,13 @@ class RegistrationInvitation < ApplicationRecord
   def self.deliver_to!(address)
     candidate = new(email: address)
     candidate.validate!
+    return candidate if User.exists?(email: candidate.email)
+
     transaction do
       # 初回の申請が重なっても、再送時と同じ行をロックする。
       insert_all([ { email: candidate.email } ], unique_by: :email)
       invitation = lock.find_by!(email: candidate.email)
-      unless User.exists?(email: invitation.email) || invitation.sent_at&.after?(RESEND_INTERVAL.ago)
+      unless invitation.user_id? || invitation.sent_at&.after?(RESEND_INTERVAL.ago)
         invitation.update!(generation: invitation.generation + 1, sent_at: Time.current)
         RegistrationMailer.confirmation(invitation).deliver_now
       end
@@ -22,7 +27,7 @@ class RegistrationInvitation < ApplicationRecord
   end
 
   def self.from_link(token)
-    find_by_token_for(:registration, token) if token.is_a?(String) && token.present?
+    unused.find_by_token_for(:registration, token) if token.is_a?(String) && token.present?
   end
 
   def signed_link
@@ -33,9 +38,9 @@ class RegistrationInvitation < ApplicationRecord
     raise ActiveRecord::RecordNotFound unless token.is_a?(String)
 
     transaction do
-      invitation = lock.find_by_token_for(:registration, token) || raise(ActiveRecord::RecordNotFound)
+      invitation = unused.lock.find_by_token_for(:registration, token) || raise(ActiveRecord::RecordNotFound)
       user = User.create!(details.merge(email: invitation.email))
-      invitation.destroy!
+      invitation.update!(user: user)
       user
     end
   end

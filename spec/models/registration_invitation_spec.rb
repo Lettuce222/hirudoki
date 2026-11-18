@@ -24,9 +24,29 @@ RSpec.describe RegistrationInvitation, type: :model do
     expect(described_class.from_link(last)).to be_nil
   end
 
+  it "初回の発行・最終送信・登録の日時を利用者に紐づけて残す" do
+    invitation = described_class.deliver_to!(address)
+    issued_at = invitation.created_at
+    expect(invitation.sent_at).to eq(Time.current)
+    travel 2.minutes
+    token = described_class.deliver_to!(address).signed_link
+    sent_at = Time.current
+    travel 5.minutes
+    user = described_class.register!(token, details)
+
+    invitation.reload
+    expect(invitation.created_at).to eq(issued_at)
+    expect(invitation.sent_at).to eq(sent_at)
+    expect(invitation.user).to eq(user)
+    expect(invitation.user.created_at).to eq(Time.current)
+    expect { described_class.register!(token, details) }.to raise_error(ActiveRecord::RecordNotFound)
+    expect { described_class.deliver_to!(address) }.not_to change { invitation.reload.sent_at }
+  end
+
   it "登録済みのアドレスへの再申請でメールや利用者を増やさない" do
     existing = User.create!(details.merge(email: address))
     expect { described_class.deliver_to!(address.upcase) }.not_to change { ActionMailer::Base.deliveries.size }
+    expect(described_class.exists?(email: address)).to be(false)
     expect(User.new(details.merge(email: address.upcase))).not_to be_valid
     expect(existing.encrypted_password).not_to eq(details[:password])
   end
