@@ -1,7 +1,7 @@
 # 利用者登録の体験レビュー
 
 - Status: 基本の画面遷移は了承済み。本体は未実装。
-- Revision: 4
+- Revision: 5
 - Date: 2026-11-19
 - 対象チケット: LET-26
 
@@ -25,3 +25,5 @@
 ## 承認記録
 
 2026-11-19、revision 3 の基本の流れについて本人から「大体の流れはOK」と回答。revision 4 は同じ画面順序で、見出し・装飾を減らし、入力項目と次の操作を優先した。
+
+Revision 5 ではトップに鮭のり弁当の写真と注文方法を掲載した。フォームと確認メールに次の操作を一文で案内し、ボタンのラベルを名詞形に統一した。トップの写真は献立のイメージに使用している。[写真の出典（毒島みるく、CC0）](https://commons.wikimedia.org/wiki/File:Nori_bento_with_grilled_salmon_lunch_box_of_Lawson.jpg)
