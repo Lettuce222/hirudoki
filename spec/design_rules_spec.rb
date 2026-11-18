@@ -3,14 +3,14 @@ require "rubocop"
 
 RSpec.describe "設計ルール" do
   let(:application_path) { Pathname.new(__dir__).join("../app").expand_path }
-  let(:standard_directories) { %w[assets channels controllers helpers javascript jobs models views] }
+  let(:standard_directories) { %w[assets channels controllers helpers javascript jobs mailers models views] }
 
-  it "app直下にはメール機能を除いたRails標準のディレクトリだけを置く" do
+  it "app直下にはRails標準のディレクトリだけを置く" do
     directories = application_path.children.select(&:directory?).map { |path| path.basename.to_s }
     unexpected_directories = directories - standard_directories
 
     expect(unexpected_directories).to be_empty,
-      "許可されていないディレクトリ: #{unexpected_directories.join(', ')}。メール機能は対象外です。ドメインモデルはapp/modelsに置いてください"
+      "許可されていないディレクトリ: #{unexpected_directories.join(', ')}。ドメインモデルはapp/modelsに置いてください"
   end
 
   it "クラス・モジュール・定数にServiceやPresenterという名前を付けない" do

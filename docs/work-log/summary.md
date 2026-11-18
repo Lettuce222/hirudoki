@@ -1,14 +1,14 @@
 # Work Log Summary
 
-Generated at: 2026-11-19T05:57:15+09:00
+Generated at: 2026-11-19T06:03:01+09:00
 
-Total: 209.2 minutes (3.49 hours)
+Total: 210.4 minutes (3.51 hours)
 
 ## By category
 
 | Category | Minutes | Hours |
 |---|---:|---:|
-| decision | 53.0 | 0.88 |
+| decision | 54.2 | 0.90 |
 | documentation | 9.5 | 0.16 |
 | implementation | 0.2 | 0.00 |
 | mixed | 129.4 | 2.16 |
@@ -36,6 +36,7 @@ Total: 209.2 minutes (3.49 hours)
 | 2026-11-19T05:40:48+09:00 | 2026-11-19T05:42:20+09:00 | 1.6 | planning |  | no | 11月18日・19日のMuse経由Codex CLI作業記録を調査する | Muse経由の作業はPR #9に残っていることを確認。昨日の時間記録あり、今朝の変更はコミット履歴あり・時間記録なしと区別した |
 | 2026-11-19T05:43:10+09:00 | 2026-11-19T05:47:03+09:00 | 3.9 | mixed | LET-12, LET-20 | no | PR #9のマージ・作業ログ統合と11月19日朝の記録補完 | PR #9をマージ。全既存ログを保持し11/19朝5分を推定補完、重複・重なりなしを検証し再集計。CI全成功、Linear同期済み。 |
 | 2026-11-19T05:49:18+09:00 | 2026-11-19T05:57:15+09:00 | 8.0 | mixed | LET-12 | no | 設計ルールを静的検証へ移しAGENTS.mdを簡素化する | 機械判定できる設計ルールを構造specとRuboCopへ移しAGENTS.mdから削除。違反検出・ローカル全8spec・RuboCop・実装CI全成功、ADR0014とLinearを同期しPR #10作成。 |
+| 2026-11-19T06:01:50+09:00 | 2026-11-19T06:03:01+09:00 | 1.2 | decision | LET-12 | no | controllerのpublicメソッドを標準7アクションに限定する既存copを調査する | 既存プリセットとして外部Guardrails/RestfulActionsを確認。公式ActionOrderとの違いとConcern等の検査範囲を整理した。 |
 
 ## Notes
 
@@ -90,4 +91,8 @@ Total: 209.2 minutes (3.49 hours)
 - 2026-11-19T05:52:37+09:00: 記事の/correctに沿い、機械判定できるルールをAGENTS.mdから構造specとRuboCop RSpecへ移した。標準外ディレクトリ、名前空間付きService/Presenter宣言・定数代入、spec共有定数・ローカル変数を意図的に置く検証で全て失敗を確認し、正しいドメインモデル・コメント・文字列は通過。RuboCop34ファイルは違反ゼロ。ADR0014に範囲と限界を記録。
 - 2026-11-19T05:55:37+09:00: Rails/UniqueValidationWithoutIndexも有効化し、DB unique indexのないfilenameは失敗・indexのあるkeyは成功することを確認。全8 specはブラウザ/driver157を指定して成功。自動取得のChrome158で既存Capybara互換性エラー、ブラウザ157のみ指定ではdriver158不一致が起きたため、既存SE_CHROMEDRIVERで揃えて解消（アプリコード変更なし）。
 - 2026-11-19T05:57:15+09:00: PR #10作成、実装b0bc791のCI44396154089はtest/lint/scan_ruby/scan_js全成功。Linear LET-12の本文をADR0014と一致させ、検査範囲・ローカル全8spec成功・CI証跡を同期。PRは未マージでレビュー可能。
+
+### 2026-11-19T06:01:50+09:00 — controllerのpublicメソッドを標準7アクションに限定する既存copを調査する
+
+- 2026-11-19T06:03:01+09:00: 公式rubocop-rails2.38のActionOrderは標準アクションの順序のみで他メソッドを無視。同目的の公式issue548はOpen。外部rubocop-guardrailsのGuardrails/RestfulActionsを発見し、GitHubの実装とspecを確認。7名以外のpublic defを違反、private/protectedは許容、module内の宣言は対象外。導入・ルール変更は行わず選択肢を回答する。
 

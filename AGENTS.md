@@ -30,6 +30,8 @@ Run `bin/rubocop` and `bundle exec rspec`. Machine-checkable design rules live i
 
 ## Decisions and progress
 
+- Before implementing any change to the user experience, create a screen transition diagram for the affected ticket, including entry points, inputs, success, errors, authentication redirects, and return paths. Link it from the Linear ticket and obtain the user's explicit review approval before implementation. Record the approval and the reviewed diagram revision. If the flow changes, obtain approval for the change before implementing it. Preparing a diagram or ticket is not approval; internal-only changes without a UX change do not need this gate.
+
 - Record significant technical and process decisions in `docs/adr/`.
 - Keep implementation progress, time budgets, dependencies, and pending decisions in the Linear project `ひるどき 技術試験`.
 - An accepted decision is not complete until its ADR and Linear issue agree.

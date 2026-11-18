@@ -39,6 +39,7 @@
 | [0013](0013-gate-deploys-on-tested-ci-checks.md) | Accepted | CI成功を本番反映の条件とする |
 | [0014](0014-enforce-design-rules-with-static-checks.md) | Accepted | 機械判定できる設計ルールをRuboCopと構造specへ移す |
 | [0015](0015-enforce-restful-controller-actions-with-a-local-cop.md) | Accepted | controllerのpublicメソッドをローカルcopで標準7アクションに限定する |
+| [0016](0016-require-approved-screen-flows-before-ux-changes.md) | Accepted | UX変更は画面遷移の本人承認後に実装する |
 
 
 
