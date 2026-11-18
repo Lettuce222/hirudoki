@@ -12,6 +12,8 @@
 
 既存RuboCopのBaseとVisibilityHelpを使い、Hirudoki/RestfulActionsをlib/rubocop/cop/hirudokiに実装する。追加gemは不要。.rubocop.ymlから読み込み、app/controllers/**/*_controller.rbを対象に有効化する。
 
+lib/rubocopは開発用ツールなのでconfig.autoload_libのignoreに追加し、Railsの自動読み込み・一括読み込みから除外する。copはRuboCopとそのspecから明示的に読み込む。
+
 - Controllerで終わるクラスのpublicなdefはindex/show/new/create/edit/update/destroyだけを許可する。
 - private/protectedの補助メソッドは許可する。ブロック、インライン、定義後の名前指定、publicへの切り替えを検査する。
 - クラスメソッド、controller以外の内部クラス、Concernのmoduleは対象外。
