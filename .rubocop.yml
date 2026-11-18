@@ -4,6 +4,9 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 plugins:
   - rubocop-rspec
 
+Rails/UniqueValidationWithoutIndex:
+  Enabled: true
+
 RSpec:
   Enabled: false
 
