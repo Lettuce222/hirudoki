@@ -1,8 +1,8 @@
 # Work Log Summary
 
-Generated at: 2026-11-19T06:03:01+09:00
+Generated at: 2026-11-19T06:28:37+09:00
 
-Total: 210.4 minutes (3.51 hours)
+Total: 234.4 minutes (3.91 hours)
 
 ## By category
 
@@ -11,7 +11,7 @@ Total: 210.4 minutes (3.51 hours)
 | decision | 54.2 | 0.90 |
 | documentation | 9.5 | 0.16 |
 | implementation | 0.2 | 0.00 |
-| mixed | 129.4 | 2.16 |
+| mixed | 153.4 | 2.56 |
 | planning | 9.0 | 0.15 |
 | setup | 8.0 | 0.13 |
 
@@ -37,6 +37,7 @@ Total: 210.4 minutes (3.51 hours)
 | 2026-11-19T05:43:10+09:00 | 2026-11-19T05:47:03+09:00 | 3.9 | mixed | LET-12, LET-20 | no | PR #9のマージ・作業ログ統合と11月19日朝の記録補完 | PR #9をマージ。全既存ログを保持し11/19朝5分を推定補完、重複・重なりなしを検証し再集計。CI全成功、Linear同期済み。 |
 | 2026-11-19T05:49:18+09:00 | 2026-11-19T05:57:15+09:00 | 8.0 | mixed | LET-12 | no | 設計ルールを静的検証へ移しAGENTS.mdを簡素化する | 機械判定できる設計ルールを構造specとRuboCopへ移しAGENTS.mdから削除。違反検出・ローカル全8spec・RuboCop・実装CI全成功、ADR0014とLinearを同期しPR #10作成。 |
 | 2026-11-19T06:01:50+09:00 | 2026-11-19T06:03:01+09:00 | 1.2 | decision | LET-12 | no | controllerのpublicメソッドを標準7アクションに限定する既存copを調査する | 既存プリセットとして外部Guardrails/RestfulActionsを確認。公式ActionOrderとの違いとConcern等の検査範囲を整理した。 |
+| 2026-11-19T06:04:36+09:00 | 2026-11-19T06:28:37+09:00 | 24.0 | mixed | LET-12 | no | 標準7アクション以外のpublicメソッドを禁止するカスタムcopをTDDで実装する | ローカルcop・mailers復活・画面事前レビュー規則と認証フロー案を整備。最新CI全成功後PR #10をマージした。 |
 
 ## Notes
 
@@ -95,4 +96,13 @@ Total: 210.4 minutes (3.51 hours)
 ### 2026-11-19T06:01:50+09:00 — controllerのpublicメソッドを標準7アクションに限定する既存copを調査する
 
 - 2026-11-19T06:03:01+09:00: 公式rubocop-rails2.38のActionOrderは標準アクションの順序のみで他メソッドを無視。同目的の公式issue548はOpen。外部rubocop-guardrailsのGuardrails/RestfulActionsを発見し、GitHubの実装とspecを確認。7名以外のpublic defを違反、private/protectedは許容、module内の宣言は対象外。導入・ルール変更は行わず選択肢を回答する。
+
+### 2026-11-19T06:04:36+09:00 — 標準7アクション以外のpublicメソッドを禁止するカスタムcopをTDDで実装する
+
+- 2026-11-19T06:08:02+09:00: 追加指示: このアプリはメール機能不要のためapp/mailersを許可ディレクトリから除外し、メール雛形を削除する。カスタムcopの作業と同じ単一セッションで実施。
+- 2026-11-19T06:09:40+09:00: カスタムcopをRed→Greenで実装。public publishの未検出と、inline privateからpublic :publishへの切替の未検出をテスト失敗で確認し修正。Rubyの暗黙private initializeも考慮。cop10例、全18例成功。CLIでpublic独自アクション拒否/private補助・標準アクション許可/対象外ファイル除外を検証。mailersを許可から外してRedを確認後、ApplicationMailerとメールレイアウトを削除しGreen。RuboCop35ファイル違反なし。
+- 2026-11-19T06:12:32+09:00: CI44398738219でRails eager loadがlib/rubocopをRubocop名前空間として解釈するZeitwerkエラーを検出。開発用copディレクトリをconfig.autoload_lib(ignore)へ追加して修正。CI=trueで全18spec成功、RuboCop35ファイル違反なしを再確認。
+- 2026-11-19T06:20:57+09:00: 方針変更: 本人がメール所有を先に検証する登録フローを指定。メール入力→URL→氏名/電話/パスワード入力→登録に変更し、mailers禁止と雛形削除を撤回する。送信ドメイン・サービスは未所有との回答を得たため比較・準備も範囲に含める。
+- 2026-11-19T06:22:56+09:00: 追加ルール: UX変更を伴う全ての実装は、対象チケットに着手する前に画面遷移図を作成し本人のレビュー承認後に実装する。認証スライスはまだ実装していない。レビュー用の画面遷移図と必須手順を整備し、承認待ちとする。
+- 2026-11-19T06:28:37+09:00: CI44401184654はtest/lint/scan_ruby/scan_js全成功。前回のブラウザresizeタイムアウトは今回再現しなかった。本人承認に基づきPR #10をde24d16でマージ、main同期。認証画面は未実装でレビュー待ち。
 

@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ひるどき｜利用者登録の体験レビュー</title>
+  <style>
+    :root{--green:#245f48;--ink:#233b30;--muted:#6a786f;--line:#dde4d9;--bg:#f4f5ef}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.8 -apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif}button,input{font:inherit}button,a{cursor:pointer}a{color:var(--green);text-underline-offset:4px}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #c29135;outline-offset:3px}h1,h2,h3,p{margin-top:0}
+    .shell{max-width:1180px;margin:auto;padding:35px 26px 65px}.eyebrow{font-size:11px;letter-spacing:.12em;color:var(--green);font-weight:750;margin-bottom:9px}h1{font-size:29px;line-height:1.5;margin-bottom:9px;letter-spacing:-.03em}.intro{font-size:13px;color:var(--muted);max-width:750px}.journey{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:25px 0}.journey button{border:1px solid var(--line);border-radius:7px;background:#fff;padding:8px 12px;color:var(--green);font-size:12px}.journey button.active{background:var(--green);color:#fff;border-color:var(--green)}.arrow{color:#9ca698;font-size:12px}.workspace{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,1fr);gap:25px;align-items:start}.stage{background:#e8ede4;border:1px solid #dce2d6;border-radius:15px;padding:20px}.stage-label{font-size:11px;color:var(--muted);margin-bottom:13px}.device{background:#fff;border:1px solid #d8e0d2;border-radius:10px;overflow:hidden;box-shadow:0 12px 28px #304a3010}.product-header{padding:19px 24px;border-bottom:1px solid #edf0e8}.brand{font-size:22px;letter-spacing:.06em;font-weight:800;color:var(--green);text-decoration:none}.screen{padding:34px 28px 40px;min-height:490px}.screen-inner{max-width:380px;margin:auto}.step-label{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--green)}h2{font-size:27px;line-height:1.55;letter-spacing:-.03em;margin:10px 0 17px}.lead{font-size:14px;color:var(--muted);margin-bottom:26px}.primary,.secondary{display:block;width:100%;border-radius:7px;padding:12px 14px;text-align:center;font-weight:650;text-decoration:none;font-size:14px}.primary{background:var(--green);border:1px solid var(--green);color:#fff}.secondary{background:#fff;border:1px solid var(--line);color:var(--green)}.field{margin-bottom:18px}.field label{display:block;font-size:13px;font-weight:650;margin-bottom:6px}.field input{width:100%;padding:10px 12px;border:1px solid #bfccbc;border-radius:7px;color:var(--ink);background:#fff}.field input[readonly]{background:#f3f5ef;color:var(--muted)}.below{font-size:12px;text-align:center;margin:18px 0 0}.product-footer{background:#fafbf7;padding:15px;text-align:center;font-size:10px;color:#7f8b79}.note{background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px}.note h3{font-size:18px;margin-bottom:13px}.note p{font-size:13px}.next{border-top:1px solid var(--line);padding-top:17px;margin-top:19px}.next strong{display:block;font-size:12px;color:var(--green);margin-bottom:6px}.hint{font-size:11px;color:var(--muted);margin-top:15px}.icon{width:65px;height:65px;border-radius:50%;background:#edf3e8;color:var(--green);display:grid;place-items:center;font-size:30px;margin-bottom:22px}.mail-meta{font-size:11px;border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:25px;color:var(--muted);overflow-wrap:anywhere}.notice{background:#eef4e9;padding:13px 16px;border-radius:7px;color:var(--green);font-size:13px;margin-bottom:24px}.profile div{padding:12px 0;border-bottom:1px solid var(--line)}.profile dt{font-size:11px;color:var(--muted)}.profile dd{margin:0;overflow-wrap:anywhere}.reset{border:0;background:none;padding:0;color:var(--green);text-decoration:underline;font-size:12px}.review-footer{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;margin-top:25px;font-size:11px;color:var(--muted)}
+    @media(max-width:800px){.workspace{grid-template-columns:1fr}.shell{padding:24px 16px}.screen{min-height:0}.note{padding:20px}.stage{padding:13px}h1{font-size:25px}}@media(max-width:450px){.shell{padding:22px 12px}.journey{gap:5px}.journey button{padding:7px 9px;font-size:11px}.screen{padding:28px 21px}.product-header{padding:16px 21px}h2{font-size:25px}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header><p class="eyebrow">HIRUDOKI / REGISTRATION FLOW · REVISION 3</p><h1>利用者登録の流れを、一度体験する。</h1><p class="intro">「新規登録」から始め、メールのURLを開いて登録するまでの基本の流れです。画面を操作しながら、右側の説明を確認できます。</p></header>
+  <nav class="journey" aria-label="レビューする画面の順序" id="journey"></nav>
+  <div class="workspace">
+    <section class="stage" aria-label="画面イメージ"><div class="stage-label" id="stage-label"></div><div class="device"><header class="product-header"><a class="brand" href="#/home">ひるどき</a></header><main class="screen" id="screen"></main><footer class="product-footer">毎日のごはんを、もっと楽しみに。</footer></div></section>
+    <aside><section class="note" id="explanation"></section><p class="hint">入力欄はサンプルで埋めてあります。そのまま進めても、書き換えてもかまいません。</p></aside>
+  </div>
+  <footer class="review-footer"><span>レビュー用の試作品です。メール送信・アカウント作成は実行しません。<br>細かい入力条件やエラー処理は、本体実装時にTDDで詰めます。</span><button class="reset" id="reset">はじめから</button></footer>
+</div>
+<script>
+  const initialValues=()=>({email:"hanako@example.com",name:"ひるどき 花子",phone:"09012345678"});
+  let values=initialValues();
+  const escapeHtml=value=>String(value).replace(/[&<>"']/g,character=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[character]));
+  const steps=[
+    {id:"home",name:"トップ",purpose:"利用者がサービスを知り、新規登録を始める入口です。",action:"「新規登録」を押すと、メールアドレスの入力画面へ進みます。"},
+    {id:"email",name:"メール入力",purpose:"最初にメールアドレスだけを入力します。氏名やパスワードは、メールを確認したあとで入力します。",action:"「確認メールを送信する」を押して、送信案内へ進みます。"},
+    {id:"sent",name:"送信案内",purpose:"メールを確認してほしいことと、どのアドレスへ送ったかを伝えます。",action:"実際には自分の受信箱を開きます。この試作品では「届いたメールを見る」で受信したメールを再現します。"},
+    {id:"mail",name:"確認メール",purpose:"ひるどきから届くメールです。メールアドレスを使える本人が、メール内のURLから登録を続けます。",action:"「利用者登録へ進む」を押して、氏名などの入力画面を開きます。"},
+    {id:"register",name:"利用者登録",purpose:"確認済みのメールアドレスは引き継ぎ、氏名・電話番号・パスワードを入力します。",action:"「登録する」を押すと登録が完了し、ログインした状態でマイページへ進みます。"},
+    {id:"complete",name:"登録完了",purpose:"登録が完了したことを伝え、本人のマイページを表示します。",action:"この基本動線はここまでです。登録後にもう一度ログインする手間は設けない案です。"}
+  ];
+  const input=(name,label,type,value,attributes="")=>`<div class="field"><label for="${name}">${label}</label><input id="${name}" name="${name}" type="${type}" value="${escapeHtml(value)}" ${attributes}></div>`;
+  function go(id){if(location.hash===`#/${id}`)render();else location.hash=`/${id}`;}
+  function render(){
+    const id=location.hash.replace(/^#\/?/,"")||"home";
+    const index=Math.max(0,steps.findIndex(step=>step.id===id)),step=steps[index];
+    document.getElementById("journey").innerHTML=steps.map((item,position)=>`${position?'<span class="arrow" aria-hidden="true">→</span>':""}<button data-step="${item.id}" class="${position===index?"active":""}" ${position===index?'aria-current="step"':""}>${position+1}. ${item.name}</button>`).join("");
+    document.getElementById("stage-label").textContent=`${index+1} / ${steps.length}　${step.name}`;
+    const screens={
+      home:()=>`<p class="step-label">毎日のお昼に、選ぶ楽しみを。</p><h2>今日のお弁当から、<br>お昼が楽しみに。</h2><p class="lead">日替わりのお弁当を、ご自宅やオフィスへ。<br>ひるどきで、毎日のごはんを選びませんか。</p><a class="primary" href="#/email">新規登録</a>`,
+      email:()=>`<p class="step-label">新規登録 · STEP 1 / 2</p><h2>メールアドレスを<br>確認しましょう。</h2><p class="lead">登録用のURLをお送りします。メールを確認したあとに、お名前などを入力します。</p><form id="email-form" novalidate>${input("email","メールアドレス","email",values.email,'autocomplete="off"')}<button class="primary" type="submit">確認メールを送信する</button></form>`,
+      sent:()=>`<div class="icon" aria-hidden="true">✉</div><h2>メールをご確認ください。</h2><p class="lead"><strong>${escapeHtml(values.email)}</strong> 宛てに、登録用のURLをお送りしました。</p><p class="lead">メール内のURLから、続けて登録をお願いします。</p><a class="secondary" href="#/mail">届いたメールを見る（レビュー用）</a>`,
+      mail:()=>`<div class="mail-meta">受信メールのイメージ<br>差出人：ひるどき<br>宛先：${escapeHtml(values.email)}</div><h2>利用者登録のご案内</h2><p class="lead">ひるどきへの登録をお申し込みいただき、ありがとうございます。</p><p class="lead">下のURLから、お名前などを入力して登録を完了してください。</p><a class="primary" href="#/register">利用者登録へ進む</a>`,
+      register:()=>`<p class="step-label">新規登録 · STEP 2 / 2</p><h2>あと少しで、登録完了。</h2><p class="lead">お名前・電話番号と、ログイン用のパスワードを入力してください。</p><form id="registration-form" novalidate>${input("verified-email","確認済みメールアドレス","email",values.email,"readonly")}${input("name","氏名","text",values.name,'autocomplete="off"')}${input("phone","電話番号","tel",values.phone,'autocomplete="off"')}${input("password","パスワード","password","sample-password",'autocomplete="off"')}${input("password-confirmation","パスワード（確認）","password","sample-password",'autocomplete="off"')}<button class="primary" type="submit">登録する</button></form>`,
+      complete:()=>`<div class="notice">利用者登録が完了しました。</div><p class="step-label">MY PAGE</p><h2>${escapeHtml(values.name)}さん、<br>こんにちは。</h2><p class="lead">ひるどきへようこそ。</p><dl class="profile"><div><dt>氏名</dt><dd>${escapeHtml(values.name)}</dd></div><div><dt>メールアドレス</dt><dd>${escapeHtml(values.email)}</dd></div><div><dt>電話番号</dt><dd>${escapeHtml(values.phone)}</dd></div></dl>`
+    };
+    document.getElementById("screen").innerHTML=`<div class="screen-inner">${screens[step.id]()}</div>`;
+    document.getElementById("explanation").innerHTML=`<p class="eyebrow">${index+1} / ${steps.length}</p><h3>${step.name}</h3><p>${step.purpose}</p><div class="next"><strong>次の操作</strong><p>${step.action}</p></div>`;
+    document.getElementById("email-form")?.addEventListener("submit",event=>{event.preventDefault();values.email=event.currentTarget.elements.email.value;go("sent");});
+    document.getElementById("registration-form")?.addEventListener("submit",event=>{event.preventDefault();values.name=event.currentTarget.elements.name.value;values.phone=event.currentTarget.elements.phone.value;go("complete");});
+  }
+  document.addEventListener("click",event=>{const button=event.target.closest("[data-step]");if(button)go(button.dataset.step);});
+  document.getElementById("reset").addEventListener("click",()=>{values=initialValues();go("home");});
+  window.addEventListener("hashchange",render);
+  render();
+</script>
+</body>
+</html>
