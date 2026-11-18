@@ -10,6 +10,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require "capybara/rspec"
 require "selenium-webdriver"
+require_relative "support/chrome_storage_reset"
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -44,19 +45,6 @@ RSpec.configure do |config|
     driven_by :selenium, using: :headless_chrome, screen_size: [ 1280, 900 ] do |options|
       options.binary = ENV["CHROME_BINARY"] if ENV["CHROME_BINARY"].present?
       options.add_argument("--disable-dev-shm-usage")
-    end
-  end
-
-  config.prepend_after(type: :system) do
-    next unless Capybara::Session.instance_created?
-
-    # Chrome 158 rejects the wildcard origin Capybara uses to clear browser data.
-    session = Capybara.current_session
-    begin
-      session.server&.wait_for_pending_requests
-      session.raise_server_error!
-    ensure
-      session.quit
     end
   end
 
