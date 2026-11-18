@@ -1,14 +1,16 @@
 # Work Log Summary
 
-Generated at: 2026-11-19T05:42:20+09:00
+Generated at: 2026-11-19T05:44:35+09:00
 
-Total: 134.6 minutes (2.24 hours)
+Total: 197.3 minutes (3.29 hours)
 
 ## By category
 
 | Category | Minutes | Hours |
 |---|---:|---:|
-| documentation | 0.1 | 0.00 |
+| decision | 53.0 | 0.88 |
+| documentation | 9.5 | 0.16 |
+| implementation | 0.2 | 0.00 |
 | mixed | 117.5 | 1.96 |
 | planning | 9.0 | 0.15 |
 | setup | 8.0 | 0.13 |
@@ -26,6 +28,11 @@ Total: 134.6 minutes (2.24 hours)
 | 2026-11-16T17:44:33+09:00 | 2026-11-16T18:10:13+09:00 | 25.7 | mixed | LET-11, LET-12, LET-14, LET-21, LET-22 | no | 準備・設計マイルストーンの残作業を完了する | 準備・設計の残4件（LET-12/14/21/22）を完了。Ruby3.4.12固定、実ブラウザPC/モバイル全3specとGitHub CI全4ジョブ成功、個人privateリポジトリとRender支払い・GitHub接続確認。ADR0008〜0010と手順を記録し文書PR#5もCI成功。 |
 | 2026-11-16T18:11:47+09:00 | 2026-11-16T18:19:49+09:00 | 8.0 | setup | LET-21, LET-25 | no | 作成済みの全PRを確認しマージする | PR#1〜#5を全件マージ、未マージ0件。image_processing2のVips依存維持と遅延ロードを修正しADR0011へ記録。ローカルmainは7b72791へ同期、最終main CI43838589975の4ジョブすべて成功。 |
 | 2026-11-16T18:25:04+09:00 | 2026-11-16T18:55:20+09:00 | 30.3 | mixed | LET-23, LET-24, LET-25, LET-27 | no | Walking Skeletonを本番で稼働させCIと画像永続化を確認する | Walking Skeleton全6件をDone。PR#6〜#8をマージ。本番https://hirudoki.onrender.comを公開しPC/モバイル、DBヘルス、DB/画像書込み・公開配信、別インスタンスへの自動再デプロイ後の同一blob/SHA256保持を確認。承認済みpre-deploy失敗で旧版維持を確認し一時フラグ削除。CI全4ジョブ成功、ローカル6spec成功。 |
+| 2026-11-18T17:27:00+09:00 | 2026-11-18T18:20:00+09:00 | 53.0 | decision | LET-12 | yes | 設計ルールの検討と決定（services禁止・フォームオブジェクトはモデル・ADR運用・プレゼンター不採用） | 本人の設計方針を確定し叩き台v2を作成。ADR 0009・tdd.mdとの食い違い（service spec）を発見 |
+| 2026-11-18T18:29:40+09:00 | 2026-11-18T18:30:19+09:00 | 0.7 | documentation | LET-12 | no | 設計ルールの決定をADR 0009・tdd.md・既存specへ反映する | ADR 0009・tdd.mdのservice spec前提をmodel specへ修正。既存specの定数をlet化（health）と名前付き定義（systemのviewport）へ。設計ルール決定版v3を確定 |
+| 2026-11-18T18:32:54+09:00 | 2026-11-18T18:36:41+09:00 | 3.8 | documentation | LET-12 | no | Linearチケットの共通DoDからservice spec前提の文言を外す | Linear全44チケットを確認し、共通DoDのservice spec前提を26件（DoD 25件＋LET-12の推奨）すべてmodel/request/system specへ修正。残存ゼロを検証 |
+| 2026-11-18T18:40:13+09:00 | 2026-11-18T18:40:25+09:00 | 0.2 | implementation | LET-12 | no | 検証ファーストの原則を取り入れ、設計ルールを検証するspecを置く | 検証ファーストの原則（potetoさん）を設計ルールへ追加。RuboCopで表現できない構造ルールを検証するspec/design_rules_spec.rbを新設（services禁止・Service命名禁止） |
+| 2026-11-19T05:26:04+09:00 | 2026-11-19T05:31:04+09:00 | 5.0 | documentation | LET-12 | yes | AGENTS.mdに設計ルールの要点を追加する（Muse経由Codex CLI、推定） | PR #9コメント https://github.com/Lettuce222/hirudoki/pull/9#issuecomment-6990757224 に約5分・推定との記載あり。コミット51cd2a2の05:31:04 JSTを終了点とし5分を逆算。開始・終了の作業境界は実測でなく、開始時刻05:26:04は便宜上の推定。Ruby不在で未記録だった作業を補完。 |
 | 2026-11-19T05:40:48+09:00 | 2026-11-19T05:42:20+09:00 | 1.6 | planning |  | no | 11月18日・19日のMuse経由Codex CLI作業記録を調査する | Muse経由の作業はPR #9に残っていることを確認。昨日の時間記録あり、今朝の変更はコミット履歴あり・時間記録なしと区別した |
 
 ## Notes
