@@ -3,9 +3,11 @@
 <h1 class="visually-hidden">利用者登録</h1>
 <p>氏名・電話番号と、ログインに使うパスワードを入力してください。</p>
 <% if @user.errors.any? %>
-  <ul role="alert">
-    <% @user.errors.full_messages.each do |message| %><li><%= message %></li><% end %>
-  </ul>
+  <div role="alert">
+    <ul>
+      <% @user.errors.full_messages.each do |message| %><li><%= message %></li><% end %>
+    </ul>
+  </div>
 <% end %>
 <%= form_with model: @user, url: registration_path do |form| %>
   <%= hidden_field_tag :token, params[:token] %>

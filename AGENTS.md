@@ -23,6 +23,7 @@ Decided by the author on 2026-11-18. Sources: the author's design policy, texta.
 - The tools from Part 5 are normal tools, not exceptions: value objects, models not backed by a database table, form objects, concerns, and callback objects. Form objects are models and live in `app/models`.
 - Tests: write each `it` description as a simple sentence that reads as the specification. Keep the test pyramid in mind.
 - Writing split (t-wada): How goes in code, What goes in tests, Why goes in commit messages, Why not goes in code comments.
+- コードの説明コメントは日本語で書く。新規・変更されたRubyのコメントは `bin/check-ruby-comments` で確認する。
 - ADRs sparingly: only for architecture-wide decisions, decisions not tied to a specific file, and library adoption. The latest decision must be understandable from the latest code alone.
 - Verification: verify through correct linters and tests, not through adversarial review of generated code. When a rule can be enforced by RuboCop or a spec, enforce it there instead of relying on review.
 

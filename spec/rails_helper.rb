@@ -10,6 +10,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require "capybara/rspec"
 require "selenium-webdriver"
+require_relative "support/chrome_storage_reset"
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -46,6 +47,7 @@ RSpec.configure do |config|
       options.add_argument("--disable-dev-shm-usage")
     end
   end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
