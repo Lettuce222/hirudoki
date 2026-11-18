@@ -12,13 +12,15 @@
 
 | 対象 | 検証場所 |
 |---|---|
-| app直下のディレクトリはassets/channels/controllers/helpers/javascript/jobs/mailers/models/viewsに限定 | spec/design_rules_spec.rb |
+| app直下のディレクトリはassets/channels/controllers/helpers/javascript/jobs/models/viewsに限定 | spec/design_rules_spec.rb |
 | app内のクラス・モジュール・定数名の各名前空間要素をService/Presenterで終えない | 同spec。既存RuboCopのRuby ASTを解析し、宣言と定数代入を検査 |
 | specのグループ内で定数・クラス・モジュールを直接定義しない | RSpec/LeakyConstantDeclaration |
 | グループの外側のローカル変数をexample内の共有データにしない | RSpec/LeakyLocalVariable |
 | モデルの一意性バリデーションに対応するDBのunique indexを用意する | Rails/UniqueValidationWithoutIndex |
 
 rubocop-rspec 3.10系を開発・テスト依存として採用し、上記2つのcopだけを有効にする。exampleの入力データはletを使う。example生成用のループ変数、example内の計算結果、期待値のリテラルまで一律にlet化することは要求しない。定数の差し替えを検証するstub_constも許容する。
+
+メール送信はPDFの対象外（X-006）で、ユーザーも不要と明示したため、mailersは許可対象に含めない。生成されたApplicationMailerとメール用レイアウトは削除する。ログイン識別子としてのメールアドレスは必要だが、メール送信を伴う確認・パスワード再設定は実装しない。
 
 機械判定できる禁止事項はAGENTS.mdから削除し、既存のCIのlint/testジョブで失敗させる。ドメインの名詞として適切か、標準7アクションで表せるか、モデルとDBの制約が業務に十分か、テストの文章が仕様として読めるかなど、意味の判断が必要な指針は残す。一意性のcopはdb/schema.rbに基づく検査であり、条件付きバリデーションなどの対象外ケースやNOT NULL・外部キー・CHECK制約の整合性までは保証しない。
 
