@@ -29,3 +29,14 @@ PDFで指定されたmodel specとsystem specは実業務の実装とともに�
 - CI・ローカルともChromeを使う。Selenium Managerが対応するブラウザとドライバーを解決する。既存Braveはバージョン判定とdriverに不一致が出たため標準にはしない。
 - PC 1280×900、モバイル390×844を基準にし、追加の崩れ確認も各スライスで行う。初回Chrome/driver取得はネットワークが必要。
 - ローカルとCIで `RAILS_ENV=test bin/rails db:prepare`、`bin/rails tailwindcss:build`、`bundle exec rspec` を共通実行する。
+
+## アクセシビリティ検査
+
+`bundle exec rspec spec/system/home_spec.rb` で、PCとモバイルのホーム画面をaxeで検査できる。
+新しい主要画面やフォームのエラー状態では、対象画面が表示されたことを確認した後、system specに次の期待値を追加する。
+
+```ruby
+expect(page).to be_axe_clean.according_to(:wcag2a, :wcag2aa, :wcag21a, :wcag21aa, :wcag22aa)
+```
+
+違反時はRSpecの出力にルールIDと要素のセレクターが出る。GitHub Actionsの失敗時はスクリーンショットを `system-spec-failures` アーティファクトで参照できる。
