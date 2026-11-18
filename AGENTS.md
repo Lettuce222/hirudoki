@@ -28,6 +28,10 @@ Decided by the author on 2026-11-18. Sources: the author's design policy, texta.
 
 Run `bin/rubocop` and `bundle exec rspec`. Machine-checkable design rules live in `.rubocop.yml` and `spec/design_rules_spec.rb`.
 
+## Interface design
+
+Follow the visual design guidance in [unslop by Damir Sokolovsky](https://github.com/heydamir/unslop) for prototypes and product screens. Give the next input or action visual priority. Keep labels, status and instructions that help people act. Omit slogans, decorative badges and headings that repeat what the form already says.
+
 ## Decisions and progress
 
 - Before implementing a UX change, prepare a simple interactive HTML prototype for the affected ticket, with brief explanations and one main successful journey. Align on the screen order, inputs, and destination; do not turn the prototype into an exhaustive error or boundary-case simulator. Work out detailed validation and error conditions with TDD when implementing the product.

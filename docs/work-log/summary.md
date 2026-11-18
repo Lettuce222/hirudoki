@@ -1,8 +1,8 @@
 # Work Log Summary
 
-Generated at: 2026-11-19T06:47:07+09:00
+Generated at: 2026-11-19T06:54:24+09:00
 
-Total: 252.9 minutes (4.21 hours)
+Total: 254.2 minutes (4.24 hours)
 
 ## By category
 
@@ -14,6 +14,7 @@ Total: 252.9 minutes (4.21 hours)
 | mixed | 153.4 | 2.56 |
 | planning | 27.5 | 0.46 |
 | setup | 8.0 | 0.13 |
+| ui-ux | 1.3 | 0.02 |
 
 ## Entries
 
@@ -39,6 +40,7 @@ Total: 252.9 minutes (4.21 hours)
 | 2026-11-19T06:01:50+09:00 | 2026-11-19T06:03:01+09:00 | 1.2 | decision | LET-12 | no | controllerのpublicメソッドを標準7アクションに限定する既存copを調査する | 既存プリセットとして外部Guardrails/RestfulActionsを確認。公式ActionOrderとの違いとConcern等の検査範囲を整理した。 |
 | 2026-11-19T06:04:36+09:00 | 2026-11-19T06:28:37+09:00 | 24.0 | mixed | LET-12 | no | 標準7アクション以外のpublicメソッドを禁止するカスタムcopをTDDで実装する | ローカルcop・mailers復活・画面事前レビュー規則と認証フロー案を整備。最新CI全成功後PR #10をマージした。 |
 | 2026-11-19T06:28:37+09:00 | 2026-11-19T06:47:07+09:00 | 18.5 | planning | LET-15, LET-26, LET-28 | no | 認証フローのHTML操作プロトタイプを作成し再送・旧URL失効の変更を反映する | 利用者登録の基本動線1本だけのHTMLを作成しブラウザで公開、Draft PR #11とLinearへ保存。質問と方針変更の区別、レビューの簡潔さを規則へ反映。本体は本人の体験レビュー承認待ち。 |
+| 2026-11-19T06:53:06+09:00 | 2026-11-19T06:54:24+09:00 | 1.3 | ui-ux | LET-26 | no | 登録フローの文言と視線誘導に関するレビュー反映 | 登録画面の入力欄を優先する表示を確認し、方針をAGENTS.md・ADR・LET-26に記録 |
 
 ## Notes
 
