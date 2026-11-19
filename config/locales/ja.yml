@@ -1,0 +1,18 @@
+ja:
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: "を入力してください"
+      confirmation: "が一致しません"
+      too_short: "は%{count}文字以上で入力してください"
+      too_long: "は%{count}文字以内で入力してください"
+      invalid: "の形式を確認してください"
+      taken: "は登録済みです"
+  activerecord:
+    attributes:
+      user:
+        name: 氏名
+        email: メールアドレス
+        phone: 電話番号
+        password: パスワード
+        password_confirmation: 確認用パスワード

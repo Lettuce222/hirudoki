@@ -1,10 +1,16 @@
-/*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
- */
+body { margin: 0; color: #233b30; background: #fff; font: 1rem/1.7 system-ui, sans-serif; }
+.site-header { border-bottom: 1px solid #dce3dd; padding: 1rem max(1.25rem, calc((100% - 30rem) / 2)); }
+.site-header a { color: #245f48; font-weight: 650; text-decoration: none; white-space: nowrap; }
+.content { max-width: 30rem; margin: 1.5rem auto 3rem; padding: 0 1.25rem; overflow-wrap: anywhere; }
+.content h1 { font-size: 1.4rem; font-weight: 600; line-height: 1.45; margin: 0 0 .75rem; }
+.content p, .content dd { margin: 0 0 1rem; }
+.content label, .content dt { display: block; font-weight: 600; margin-bottom: .25rem; }
+.content input:not([type=hidden], [type=submit]) { box-sizing: border-box; display: block; width: 100%; border: 1px solid #819489; border-radius: .35rem; padding: .6rem .75rem; margin-bottom: 1rem; font: inherit; }
+.primary, .secondary { box-sizing: border-box; display: block; width: 100%; padding: .7rem 1rem; border: 1px solid #245f48; border-radius: .4rem; text-align: center; cursor: pointer; font: inherit; font-weight: 600; text-decoration: none; }
+.primary { color: white; background: #245f48; }
+.secondary { color: #245f48; background: white; }
+.bento-photo { display: block; width: 100%; height: auto; margin-bottom: 1.25rem; border-radius: .5rem; }
+[role=alert] { color: #862d23; margin-bottom: 1rem; }
+[role=status] { background: #edf4ee; padding: .75rem; }
+:focus-visible { outline: 3px solid #9b6912; outline-offset: 3px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

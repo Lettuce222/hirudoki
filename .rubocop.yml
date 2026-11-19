@@ -6,6 +6,13 @@ plugins:
 
 require:
   - ./lib/rubocop/cop/hirudoki/restful_actions
+  - ./lib/rubocop/cop/hirudoki/strong_parameters_method
+
+Hirudoki/StrongParametersMethod:
+  Description: Declare permitted controller attributes in private *_params methods.
+  Enabled: true
+  Include:
+    - app/controllers/**/*_controller.rb
 
 Hirudoki/RestfulActions:
   Description: Restrict public controller methods to the seven standard REST actions.

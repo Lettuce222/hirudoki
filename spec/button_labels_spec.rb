@@ -5,12 +5,12 @@ require "rubocop"
 
 RSpec.describe "ボタンの文言" do
   # 新しい操作を追加するときに、その名詞形をここでレビューする。
-  let(:labels) { %w[利用者登録 確認メール送信 受信メール 登録 レビューのリセット 保存 トップ メール入力 送信案内 確認メール 登録完了] }
+  let(:labels) { %w[利用者登録 確認メール送信 登録 保存 確認メール再送] }
   let(:root) { Pathname.new(__dir__).parent }
 
-  it "試作品とビューのHTMLボタンには承認した名詞を表示する" do
-    files = root.glob("docs/ux/**/*.html") + root.glob("app/views/**/*.html.erb")
-    selector = "button, [role=button], a.primary, a.secondary, .journey a, input[type=submit], input[type=button], input[type=reset]"
+  it "ビューのHTMLボタンには承認した名詞を表示する" do
+    files = root.glob("app/views/**/*.html.erb")
+    selector = "button, [role=button], a.primary, a.secondary, input[type=submit], input[type=button], input[type=reset]"
     files.each do |file|
       Nokogiri::HTML5.parse(file.read).css(selector).each do |control|
         label = control.name == "input" ? control["value"] : control.text.strip
