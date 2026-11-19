@@ -7,10 +7,11 @@ RSpec.describe RegistrationInvitation, type: :model do
   before { freeze_time }
 
   it "再送間隔が過ぎるまでは同じアドレスにメールを追加送信しない" do
-    expect {
-      described_class.deliver_to!(" HANA@example.org ")
-      described_class.deliver_to!(address)
-    }.to change { ActionMailer::Base.deliveries.size }.by(1)
+    token = described_class.deliver_to!(" HANA@example.org ").signed_link
+    travel 59.seconds
+
+    expect { described_class.deliver_to!(address) }.not_to change { ActionMailer::Base.deliveries.size }
+    expect(described_class.from_link(token)).to be_present
   end
 
   it "再送すると古いリンクは使えず、新しいリンクで一度だけ登録できる" do

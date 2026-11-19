@@ -7,7 +7,7 @@ class RegistrationInvitation < ApplicationRecord
 
   normalizes :email, with: ->(value) { value.strip.downcase }
   validates :email, presence: true, format: { with: Devise.email_regexp }, length: { maximum: 254 }
-  generates_token_for(:registration, expires_in: LINK_LIFETIME) { generation }
+  generates_token_for(:registration, expires_in: LINK_LIFETIME) { sent_at&.utc }
 
   def self.deliver_to!(address)
     candidate = new(email: address)
@@ -19,7 +19,7 @@ class RegistrationInvitation < ApplicationRecord
       insert_all([ { email: candidate.email } ], unique_by: :email)
       invitation = lock.find_by!(email: candidate.email)
       unless invitation.user_id? || invitation.sent_at&.after?(RESEND_INTERVAL.ago)
-        invitation.update!(generation: invitation.generation + 1, sent_at: Time.current)
+        invitation.update!(sent_at: Time.current)
         RegistrationMailer.confirmation(invitation).deliver_now
       end
       invitation
