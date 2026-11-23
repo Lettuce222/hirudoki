@@ -6,6 +6,7 @@ plugins:
   - rubocop-factory_bot
 
 require:
+  - ./lib/rubocop/cop/hirudoki/deterministic_spec_date
   - ./lib/rubocop/cop/hirudoki/model_factory
   - ./lib/rubocop/cop/hirudoki/restful_actions
   - ./lib/rubocop/cop/hirudoki/strong_parameters_method
@@ -26,6 +27,12 @@ FactoryBot/ConsistentParenthesesStyle:
 FactoryBot/FactoryNameStyle:
   Enabled: true
   EnforcedStyle: symbol
+
+Hirudoki/DeterministicSpecDate:
+  Description: Keep test dates repeatable and express elapsed time in domain units.
+  Enabled: true
+  Include:
+    - spec/**/*.rb
 
 Hirudoki/ModelFactory:
   Description: Use factories for test records of the listed models.
