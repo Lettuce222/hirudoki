@@ -1,7 +1,11 @@
 <% content_for :title, "マイページ｜ひるどき" %>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
 <h1>マイページ</h1>
 <dl>
   <dt>氏名</dt><dd><%= current_user.name %></dd>
   <dt>メールアドレス</dt><dd><%= current_user.email %></dd>
   <dt>電話番号</dt><dd><%= current_user.phone %></dd>
 </dl>
+<%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "secondary" %>

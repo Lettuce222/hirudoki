@@ -24,7 +24,18 @@
   </head>
 
   <body>
-    <header class="site-header"><%= link_to "ひるどき", root_path %></header>
+    <header class="site-header">
+      <%= link_to "ひるどき", root_path %>
+      <% if current_page?(root_path) %>
+        <nav aria-label="利用者メニュー">
+          <% if user_signed_in? %>
+            <%= link_to "マイページ", profile_path %>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path %>
+          <% end %>
+        </nav>
+      <% end %>
+    </header>
     <main class="content">
       <% if notice %><p role="status"><%= notice %></p><% end %>
       <% if alert %><p role="alert"><%= alert %></p><% end %>

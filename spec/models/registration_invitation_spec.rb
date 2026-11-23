@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe RegistrationInvitation, type: :model do
   let(:address) { "hana@example.org" }
-  let(:details) { { name: "花子", phone: "09012345678", password: "sample-password", password_confirmation: "sample-password" } }
+  let(:details) { attributes_for(:user).except(:email) }
 
   before { freeze_time }
 
@@ -21,7 +21,7 @@ RSpec.describe RegistrationInvitation, type: :model do
     expect(described_class.from_link(first)).to be_nil
     user = described_class.register!(last, details)
     expect(user).to be_persisted
-    expect(user.valid_password?("sample-password")).to be(true)
+    expect(user.valid_password?(details.fetch(:password))).to be(true)
     expect(described_class.from_link(last)).to be_nil
   end
 
@@ -45,11 +45,11 @@ RSpec.describe RegistrationInvitation, type: :model do
   end
 
   it "登録済みのアドレスへの再申請でメールや利用者を増やさない" do
-    existing = User.create!(details.merge(email: address))
+    existing = create(:user, email: address)
     expect { described_class.deliver_to!(address.upcase) }.not_to change { ActionMailer::Base.deliveries.size }
     expect(described_class.exists?(email: address)).to be(false)
-    expect(User.new(details.merge(email: address.upcase))).not_to be_valid
-    expect(existing.encrypted_password).not_to eq(details[:password])
+    expect(build(:user, email: address.upcase)).not_to be_valid
+    expect(existing.encrypted_password).not_to eq(existing.password)
   end
 
   it "古いフォームを送信しても再送後のリンクを消費しない" do

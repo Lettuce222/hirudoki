@@ -3,10 +3,37 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 plugins:
   - rubocop-rspec
+  - rubocop-factory_bot
 
 require:
+  - ./lib/rubocop/cop/hirudoki/model_factory
   - ./lib/rubocop/cop/hirudoki/restful_actions
   - ./lib/rubocop/cop/hirudoki/strong_parameters_method
+
+FactoryBot:
+  Enabled: false
+
+FactoryBot/AttributeDefinedStatically:
+  Enabled: true
+
+FactoryBot/SyntaxMethods:
+  Enabled: true
+
+FactoryBot/ConsistentParenthesesStyle:
+  Enabled: true
+  EnforcedStyle: require_parentheses
+
+FactoryBot/FactoryNameStyle:
+  Enabled: true
+  EnforcedStyle: symbol
+
+Hirudoki/ModelFactory:
+  Description: Use factories for test records of the listed models.
+  Enabled: true
+  Models:
+    - User
+  Include:
+    - spec/**/*_spec.rb
 
 Hirudoki/StrongParametersMethod:
   Description: Declare permitted controller attributes in private *_params methods.
