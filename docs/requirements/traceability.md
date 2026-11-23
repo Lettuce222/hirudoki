@@ -170,7 +170,8 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | Q-008（トップ画面のみ） | PC1280×900・モバイル390×844のsystem spec | 本番でも同サイズで表示し、横はみ出しなし | 2026-11-16 / 7263c9e | LET-23。その他の画面は未実装 |
 | Q-003（DB/画像永続化部分） | storage_round_trip_spec、script/storage-smoke.rb | 初回配置→pre-deploy失敗→自動再デプロイ後も同じblob ID/key/SHA256、画像と/upは200 | 2026-11-16 / 7263c9e→0882537 | LET-13・LET-24・LET-27。詳細はdocs/testing/walking-skeleton.md |
 | Q-008・Q-009（ホームのアクセシビリティ） | `spec/system/home_spec.rb`でPC・モバイルにaxeを実行。言語未指定で両方失敗し、修正後はChrome 158で全20例成功 | 本番反映前 | 2026-11-19 / ローカル | [LET-25の検証記録](https://linear.app/lettuce222/issue/LET-25#comment-d61b2737-2aef-4e32-962a-f5191b629164) |
-| F-001・F-002（一意性）・D-002 | spec/models/registration_invitation_spec.rb、spec/requests/registrations_spec.rb、spec/system/registration_spec.rb。確認メール経由の登録、旧URLの失効、必須項目の修正、登録直後のセッションを確認 | 本番SMTP配送と受信後の登録は未確認 | 2026-11-19 / 利用者登録PR | [LET-26] |
+| F-001・F-002（一意性）・D-002 | spec/models/registration_invitation_spec.rb、spec/requests/registrations_spec.rb、spec/system/registration_spec.rb。確認メール経由の登録、旧URLの失効、必須項目の修正、登録直後のセッションを確認 | 本人が迷惑メールフォルダで確認メールを受信し、リンクから登録を完了してマイページを表示 | 2026-11-19 / 448b26a | [LET-26の本番確認](https://linear.app/lettuce222/issue/LET-26#comment-702ab9df-3c6e-4774-bcf4-11719155450c) |
+| F-002（再ログイン） | spec/system/user_sessions_spec.rb。PC・スマートフォンで誤入力からの再試行、マイページへの再ログイン、ログアウト後のアクセス制限を確認。全42例成功 | 本番反映後に操作確認 | 2026-11-23 / 利用者セッションPR | [LET-26] |
 
 ## チケット索引
 

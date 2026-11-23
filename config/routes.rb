@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root "home#show"
-  devise_for :users, skip: :all
+  devise_for :users, only: :sessions, controllers: { sessions: "user_sessions" }
   resource :registration_invitation, only: %i[new create show]
   resource :registration, only: %i[new create]
   resource :profile, only: :show
