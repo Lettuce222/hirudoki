@@ -1,0 +1,25 @@
+.content:has(.catalog-grid, .catalog-nav) { max-width: 64rem; }
+.catalog-crumbs ol { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0 0 1rem; list-style: none; }
+.catalog-crumbs li + li::before { content: "/"; color: #56665b; margin-right: .5rem; }
+.catalog-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .8rem; }
+.catalog-heading h1 { margin: 0; }
+.catalog-heading .primary { width: auto; }
+.catalog-nav { display: grid; gap: .5rem; list-style: none; padding: 0; margin: 1rem 0; }
+.catalog-nav a { display: block; padding: .65rem 1rem; border: 1px solid #9caea1; border-radius: .3rem; }
+.catalog-nav a, .catalog-crumbs a, .catalog-grid a, .catalog-form a { color: #245f48; text-decoration: underline; }
+.catalog-grid { max-width: 100%; overflow-x: auto; margin-bottom: .75rem; }
+.catalog-grid table { border-collapse: collapse; width: 100%; }
+.catalog-grid th, .catalog-grid td { border: 1px solid #99a99d; text-align: left; padding: .5rem .65rem; vertical-align: middle; }
+.catalog-grid th { background: #edf3ee; font-weight: 650; white-space: nowrap; }
+.catalog-thumb { display: block; width: 4rem; height: 3rem; max-width: none; object-fit: cover; }
+.catalog-placeholder { background: #edf3ee; text-align: center; line-height: 3rem; }
+.catalog-preview { width: 12rem; max-width: 100%; height: 9rem; object-fit: contain; background: #f1f4f1; }
+.catalog-preview[hidden] { display: none; }
+.catalog-form textarea, .catalog-form select { width: 100%; box-sizing: border-box; margin-bottom: 1rem; padding: .6rem .75rem; background: white; border: 1px solid #819489; border-radius: .35rem; font: inherit; }
+.content .catalog-form input[type=checkbox] { display: inline-block; width: 1.2rem; height: 1.2rem; margin: 0; vertical-align: middle; }
+.catalog-form .primary { margin-top: 1rem; }
+.catalog-delete { margin-top: 1.5rem; padding: .4rem .7rem; background: white; border: 1px solid #862d23; border-radius: .3rem; color: #862d23; cursor: pointer; }
+@media (max-width: 40rem) {
+  .catalog-grid td, .catalog-grid th { padding: .4rem; }
+  .catalog-thumb { width: 3rem; height: 2.25rem; }
+}

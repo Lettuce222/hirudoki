@@ -1,0 +1,3 @@
+<% if record.persisted? %>
+  <%= button_to "削除", [:admin, record], method: :delete, class: "catalog-delete", form: { data: { turbo_confirm: "削除してよろしいですか？" } } %>
+<% end %>

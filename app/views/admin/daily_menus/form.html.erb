@@ -1,0 +1,16 @@
+<% action = @daily_menu.persisted? ? "編集" : "登録" %>
+<% content_for :title, "日別献立の#{action}｜管理画面｜ひるどき" %>
+<%= render "admin/shared/breadcrumbs", section: "日別献立", index_path: admin_daily_menus_path, current: action %>
+<h1>日別献立の<%= action %></h1>
+<%= render "admin/shared/errors", record: @daily_menu %>
+<%= form_with model: [:admin, @daily_menu], class: "catalog-form" do |form| %>
+  <%= form.label :served_on, "提供日" %>
+  <%= form.date_field :served_on, required: true %>
+  <%= form.label :bento_id, "弁当" %>
+  <%= form.collection_select :bento_id, @bentos, :id, :name, { prompt: "選択してください" }, required: true %>
+  <% if @bentos.empty? %><p>先に<%= link_to "弁当登録", new_admin_bento_path %>で弁当を登録してください。</p><% end %>
+  <%= form.label :capacity, "提供数上限（個）" %>
+  <%= form.number_field :capacity, min: 0, required: true %>
+  <%= form.submit "保存", class: "primary" %>
+<% end %>
+<%= render "admin/shared/delete", record: @daily_menu %>

@@ -1,0 +1,17 @@
+<% action = @delivery_area.persisted? ? "編集" : "登録" %>
+<% content_for :title, "配達エリアの#{action}｜管理画面｜ひるどき" %>
+<%= render "admin/shared/breadcrumbs", section: "配達エリア", index_path: admin_delivery_areas_path, current: action %>
+<h1>配達エリアの<%= action %></h1>
+<%= render "admin/shared/errors", record: @delivery_area %>
+<%= form_with model: [:admin, @delivery_area], class: "catalog-form" do |form| %>
+  <%= form.label :name, "エリア名" %>
+  <%= form.text_field :name, required: true %>
+  <%= form.label :postal_code, "郵便番号" %>
+  <%= form.text_field :postal_code, inputmode: "numeric", pattern: "[0-9]{7}", maxlength: 7, required: true, aria: { describedby: "postal-format" } %>
+  <p id="postal-format">ハイフンを除く半角数字7桁で入力してください。</p>
+  <%= form.label :active do %>
+    <%= form.check_box :active %> 有効
+  <% end %>
+  <%= form.submit "保存", class: "primary" %>
+<% end %>
+<%= render "admin/shared/delete", record: @delivery_area %>

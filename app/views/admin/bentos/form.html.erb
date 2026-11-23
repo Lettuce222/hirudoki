@@ -1,0 +1,30 @@
+<% action = @bento.persisted? ? "編集" : "登録" %>
+<% content_for :title, "弁当の#{action}｜管理画面｜ひるどき" %>
+<%= render "admin/shared/breadcrumbs", section: "弁当", index_path: admin_bentos_path, current: action %>
+<h1>弁当の<%= action %></h1>
+<%= render "admin/shared/errors", record: @bento %>
+<%= form_with model: [:admin, @bento], class: "catalog-form" do |form| %>
+  <%= form.label :name, "弁当名" %>
+  <%= form.text_field :name, required: true %>
+  <%= form.label :description, "説明" %>
+  <%= form.text_area :description, rows: 3 %>
+  <%= form.label :category, "タイプ" %>
+  <%= form.select :category, Bento::CATEGORIES %>
+  <%= form.label :price, "税抜価格（円）" %>
+  <%= form.number_field :price, min: 0, required: true %>
+  <%= form.label :display_order, "表示順" %>
+  <%= form.number_field :display_order, required: true %>
+  <div data-controller="image-preview">
+    <%= form.label :image, "弁当画像" %>
+    <% if @registered_image %>
+      <%= image_tag @registered_image, class: "catalog-preview", alt: "#{@bento.name}の登録画像", data: { image_preview_target: "original" } %>
+    <% end %>
+    <img class="catalog-preview" alt="選択した弁当画像" data-image-preview-target="preview" hidden>
+    <%= form.file_field :image, accept: Bento::IMAGE_TYPES.join(","), data: { action: "change->image-preview#update" } %>
+  </div>
+  <%= form.label :on_sale do %>
+    <%= form.check_box :on_sale %> 販売中
+  <% end %>
+  <%= form.submit "保存", class: "primary" %>
+<% end %>
+<%= render "admin/shared/delete", record: @bento %>

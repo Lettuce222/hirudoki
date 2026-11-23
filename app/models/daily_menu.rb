@@ -1,4 +1,6 @@
 class DailyMenu < ApplicationRecord
+  scope :latest_first, -> { order(served_on: :desc, id: :asc) }
+
   belongs_to :bento
   before_validation :copy_bento_category
 
