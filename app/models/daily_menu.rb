@@ -1,5 +1,5 @@
 class DailyMenu < ApplicationRecord
-  scope :served_on_desc, -> { order(served_on: :desc, id: :asc) }
+  scope :desc_by_served_on, -> { order(served_on: :desc, id: :asc) }
 
   belongs_to :bento
 

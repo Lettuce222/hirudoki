@@ -3,7 +3,7 @@ class Bento < ApplicationRecord
 
   IMAGE_TYPES = %w[image/jpeg image/png image/webp image/gif].freeze
 
-  scope :display_order_asc, -> { order(:display_order, :id) }
+  scope :asc_by_display_order, -> { order(:display_order, :id) }
 
   has_many :daily_menus, dependent: :restrict_with_error
   has_one_attached :image

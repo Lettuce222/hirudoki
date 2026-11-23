@@ -29,7 +29,7 @@ FactoryBot/FactoryNameStyle:
   EnforcedStyle: symbol
 
 Hirudoki/OrderScopeName:
-  Description: Name simple ordering scopes after the primary column and sort direction.
+  Description: Name simple ordering scopes asc_by_<column> or desc_by_<column> according to the primary sort key.
   Enabled: true
   Include:
     - app/models/**/*.rb

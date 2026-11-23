@@ -12,10 +12,10 @@ module RuboCop
 
         def on_send(node)
           ordered_scope(node) do |name, first_argument|
-            order = first_argument.sym_type? ? [ first_argument.value, :asc ] : column_and_direction(first_argument)
-            next unless order
+            column, direction = first_argument.sym_type? ? [ first_argument.value, :asc ] : column_and_direction(first_argument)
+            next unless column
 
-            expected = order.join("_")
+            expected = "#{direction}_by_#{column}"
             add_offense(name, message: format(MSG, expected:)) unless name.value.to_s == expected
           end
         end

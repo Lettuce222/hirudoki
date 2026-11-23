@@ -1,5 +1,5 @@
 class DeliveryArea < ApplicationRecord
-  scope :postal_code_asc, -> { order(:postal_code, :id) }
+  scope :asc_by_postal_code, -> { order(:postal_code, :id) }
 
   validates :name, presence: true
   validates :postal_code, format: { with: /\A[0-9]{7}\z/ }, uniqueness: true
