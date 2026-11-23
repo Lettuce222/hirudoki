@@ -51,6 +51,40 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_000200) do
     t.index ["email"], name: "index_administrators_on_email", unique: true
   end
 
+  create_table "bentos", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.string "bento_type", null: false
+    t.integer "price", null: false
+    t.boolean "on_sale", default: true, null: false
+    t.integer "display_order", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.check_constraint "bento_type::text = ANY (ARRAY['和食'::character varying, '洋食'::character varying, '中華'::character varying, 'ヘルシー'::character varying]::text[])", name: "bentos_known_bento_type"
+    t.check_constraint "price >= 0", name: "bentos_nonnegative_price"
+  end
+
+  create_table "daily_menus", force: :cascade do |t|
+    t.date "served_on", null: false
+    t.bigint "bento_id", null: false
+    t.integer "capacity", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bento_id"], name: "index_daily_menus_on_bento_id"
+    t.index ["served_on", "bento_id"], name: "index_daily_menus_on_served_on_and_bento_id", unique: true
+    t.check_constraint "capacity >= 0", name: "daily_menus_nonnegative_capacity"
+  end
+
+  create_table "delivery_areas", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "postal_code", null: false
+    t.boolean "active", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["postal_code"], name: "index_delivery_areas_on_postal_code", unique: true
+    t.check_constraint "postal_code::text ~ '^[0-9]{7}$'::text", name: "delivery_areas_seven_digit_postal_code"
+  end
+
   create_table "registration_invitations", force: :cascade do |t|
     t.string "email", null: false
     t.datetime "sent_at"
@@ -73,5 +107,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_000200) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "daily_menus", "bentos"
   add_foreign_key "registration_invitations", "users"
 end
