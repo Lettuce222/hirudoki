@@ -17,6 +17,7 @@
 .catalog-preview[hidden] { display: none; }
 .catalog-form textarea, .catalog-form select { width: 100%; box-sizing: border-box; margin-bottom: 1rem; padding: .6rem .75rem; background: white; border: 1px solid #819489; border-radius: .35rem; font: inherit; }
 .content .catalog-form input[type=checkbox] { display: inline-block; width: 1.2rem; height: 1.2rem; margin: 0; vertical-align: middle; }
+.catalog-form .catalog-field-with-hint input[type=text] { margin-bottom: .25rem; }
 .catalog-form .primary { margin-top: 1rem; }
 .catalog-delete { margin-top: 1.5rem; padding: .4rem .7rem; background: white; border: 1px solid #862d23; border-radius: .3rem; color: #862d23; cursor: pointer; }
 @media (max-width: 40rem) {
