@@ -1,0 +1,49 @@
+<% content_for :title, "献立｜ひるどき" %>
+<div class="customer-menus">
+  <h1>献立</h1>
+  <%= form_with url: daily_menus_path, method: :get, class: "menu-filters" do |form| %>
+    <div class="menu-filter">
+      <%= form.label :served_on, "提供日" %>
+      <%= form.date_field :served_on, value: @filters[:served_on] %>
+    </div>
+    <div class="menu-filter">
+      <%= form.label :category, "弁当タイプ" %>
+      <%= form.select :category, Bento::CATEGORIES, { include_blank: "すべて", selected: @filters[:category] } %>
+    </div>
+    <%= form.submit "絞り込み", class: "secondary" %>
+  <% end %>
+  <% if @menus.empty? %>
+    <p>条件に合う献立はありません。</p>
+  <% else %>
+    <div class="menu-grid">
+      <table>
+        <caption class="visually-hidden">献立一覧</caption>
+        <thead>
+          <tr>
+            <th scope="col">画像</th>
+            <th scope="col">弁当名</th>
+            <th scope="col" class="menu-date-column">提供日</th>
+            <th scope="col">タイプ</th>
+            <th scope="col">税抜価格</th>
+            <th scope="col">残数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @menus.each do |menu| %>
+            <tr>
+              <td class="menu-thumbnail"><%= render "photo", bento: menu.bento %></td>
+              <th scope="row">
+                <%= link_to menu.bento.name, daily_menu_path(menu, @filters.to_h) %>
+                <span class="menu-date-compact"><%= menu.served_on %></span>
+              </th>
+              <td class="menu-date-column"><%= menu.served_on %></td>
+              <td><%= menu.category %></td>
+              <td class="menu-quantity"><%= menu.bento.price %>円</td>
+              <td class="menu-quantity"><%= menu.capacity %>個</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>
