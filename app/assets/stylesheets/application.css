@@ -1,6 +1,7 @@
 body { margin: 0; color: #233b30; background: #fff; font: 1rem/1.7 system-ui, sans-serif; }
-.site-header { border-bottom: 1px solid #dce3dd; padding: 1rem max(1.25rem, calc((100% - 30rem) / 2)); }
+.site-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid #dce3dd; padding: 1rem max(1.25rem, calc((100% - 30rem) / 2)); }
 .site-header a { color: #245f48; font-weight: 650; text-decoration: none; white-space: nowrap; }
+.site-header nav a { text-decoration: underline; text-underline-offset: .2em; }
 .content { max-width: 30rem; margin: 1.5rem auto 3rem; padding: 0 1.25rem; overflow-wrap: anywhere; }
 .content h1 { font-size: 1.4rem; font-weight: 600; line-height: 1.45; margin: 0 0 .75rem; }
 .content p, .content dd { margin: 0 0 1rem; }
