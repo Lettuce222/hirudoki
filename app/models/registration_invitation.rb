@@ -40,7 +40,7 @@ class RegistrationInvitation < ApplicationRecord
     transaction do
       invitation = pending.lock.find_by_token_for(:registration, token) || raise(ActiveRecord::RecordNotFound)
       user = User.create!(details.merge(email: invitation.email))
-      invitation.update!(user: user)
+      invitation.update!(user:)
       user
     end
   end
