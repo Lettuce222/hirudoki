@@ -5,8 +5,19 @@ RSpec.describe "利用者の献立の公開範囲", type: :request do
 
   let(:user) { create(:user) }
 
+  it "絞り込みなしで一覧を開くと、提供日やタイプが異なる販売中の献立が表示される" do
+    create(:daily_menu, served_on: Date.new(2028, 2, 29), bento: create(:bento, name: "鮭弁当", bento_type: "和食"))
+    create(:daily_menu, served_on: Date.new(2028, 3, 1), bento: create(:bento, name: "パスタ弁当", bento_type: "洋食"))
+    sign_in user
+
+    get daily_menus_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("鮭弁当", "パスタ弁当")
+  end
+
   it "提供日と弁当タイプ付きのURLを開くと、両方に一致する献立だけが表示される" do
-    served_on = Date.new(2026, 11, 25)
+    served_on = Date.new(2028, 2, 29)
     create(:daily_menu, served_on:, bento: create(:bento, name: "鮭弁当", bento_type: "和食"))
     create(:daily_menu, served_on:, bento: create(:bento, name: "パスタ弁当", bento_type: "洋食"))
     create(:daily_menu, served_on: served_on.tomorrow, bento: create(:bento, name: "さば弁当", bento_type: "和食"))

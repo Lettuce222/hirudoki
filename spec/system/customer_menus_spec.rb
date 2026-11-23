@@ -4,7 +4,7 @@ RSpec.describe "利用者の献立閲覧", type: :system do
   include Warden::Test::Helpers
 
   let(:user) { create(:user) }
-  let(:date) { Date.new(2026, 11, 24) }
+  let(:date) { Date.new(2028, 2, 29) }
   let(:salmon) { create(:bento, name: "焼き鮭のり弁当", bento_type: "和食", description: "焼き鮭と玉子焼きです。", price: 650, display_order: 1) }
   let(:pasta) { create(:bento, name: "パスタ弁当", bento_type: "洋食", price: 720, display_order: 2) }
   let(:accessibility_tags) { %i[wcag2a wcag2aa wcag21a wcag21aa wcag22aa] }
