@@ -10,14 +10,13 @@ ja:
     attributes:
       bento:
         name: 弁当名
-        category: タイプ
+        bento_type: タイプ
         price: 税抜価格
         display_order: 表示順
         image: 弁当画像
         on_sale: 販売状態
       daily_menu:
         served_on: 提供日
-        category: タイプ
         bento: 弁当
         capacity: 提供数上限
       delivery_area:

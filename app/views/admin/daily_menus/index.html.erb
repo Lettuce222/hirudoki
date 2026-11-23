@@ -20,7 +20,7 @@
         <tr>
           <td><%= daily_menu.served_on.iso8601 %></td>
           <td><%= daily_menu.bento.name %></td>
-          <td><%= daily_menu.category %></td>
+          <td><%= daily_menu.bento.bento_type %></td>
           <td><%= daily_menu.capacity %>個</td>
           <td><%= link_to "編集", edit_admin_daily_menu_path(daily_menu), aria: { label: "#{daily_menu.served_on}の#{daily_menu.bento.name}の編集" } %></td>
         </tr>

@@ -3,10 +3,41 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 
 plugins:
   - rubocop-rspec
+  - rubocop-factory_bot
 
 require:
+  - ./lib/rubocop/cop/hirudoki/model_factory
   - ./lib/rubocop/cop/hirudoki/restful_actions
   - ./lib/rubocop/cop/hirudoki/strong_parameters_method
+
+FactoryBot:
+  Enabled: true
+
+FactoryBot/AttributeDefinedStatically:
+  Enabled: true
+
+FactoryBot/SyntaxMethods:
+  Enabled: true
+
+FactoryBot/ConsistentParenthesesStyle:
+  Enabled: true
+  EnforcedStyle: require_parentheses
+
+FactoryBot/FactoryNameStyle:
+  Enabled: true
+  EnforcedStyle: symbol
+
+Hirudoki/ModelFactory:
+  Description: Use factories for test records of the listed models.
+  Enabled: true
+  Models:
+    - Administrator
+    - Bento
+    - DailyMenu
+    - DeliveryArea
+    - User
+  Include:
+    - spec/**/*_spec.rb
 
 Hirudoki/StrongParametersMethod:
   Description: Declare permitted controller attributes in private *_params methods.
@@ -20,6 +51,9 @@ Hirudoki/RestfulActions:
   Include:
     - app/controllers/**/*_controller.rb
 
+Style/HashSyntax:
+  EnforcedShorthandSyntax: always
+
 Rails/UniqueValidationWithoutIndex:
   Enabled: true
 
@@ -31,3 +65,7 @@ RSpec/LeakyConstantDeclaration:
 
 RSpec/LeakyLocalVariable:
   Enabled: true
+
+Style/EmptyMethod:
+  Enabled: true
+  EnforcedStyle: compact

@@ -8,8 +8,8 @@
   <%= form.text_field :name, required: true %>
   <%= form.label :description, "説明" %>
   <%= form.text_area :description, rows: 3 %>
-  <%= form.label :category, "タイプ" %>
-  <%= form.select :category, Bento::CATEGORIES %>
+  <%= form.label :bento_type, "タイプ" %>
+  <%= form.select :bento_type, Bento::BENTO_TYPES %>
   <%= form.label :price, "税抜価格（円）" %>
   <%= form.number_field :price, min: 0, required: true %>
   <%= form.label :display_order, "表示順" %>

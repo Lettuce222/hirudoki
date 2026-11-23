@@ -21,7 +21,7 @@
         <tr>
           <td><% if bento.image.attached? %><%= image_tag bento.image, class: "catalog-thumb", alt: "" %><% else %><span class="catalog-thumb catalog-placeholder" role="img" aria-label="画像なし">—</span><% end %></td>
           <td><%= bento.name %></td>
-          <td><%= bento.category %></td>
+          <td><%= bento.bento_type %></td>
           <td><%= number_with_delimiter(bento.price) %>円</td>
           <td><%= bento.on_sale? ? "販売中" : "非販売" %></td>
           <td><%= link_to "編集", edit_admin_bento_path(bento), aria: { label: "#{bento.name}の編集" } %></td>

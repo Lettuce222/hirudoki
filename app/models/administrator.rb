@@ -1,5 +1,5 @@
 class Administrator < ApplicationRecord
-  devise :database_authenticatable, :validatable
+  include PasswordAuthentication
 
   validates :name, presence: true
 end

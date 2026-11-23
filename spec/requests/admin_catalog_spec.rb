@@ -1,21 +1,21 @@
 require "rails_helper"
 
 RSpec.describe "管理用の献立カタログ", type: :request do
-  let(:administrator) { Administrator.create!(name: "管理担当", email: "catalog@example.test", password: "sample-password") }
-  let(:bento) { Bento.create!(name: "焼き鮭", category: "和食", display_order: 1, price: 500) }
+  let(:administrator) { create(:administrator) }
+  let(:bento) { create(:bento, name: "焼き鮭", price: 500) }
   let(:menu_attributes) { { bento_id: bento.id, served_on: Date.current, capacity: 3 } }
   let(:area_attributes) { { name: "本町", postal_code: "0012345" } }
 
   def log_in
-    post administrator_session_path, params: { administrator: { email: administrator.email, password: "sample-password" } }
+    post administrator_session_path, params: { administrator: { email: administrator.email, password: administrator.password } }
   end
 
   it "未ログインの閲覧・登録や一般利用者の変更を拒否する" do
     get "/admin/bentos"
     expect(response).to redirect_to(new_administrator_session_path)
     expect { post "/admin/delivery_areas", params: { delivery_area: area_attributes } }.not_to change(DeliveryArea, :count)
-    user = User.create!(name: "利用者", email: "member@example.test", phone: "09000000000", password: "sample-password", password_confirmation: "sample-password")
-    post user_session_path, params: { user: { email: user.email, password: "sample-password" } }
+    user = create(:user)
+    post user_session_path, params: { user: { email: user.email, password: user.password } }
     patch "/admin/bentos/#{bento.id}", params: { bento: { price: 3 } }
     expect(response).to redirect_to(new_administrator_session_path)
     expect(bento.reload.price).to eq(500)

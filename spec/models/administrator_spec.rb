@@ -13,8 +13,8 @@ RSpec.describe "管理者のシード", type: :model do
   end
 
   it "氏名と一意のメールアドレスを必須とする" do
-    administrator = Administrator.create!(email: "admin@example.test", name: "管理担当", password: "test-password")
-    expect(Administrator.new(email: administrator.email.upcase, name: "別担当", password: "test-password")).not_to be_valid
-    expect(Administrator.new(email: "other@example.test", password: "test-password")).not_to be_valid
+    administrator = create(:administrator)
+    expect(build(:administrator, email: administrator.email.upcase)).not_to be_valid
+    expect(build(:administrator, name: nil)).not_to be_valid
   end
 end

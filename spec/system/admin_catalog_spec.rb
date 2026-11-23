@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "管理者の弁当・献立・配達エリア管理", type: :system do
-  let!(:administrator) { Administrator.create!(name: "管理担当", email: "catalog@example.test", password: "sample-password") }
+  let!(:administrator) { create(:administrator) }
   let(:tags) { %i[wcag2a wcag2aa wcag21a wcag21aa wcag22aa] }
 
   [ [ "PC", 1280, 900 ], [ "スマートフォン", 390, 844 ] ].each do |device, width, height|
@@ -9,7 +9,7 @@ RSpec.describe "管理者の弁当・献立・配達エリア管理", type: :sys
       page.current_window.resize_to(width, height)
       visit "/admin"
       fill_in "メールアドレス", with: administrator.email
-      fill_in "パスワード", with: "sample-password"
+      fill_in "パスワード", with: administrator.password
       click_button "ログイン"
       expect(page).not_to have_link("献立登録")
       click_link "弁当", exact: true

@@ -4,8 +4,7 @@ class RegistrationInvitationsController < ApplicationController
     render :new, status: :too_many_requests
   }
 
-  def new
-  end
+  def new; end
 
   def create
     invitation = RegistrationInvitation.deliver_to!(params[:email].to_s)

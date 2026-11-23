@@ -36,6 +36,6 @@ class Admin::BentosController < Admin::CatalogController
   end
 
   def bento_params
-    params.expect(bento: [ :name, :description, :category, :price, :display_order, :image, :on_sale ])
+    params.expect(bento: [ :name, :description, :bento_type, :price, :display_order, :image, :on_sale ])
   end
 end
