@@ -3,7 +3,8 @@ require "rails_helper"
 RSpec.describe "管理用の献立カタログ", type: :request do
   let(:administrator) { create(:administrator) }
   let(:bento) { create(:bento, name: "焼き鮭", price: 500) }
-  let(:menu_attributes) { { bento_id: bento.id, served_on: Date.current, capacity: 3 } }
+  let(:served_on) { Date.new(2028, 2, 29) }
+  let(:menu_attributes) { { bento_id: bento.id, served_on:, capacity: 3 } }
   let(:area_attributes) { { name: "本町", postal_code: "0012345" } }
 
   def log_in
@@ -24,7 +25,7 @@ RSpec.describe "管理用の献立カタログ", type: :request do
   it "同日同タイプの登録と参照中の弁当削除を拒否し、未参照にすると削除できる" do
     log_in
     post admin_daily_menus_path, params: { daily_menu: menu_attributes }
-    menu = DailyMenu.find_by!(served_on: Date.current)
+    menu = DailyMenu.find_by!(served_on:)
     expect { post admin_daily_menus_path, params: { daily_menu: menu_attributes } }.not_to change(DailyMenu, :count)
     expect(response).to have_http_status(:unprocessable_content)
     expect(response.body).to include("同じ提供日")

@@ -32,7 +32,7 @@ RSpec.describe "管理者の弁当・献立・配達エリア管理", type: :sys
       within("nav[aria-label='パンくず']") { click_link "管理画面" }
       click_link "日別献立"
       click_link "献立登録"
-      fill_in "提供日", with: 2.days.from_now.to_date
+      fill_in "提供日", with: Date.new(2028, 2, 29)
       select "焼き鮭弁当", from: "弁当"
       fill_in "提供数上限（個）", with: 20
       click_button "保存"
