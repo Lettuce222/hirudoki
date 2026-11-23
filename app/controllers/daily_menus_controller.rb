@@ -3,7 +3,10 @@ class DailyMenusController < ApplicationController
 
   def index
     @filters = catalog_params
-    @menus = DailyMenu.for_catalog(served_on: @filters[:served_on], bento_type: @filters[:bento_type])
+    @menus = DailyMenu.on_sale
+                      .filtered_by(served_on: @filters[:served_on], bento_type: @filters[:bento_type])
+                      .in_display_order
+                      .preload(bento: { image_attachment: :blob })
   end
 
   def show

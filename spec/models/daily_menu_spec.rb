@@ -6,6 +6,19 @@ RSpec.describe DailyMenu, type: :model do
   let(:saba) { create(:bento, name: "さば弁当", bento_type: "和食") }
   let(:pasta) { create(:bento, name: "パスタ弁当", bento_type: "洋食") }
 
+  it "販売中の献立を指定された提供日・弁当タイプだけで絞り込める" do
+    today = create(:daily_menu, served_on:, bento: salmon)
+    tomorrow = create(:daily_menu, served_on: served_on.tomorrow, bento: salmon)
+    western = create(:daily_menu, served_on:, bento: pasta)
+    saba.update!(on_sale: false)
+    create(:daily_menu, served_on: served_on.yesterday, bento: saba)
+
+    menus = described_class.on_sale
+    expect(menus.filtered_by(served_on: "", bento_type: "")).to contain_exactly(today, tomorrow, western)
+    expect(menus.filtered_by(served_on:)).to contain_exactly(today, western)
+    expect(menus.filtered_by(bento_type: "和食")).to contain_exactly(today, tomorrow)
+  end
+
   it "日付、弁当、0以上の整数の提供数上限を指定する" do
     expect(build(:daily_menu, capacity: 0)).to be_valid
     expect(build(:daily_menu, capacity: -1)).not_to be_valid

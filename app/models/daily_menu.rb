@@ -3,6 +3,15 @@ class DailyMenu < ApplicationRecord
 
   scope :with_bento_type, ->(bento_type) { joins(:bento).where(bentos: { bento_type: }) }
 
+  scope :on_sale, -> { joins(:bento).where(bentos: { on_sale: true }) }
+  scope :in_display_order, -> { joins(:bento).order(:served_on, "bentos.display_order", :id) }
+  scope :filtered_by, ->(served_on: nil, bento_type: nil) {
+    menus = all
+    menus = menus.where(served_on:) if served_on.present?
+    menus = menus.with_bento_type(bento_type) if bento_type.present?
+    menus
+  }
+
   validates :served_on, presence: true
   validates :capacity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :unique_bento_type_on_served_on
@@ -13,15 +22,6 @@ class DailyMenu < ApplicationRecord
       with_connection { |connection| connection.execute("LOCK TABLE daily_menus IN SHARE ROW EXCLUSIVE MODE") }
       uncached { yield }
     end
-  end
-
-  scope :on_sale, -> { joins(:bento).where(bentos: { on_sale: true }) }
-
-  def self.for_catalog(served_on:, bento_type:)
-    menus = on_sale.includes(bento: { image_attachment: :blob }).order(:served_on, "bentos.display_order", :id)
-    menus = menus.where(served_on:) if served_on.present?
-    menus = menus.with_bento_type(bento_type) if bento_type.present?
-    menus
   end
 
   private
