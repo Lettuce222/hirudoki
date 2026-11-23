@@ -44,3 +44,4 @@
 | [0018](0018-use-smtp-for-registration-mail.md) | Accepted | 登録確認メールの配送にBrevoのSMTPを使う |
 | [0019](0019-enforce-catalog-constraints.md) | Accepted | 弁当タイプを弁当に持たせ、提供日ごとの重複をRailsで防ぐ |
 | [0020](0020-separate-administrator-access.md) | Accepted | 管理者の認証と画面を利用者から分ける |
+| [0021](0021-use-deterministic-dates-in-specs.md) | Accepted | specの入力日は固定し、現在に依存する仕様は基準日時を明示する |
