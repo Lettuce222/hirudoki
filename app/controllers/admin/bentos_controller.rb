@@ -2,7 +2,7 @@ class Admin::BentosController < Admin::CatalogController
   before_action :set_bento, only: %i[edit update destroy]
 
   def index
-    @bentos = Bento.with_attached_image.in_display_order
+    @bentos = Bento.with_attached_image.display_order_asc
   end
 
   def new

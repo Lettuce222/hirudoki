@@ -2,7 +2,7 @@ class Admin::DeliveryAreasController < Admin::CatalogController
   before_action :set_delivery_area, only: %i[edit update destroy]
 
   def index
-    @delivery_areas = DeliveryArea.by_postal_code
+    @delivery_areas = DeliveryArea.postal_code_asc
   end
 
   def new

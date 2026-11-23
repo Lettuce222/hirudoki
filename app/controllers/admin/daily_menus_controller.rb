@@ -3,7 +3,7 @@ class Admin::DailyMenusController < Admin::CatalogController
   before_action :load_bentos, only: %i[new create edit update]
 
   def index
-    @daily_menus = DailyMenu.includes(:bento).latest_first
+    @daily_menus = DailyMenu.includes(:bento).served_on_desc
   end
 
   def new
@@ -36,7 +36,7 @@ class Admin::DailyMenusController < Admin::CatalogController
   end
 
   def load_bentos
-    @bentos = Bento.in_display_order.to_a
+    @bentos = Bento.display_order_asc.to_a
   end
 
   def daily_menu_params
