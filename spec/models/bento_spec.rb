@@ -7,7 +7,7 @@ RSpec.describe Bento, type: :model do
 
   it "4種類からタイプを選び、0円の弁当も販売中で登録できる" do
     %w[和食 洋食 中華 ヘルシー].each do |bento_type|
-      bento = build_bento(bento_type: bento_type, price: 0)
+      bento = build_bento(bento_type:, price: 0)
       bento.save!
       expect(bento).to be_on_sale
     end
