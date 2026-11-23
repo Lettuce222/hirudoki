@@ -3,9 +3,9 @@ require "rails_helper"
 RSpec.describe "利用者の献立の公開範囲", type: :request do
   include Devise::Test::IntegrationHelpers
 
-  let(:user) { User.create!(name: "花子", email: "hana@example.org", phone: "09012345678", password: "sample-password", password_confirmation: "sample-password") }
-  let(:bento) { Bento.create!(name: "非販売のお弁当", category: "和食", on_sale: false, price: 0, display_order: 1) }
-  let!(:menu) { DailyMenu.create!(bento: bento, served_on: Date.current, capacity: 1) }
+  let(:user) { create(:user) }
+  let(:bento) { create(:bento, name: "非販売のお弁当", bento_type: "和食", on_sale: false, price: 0, display_order: 1) }
+  let!(:menu) { create(:daily_menu, bento:, served_on: Date.current, capacity: 1) }
 
   it "ログイン前に献立一覧や詳細を直接開くとトップに戻る" do
     get daily_menus_path

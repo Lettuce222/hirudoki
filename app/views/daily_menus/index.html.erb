@@ -7,8 +7,8 @@
       <%= form.date_field :served_on, value: @filters[:served_on] %>
     </div>
     <div class="menu-filter">
-      <%= form.label :category, "弁当タイプ" %>
-      <%= form.select :category, Bento::CATEGORIES, { include_blank: "すべて", selected: @filters[:category] } %>
+      <%= form.label :bento_type, "弁当タイプ" %>
+      <%= form.select :bento_type, Bento::BENTO_TYPES, { include_blank: "すべて", selected: @filters[:bento_type] } %>
     </div>
     <%= form.submit "絞り込み", class: "secondary" %>
   <% end %>
@@ -37,7 +37,7 @@
                 <span class="menu-date-compact"><%= menu.served_on %></span>
               </th>
               <td class="menu-date-column"><%= menu.served_on %></td>
-              <td><%= menu.category %></td>
+              <td><%= menu.bento.bento_type %></td>
               <td class="menu-quantity"><%= menu.bento.price %>円</td>
               <td class="menu-quantity"><%= menu.capacity %>個</td>
             </tr>

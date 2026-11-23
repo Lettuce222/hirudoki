@@ -3,19 +3,19 @@ require "rails_helper"
 RSpec.describe "利用者の献立閲覧", type: :system do
   include Warden::Test::Helpers
 
-  let(:user) { User.create!(name: "花子", email: "hana@example.org", phone: "09012345678", password: "sample-password", password_confirmation: "sample-password") }
+  let(:user) { create(:user) }
   let(:date) { Date.new(2026, 11, 24) }
-  let(:salmon) { Bento.create!(name: "焼き鮭のり弁当", category: "和食", description: "焼き鮭と玉子焼きです。", price: 650, display_order: 1) }
-  let(:pasta) { Bento.create!(name: "パスタ弁当", category: "洋食", price: 720, display_order: 2) }
+  let(:salmon) { create(:bento, name: "焼き鮭のり弁当", bento_type: "和食", description: "焼き鮭と玉子焼きです。", price: 650, display_order: 1) }
+  let(:pasta) { create(:bento, name: "パスタ弁当", bento_type: "洋食", price: 720, display_order: 2) }
   let(:accessibility_tags) { %i[wcag2a wcag2aa wcag21a wcag21aa wcag22aa] }
 
   before do
     File.open(Rails.root.join("app/assets/images/salmon-bento.jpg")) do |file|
       salmon.image.attach(io: file, filename: "salmon.jpg", content_type: "image/jpeg")
     end
-    DailyMenu.create!(bento: salmon, served_on: date, capacity: 19)
-    DailyMenu.create!(bento: pasta, served_on: date, capacity: 10)
-    DailyMenu.create!(bento: salmon, served_on: date.tomorrow, capacity: 4)
+    create(:daily_menu, bento: salmon, served_on: date, capacity: 19)
+    create(:daily_menu, bento: pasta, served_on: date, capacity: 10)
+    create(:daily_menu, bento: salmon, served_on: date.tomorrow, capacity: 4)
     login_as(user, scope: :user)
   end
 

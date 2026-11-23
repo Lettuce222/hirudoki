@@ -166,13 +166,14 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | 要件ID | 開発環境の結果・specパス | 本番の操作・URL・結果 | 確認日・対象コミット | 証跡を記載したLinearコメント |
 |---|---|---|---|---|
 | F-004〜006（閲覧）・F-023・Q-008 | spec/system/customer_menus_spec.rb、spec/requests/daily_menus_spec.rb。提供日・タイプの絞り込み、詳細、非販売と認可、PC・スマホの表と画像を確認。開発環境でも登録後のマイページから詳細に到達 | 本番反映前。注文後の残数はLET-34、評価投稿後の平均・一覧はLET-37、注文への導線はLET-33で確認 | 2026-11-23 / LET-31 | [LET-31] |
-| D-004〜006・F-027・B-031（献立参照時） | spec/models/{bento,delivery_area,daily_menu}_spec.rb。9例で価格・提供数上限・郵便番号・同日同タイプ重複・弁当タイプ変更・参照中の弁当の削除拒否を確認 | 本番未確認。管理画面の操作はLET-30、注文を含む残数計算はLET-34で確認 | 2026-11-23 / LET-29 | [LET-29] |
+| D-004〜006・F-027・B-031（献立参照時） | spec/models/{bento,delivery_area,daily_menu,menu_concurrency}_spec.rb。弁当タイプは弁当だけに保存。別接続で同日の同タイプ登録・タイプ変更の競合を検証。価格・提供数上限・郵便番号・参照中の弁当の削除制限も確認 | 本番未確認。管理画面の操作はLET-30、注文を含む残数計算はLET-34で確認 | 2026-11-23 / LET-29 | [LET-29] |
 | Q-003（基盤部分） | health_spec、storage_round_trip_spec、home system specを含む6例成功 | https://hirudoki.onrender.com/ と/upが200、PC/モバイル表示・DB/画像書込み確認 | 2026-11-16 / 7263c9e | LET-23・LET-24・LET-27の検証記録。業務の主要シナリオは未実装 |
 | Q-007・Q-009（基盤部分） | DB不通時503、Active Storage往復のmodel spec、PC/モバイルsystem spec。CIで意図したRed→Green | /up200。業務モデルの検証は各後続スライスで追加 | 2026-11-16 / 7263c9e | LET-11・LET-25。CI 43839858719→43840809678 |
 | Q-008（トップ画面のみ） | PC1280×900・モバイル390×844のsystem spec | 本番でも同サイズで表示し、横はみ出しなし | 2026-11-16 / 7263c9e | LET-23。その他の画面は未実装 |
 | Q-003（DB/画像永続化部分） | storage_round_trip_spec、script/storage-smoke.rb | 初回配置→pre-deploy失敗→自動再デプロイ後も同じblob ID/key/SHA256、画像と/upは200 | 2026-11-16 / 7263c9e→0882537 | LET-13・LET-24・LET-27。詳細はdocs/testing/walking-skeleton.md |
 | Q-008・Q-009（ホームのアクセシビリティ） | `spec/system/home_spec.rb`でPC・モバイルにaxeを実行。言語未指定で両方失敗し、修正後はChrome 158で全20例成功 | 本番反映前 | 2026-11-19 / ローカル | [LET-25の検証記録](https://linear.app/lettuce222/issue/LET-25#comment-d61b2737-2aef-4e32-962a-f5191b629164) |
-| F-001・F-002（一意性）・D-002 | spec/models/registration_invitation_spec.rb、spec/requests/registrations_spec.rb、spec/system/registration_spec.rb。確認メール経由の登録、旧URLの失効、必須項目の修正、登録直後のセッションを確認 | 本番SMTP配送と受信後の登録は未確認 | 2026-11-19 / 利用者登録PR | [LET-26] |
+| F-001・F-002（一意性）・D-002 | spec/models/registration_invitation_spec.rb、spec/requests/registrations_spec.rb、spec/system/registration_spec.rb。確認メール経由の登録、旧URLの失効、必須項目の修正、登録直後のセッションを確認 | 本人が迷惑メールフォルダで確認メールを受信し、リンクから登録を完了してマイページを表示 | 2026-11-19 / 448b26a | [LET-26の本番確認](https://linear.app/lettuce222/issue/LET-26#comment-702ab9df-3c6e-4774-bcf4-11719155450c) |
+| F-002（再ログイン） | spec/system/user_sessions_spec.rb。PC・スマートフォンで誤入力からの再試行、マイページへの再ログイン、ログアウト後のアクセス制限を確認。全42例成功 | 本番反映後に操作確認 | 2026-11-23 / 利用者セッションPR | [LET-26] |
 
 ## チケット索引
 

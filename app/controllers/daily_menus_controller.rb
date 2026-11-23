@@ -3,7 +3,7 @@ class DailyMenusController < ApplicationController
 
   def index
     @filters = catalog_params
-    @menus = DailyMenu.for_catalog(served_on: @filters[:served_on], category: @filters[:category])
+    @menus = DailyMenu.for_catalog(served_on: @filters[:served_on], bento_type: @filters[:bento_type])
   end
 
   def show
@@ -14,7 +14,7 @@ class DailyMenusController < ApplicationController
   private
 
   def catalog_params
-    params.permit(:served_on, :category)
+    params.permit(:served_on, :bento_type)
   end
 
   def require_user

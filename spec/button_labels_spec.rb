@@ -5,7 +5,7 @@ require "rubocop"
 
 RSpec.describe "ボタンの文言" do
   # 新しい操作を追加するときに、その名詞形をここでレビューする。
-  let(:labels) { %w[利用者登録 確認メール送信 登録 保存 確認メール再送 絞り込み] }
+  let(:labels) { %w[利用者登録 確認メール送信 登録 保存 確認メール再送 ログイン ログアウト 絞り込み] }
   let(:root) { Pathname.new(__dir__).parent }
 
   it "ビューのHTMLボタンには承認した名詞を表示する" do

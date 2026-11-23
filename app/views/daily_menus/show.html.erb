@@ -10,7 +10,7 @@
   <div class="menu-detail">
     <%= render "photo", bento: @menu.bento %>
     <div>
-      <p><%= @menu.served_on %>・<%= @menu.category %></p>
+      <p><%= @menu.served_on %>・<%= @menu.bento.bento_type %></p>
       <p><strong><%= @menu.bento.price %>円（税抜）</strong>　残り<%= @menu.capacity %>個</p>
       <p><%= @menu.bento.description %></p>
       <h2>評価</h2>
