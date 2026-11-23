@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resource :registration_invitation, only: %i[new create show]
   resource :registration, only: %i[new create]
   resource :profile, only: :show
+  resources :daily_menus, only: %i[index show]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
