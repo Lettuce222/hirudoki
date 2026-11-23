@@ -31,6 +31,9 @@ Hirudoki/ModelFactory:
   Description: Use factories for test records of the listed models.
   Enabled: true
   Models:
+    - Bento
+    - DailyMenu
+    - DeliveryArea
     - User
   Include:
     - spec/**/*_spec.rb
