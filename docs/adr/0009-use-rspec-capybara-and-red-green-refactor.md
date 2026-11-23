@@ -15,6 +15,7 @@ PDFはmodel specとsystem specを要求する。ユーザーは全ての開発�
 - system specはCapybara＋Selenium＋headless Chromeを標準とする。PCとモバイルのviewportを検証する。
 - ローカルとCIはChromeを使用する。Selenium Managerが対応driverを管理する。既存Braveも比較したが、実機検証でbrowser 155とdriver 157の不一致が出たため標準に採用しない。
 - FactoryBotで必要最小限のデータを作り、Rails time helpersで時刻を固定する。
+- テストデータは、検証だけなら `build(:user)`、保存済みの利用者が必要なら `create(:user)`、登録フォームの属性には `attributes_for(:user)` を使う。呼び出しの表記と属性のブロック定義は rubocop-factory_bot で検査する。factoryを用意したモデルは `Hirudoki/ModelFactory` の対象に加える。
 - 通常のDBテストはtransactional fixturesを使用する。競合テストは別接続・非transaction方式を個別設計する。
 - テスト実行方式をローカルとGitHub Actionsで揃える。実行結果の確認前にCI成功済みとは扱わない。
 - 各仕様についてTODO→意図したRed→最小実装でGreen→Refactorを繰り返す。詳細は`docs/testing/tdd.md`。
@@ -37,3 +38,4 @@ PDFはmodel specとsystem specを要求する。ユーザーは全ての開発�
 - [Capybara](https://github.com/teamcapybara/capybara)
 - [Selenium Manager](https://www.selenium.dev/documentation/selenium_manager/)
 - [FactoryBot Rails](https://github.com/thoughtbot/factory_bot_rails)
+- [RuboCop FactoryBot](https://docs.rubocop.org/rubocop-factory_bot/cops_factorybot.html)
