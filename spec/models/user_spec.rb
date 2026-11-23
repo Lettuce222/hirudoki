@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe User, type: :model do
   def user_with_password(password)
     described_class.new(name: "花子", email: "hana@example.org", phone: "09012345678",
-                        password: password, password_confirmation: password)
+                        password:, password_confirmation: password)
   end
 
   it "半角英数字・記号の6文字から72文字までを使える" do

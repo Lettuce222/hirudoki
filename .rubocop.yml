@@ -20,6 +20,9 @@ Hirudoki/RestfulActions:
   Include:
     - app/controllers/**/*_controller.rb
 
+Style/HashSyntax:
+  EnforcedShorthandSyntax: always
+
 Rails/UniqueValidationWithoutIndex:
   Enabled: true
 

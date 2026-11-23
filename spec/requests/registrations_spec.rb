@@ -10,12 +10,12 @@ RSpec.describe "メール確認による利用者登録", type: :request do
     url = Nokogiri::HTML(mail.html_part.body.decoded).at_css("a")["href"]
     get URI(url).request_uri
     token = Nokogiri::HTML(response.body).at_css("input[name=token]")["value"]
-    post registration_path, params: { token: token, user: details.merge(phone: "") }
+    post registration_path, params: { token:, user: details.merge(phone: "") }
     expect(response).to have_http_status(:unprocessable_content)
-    expect { post registration_path, params: { token: token, user: details.merge(email: "other@example.org") } }.to change(User, :count).by(1)
+    expect { post registration_path, params: { token:, user: details.merge(email: "other@example.org") } }.to change(User, :count).by(1)
     follow_redirect!
     expect(response.body).to include("マイページ", "hana@example.org", "花子")
-    expect { post registration_path, params: { token: token, user: details } }.not_to change(User, :count)
+    expect { post registration_path, params: { token:, user: details } }.not_to change(User, :count)
   end
 
   it "メールアドレスに誤りがあれば送信せず入力画面に戻す" do
