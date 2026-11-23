@@ -172,6 +172,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | Q-008・Q-009（ホームのアクセシビリティ） | `spec/system/home_spec.rb`でPC・モバイルにaxeを実行。言語未指定で両方失敗し、修正後はChrome 158で全20例成功 | 本番反映前 | 2026-11-19 / ローカル | [LET-25の検証記録](https://linear.app/lettuce222/issue/LET-25#comment-d61b2737-2aef-4e32-962a-f5191b629164) |
 | F-001・F-002（一意性）・D-002 | spec/models/registration_invitation_spec.rb、spec/requests/registrations_spec.rb、spec/system/registration_spec.rb。確認メール経由の登録、旧URLの失効、必須項目の修正、登録直後のセッションを確認 | 本人が迷惑メールフォルダで確認メールを受信し、リンクから登録を完了してマイページを表示 | 2026-11-19 / 448b26a | [LET-26の本番確認](https://linear.app/lettuce222/issue/LET-26#comment-702ab9df-3c6e-4774-bcf4-11719155450c) |
 | F-002（再ログイン） | spec/system/user_sessions_spec.rb。PC・スマートフォンで誤入力からの再試行、マイページへの再ログイン、ログアウト後のアクセス制限を確認。全42例成功 | 本番反映後に操作確認 | 2026-11-23 / 利用者セッションPR | [LET-26] |
+| F-003・D-003・Q-004（管理者の認証部分） | spec/models/administrator_spec.rb、spec/requests/admin_access_spec.rb、spec/system/admin_sessions_spec.rb。シードの再実行、別利用者・管理者の権限、PCとスマートフォンのログインとログアウトを確認。全51例成功 | 本番のシード管理者による確認はマージ後 | 2026-11-23 / 管理者認証PR | [LET-15]・[LET-28] |
 
 ## チケット索引
 

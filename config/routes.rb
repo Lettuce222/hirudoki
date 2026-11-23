@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root "home#show"
   devise_for :users, only: :sessions, controllers: { sessions: "user_sessions" }
+  devise_for :administrators, path: "admin", only: :sessions, controllers: { sessions: "admin/sessions" }
+  namespace :admin do
+    root "dashboards#show"
+  end
   resource :registration_invitation, only: %i[new create show]
   resource :registration, only: %i[new create]
   resource :profile, only: :show

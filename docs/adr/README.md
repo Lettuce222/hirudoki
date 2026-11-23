@@ -42,3 +42,4 @@
 | [0016](0016-require-approved-screen-flows-before-ux-changes.md) | Accepted | UX変更は画面遷移の本人承認後に実装する |
 | [0017](0017-check-accessibility-with-axe-in-system-specs.md) | Accepted | system specでaxeのアクセシビリティ検査を行う |
 | [0018](0018-use-smtp-for-registration-mail.md) | Accepted | 登録確認メールの配送にBrevoのSMTPを使う |
+| [0020](0020-separate-administrator-access.md) | Accepted | 管理者の認証と画面を利用者から分ける |

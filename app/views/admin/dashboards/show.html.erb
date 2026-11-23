@@ -1,0 +1,7 @@
+<% content_for :title, "管理画面｜ひるどき" %>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+<h1>管理画面</h1>
+<p><%= current_administrator.name %></p>
+<%= button_to "ログアウト", destroy_administrator_session_path, method: :delete, class: "secondary" %>

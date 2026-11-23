@@ -1,0 +1,7 @@
+<%= form_with model: resource, url: session_path(resource_name) do |form| %>
+  <%= form.label :email, "メールアドレス" %>
+  <%= form.email_field :email, required: true, autocomplete: "username" %>
+  <%= form.label :password, "パスワード" %>
+  <%= form.password_field :password, required: true, autocomplete: "current-password" %>
+  <%= form.submit "ログイン", class: "primary" %>
+<% end %>
