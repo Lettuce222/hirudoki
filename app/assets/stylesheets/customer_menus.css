@@ -38,6 +38,7 @@
 .menu-grid table { width: 100%; border-collapse: collapse; text-align: left; line-height: 1.45; }
 .menu-grid :is(th, td) { border: 1px solid #becbc3; padding: .65rem .8rem; vertical-align: middle; }
 .menu-grid thead { background: #f1f5f1; }
+.menu-grid th[scope=row] a { text-decoration: underline; }
 .menu-grid tbody tr:nth-child(even) { background: #fbfcfa; }
 .menu-quantity { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .menu-date-compact { display: none; }
