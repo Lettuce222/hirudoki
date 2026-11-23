@@ -7,6 +7,7 @@ plugins:
 
 require:
   - ./lib/rubocop/cop/hirudoki/order_scope_name
+  - ./lib/rubocop/cop/hirudoki/deterministic_spec_date
   - ./lib/rubocop/cop/hirudoki/model_factory
   - ./lib/rubocop/cop/hirudoki/restful_actions
   - ./lib/rubocop/cop/hirudoki/strong_parameters_method
@@ -33,6 +34,12 @@ Hirudoki/OrderScopeName:
   Enabled: true
   Include:
     - app/models/**/*.rb
+
+Hirudoki/DeterministicSpecDate:
+  Description: Keep test dates repeatable and express elapsed time in domain units.
+  Enabled: true
+  Include:
+    - spec/**/*.rb
 
 Hirudoki/ModelFactory:
   Description: Use factories for test records of the listed models.
