@@ -3,6 +3,7 @@
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
 <h1>マイページ</h1>
+<p><%= link_to "献立一覧", daily_menus_path %></p>
 <dl>
   <dt>氏名</dt><dd><%= current_user.name %></dd>
   <dt>メールアドレス</dt><dd><%= current_user.email %></dd>

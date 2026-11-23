@@ -1,0 +1,7 @@
+<% if bento.image.attached? %>
+  <%= image_tag bento.image, alt: bento.name, class: "menu-photo" %>
+<% else %>
+  <div class="menu-photo menu-illustration" role="img" aria-label="お弁当箱のイラスト">
+    <span class="menu-lunchbox" aria-hidden="true"></span>
+  </div>
+<% end %>
