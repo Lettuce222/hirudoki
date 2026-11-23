@@ -31,6 +31,7 @@ Hirudoki/ModelFactory:
   Description: Use factories for test records of the listed models.
   Enabled: true
   Models:
+    - Administrator
     - Bento
     - DailyMenu
     - DeliveryArea
@@ -64,3 +65,7 @@ RSpec/LeakyConstantDeclaration:
 
 RSpec/LeakyLocalVariable:
   Enabled: true
+
+Style/EmptyMethod:
+  Enabled: true
+  EnforcedStyle: compact
