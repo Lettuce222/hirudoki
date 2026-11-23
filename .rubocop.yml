@@ -11,7 +11,7 @@ require:
   - ./lib/rubocop/cop/hirudoki/strong_parameters_method
 
 FactoryBot:
-  Enabled: false
+  Enabled: true
 
 FactoryBot/AttributeDefinedStatically:
   Enabled: true
