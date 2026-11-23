@@ -1,0 +1,10 @@
+<% content_for :title, "ログイン｜ひるどき" %>
+<h1>ログイン</h1>
+<p>登録したメールアドレスとパスワードを入力してください。</p>
+<%= form_with model: resource, url: user_session_path do |form| %>
+  <%= form.label :email, "メールアドレス" %>
+  <%= form.email_field :email, required: true, autocomplete: "username" %>
+  <%= form.label :password, "パスワード" %>
+  <%= form.password_field :password, required: true, autocomplete: "current-password" %>
+  <%= form.submit "ログイン", class: "primary" %>
+<% end %>
