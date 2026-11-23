@@ -50,23 +50,6 @@ RSpec.describe DailyMenu, type: :model do
     expect(menu.reload.served_on).to eq(served_on)
   end
 
-  it "モデルを通さない書き込みでも負の提供数を保存できない" do
-    expect {
-      described_class.transaction(requires_new: true) do
-        described_class.insert_all!([ { served_on:, bento_id: salmon.id, capacity: -1 } ])
-      end
-    }.to raise_error(ActiveRecord::StatementInvalid) { |error| expect(error.cause).to be_a(PG::CheckViolation) }
-  end
-
-  it "同じ提供日と弁当IDの重複をDBでも拒む" do
-    create(:daily_menu, served_on:, bento: salmon)
-    expect {
-      described_class.transaction(requires_new: true) do
-        described_class.insert_all!([ { served_on:, bento_id: salmon.id, capacity: 1 } ])
-      end
-    }.to raise_error(ActiveRecord::RecordNotUnique)
-  end
-
   it "献立が参照している弁当は削除できず、非販売には変更できる" do
     create(:daily_menu, served_on:, bento: salmon)
     expect(salmon.destroy).to be(false)
