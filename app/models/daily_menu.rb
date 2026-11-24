@@ -1,4 +1,6 @@
 class DailyMenu < ApplicationRecord
+  scope :desc_by_served_on, -> { order(served_on: :desc, id: :asc) }
+
   belongs_to :bento
 
   scope :with_bento_type, ->(bento_type) { joins(:bento).where(bentos: { bento_type: }) }

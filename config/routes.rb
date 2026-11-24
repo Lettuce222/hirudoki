@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   devise_for :administrators, path: "admin", only: :sessions, controllers: { sessions: "admin/sessions" }
   namespace :admin do
     root "dashboards#show"
+    resources :bentos, :delivery_areas, :daily_menus, except: :show
   end
   resource :registration_invitation, only: %i[new create show]
   resource :registration, only: %i[new create]
