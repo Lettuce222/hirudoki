@@ -1,10 +1,10 @@
 <% content_for :title, "日別献立｜管理画面｜ひるどき" %>
 <%= render "admin/shared/breadcrumbs", current: "日別献立" %>
-<div class="catalog-heading">
+<div class="admin-list-heading">
   <h1>日別献立</h1>
   <%= link_to "献立登録", new_admin_daily_menu_path, class: "primary" %>
 </div>
-<div class="catalog-grid" role="region" aria-label="日別献立一覧" tabindex="0">
+<div class="admin-table" role="region" aria-label="日別献立一覧" tabindex="0">
   <table>
     <thead>
       <tr>

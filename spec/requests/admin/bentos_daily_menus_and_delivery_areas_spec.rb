@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "管理用の献立カタログ", type: :request do
+RSpec.describe "管理者の弁当・日別献立・配達エリア管理", type: :request do
   let(:administrator) { create(:administrator) }
   let(:bento) { create(:bento, name: "焼き鮭", price: 500) }
   let(:served_on) { Date.new(2028, 2, 29) }

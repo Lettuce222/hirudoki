@@ -3,7 +3,7 @@
 <%= render "admin/shared/breadcrumbs", section: "日別献立", index_path: admin_daily_menus_path, current: action %>
 <h1>日別献立の<%= action %></h1>
 <%= render "admin/shared/errors", record: @daily_menu %>
-<%= form_with model: [:admin, @daily_menu], class: "catalog-form" do |form| %>
+<%= form_with model: [:admin, @daily_menu], class: "admin-form" do |form| %>
   <%= form.label :served_on, "提供日" %>
   <%= form.date_field :served_on, required: true %>
   <%= form.label :bento_id, "弁当" %>

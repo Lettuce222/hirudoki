@@ -5,7 +5,7 @@ require_relative "../../../../lib/rubocop/cop/hirudoki/controller_base"
 RSpec.describe RuboCop::Cop::Hirudoki::ControllerBase, :config do
   it "同じディレクトリに中間コントローラを挟むと指摘する" do
     expect_offense(<<~RUBY, "app/controllers/admin/bentos_controller.rb")
-      class Admin::BentosController < Admin::CatalogController
+      class Admin::BentosController < Admin::RecordsController
                                       ^^^^^^^^^^^^^^^^^^^^^^^^ Inherit directly from Admin::BaseController.
       end
     RUBY

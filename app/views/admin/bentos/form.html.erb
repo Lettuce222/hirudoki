@@ -3,7 +3,7 @@
 <%= render "admin/shared/breadcrumbs", section: "弁当", index_path: admin_bentos_path, current: action %>
 <h1>弁当の<%= action %></h1>
 <%= render "admin/shared/errors", record: @bento %>
-<%= form_with model: [:admin, @bento], class: "catalog-form" do |form| %>
+<%= form_with model: [:admin, @bento], class: "admin-form" do |form| %>
   <%= form.label :name, "弁当名" %>
   <%= form.text_field :name, required: true %>
   <%= form.label :description, "説明" %>
@@ -17,9 +17,9 @@
   <div data-controller="image-preview">
     <%= form.label :image, "弁当画像" %>
     <% if @registered_image %>
-      <%= image_tag @registered_image, class: "catalog-preview", alt: "#{@bento.name}の登録画像", data: { image_preview_target: "original" } %>
+      <%= image_tag @registered_image, class: "bento-image-preview", alt: "#{@bento.name}の登録画像", data: { image_preview_target: "original" } %>
     <% end %>
-    <img class="catalog-preview" alt="選択した弁当画像" data-image-preview-target="preview" hidden>
+    <img class="bento-image-preview" alt="選択した弁当画像" data-image-preview-target="preview" hidden>
     <%= form.file_field :image, accept: Bento::IMAGE_TYPES.join(","), data: { action: "change->image-preview#update" } %>
   </div>
   <%= form.label :on_sale do %>

@@ -1,10 +1,10 @@
 <% content_for :title, "配達エリア｜管理画面｜ひるどき" %>
 <%= render "admin/shared/breadcrumbs", current: "配達エリア" %>
-<div class="catalog-heading">
+<div class="admin-list-heading">
   <h1>配達エリア</h1>
   <%= link_to "配達エリア登録", new_admin_delivery_area_path, class: "primary" %>
 </div>
-<div class="catalog-grid" role="region" aria-label="配達エリア一覧" tabindex="0">
+<div class="admin-table" role="region" aria-label="配達エリア一覧" tabindex="0">
   <table>
     <thead>
       <tr>

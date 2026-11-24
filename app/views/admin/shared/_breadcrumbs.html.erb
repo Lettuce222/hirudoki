@@ -1,7 +1,7 @@
 <% content_for :head do %>
   <meta name="turbo-cache-control" content="no-cache">
 <% end %>
-<nav class="catalog-crumbs" aria-label="パンくず">
+<nav class="admin-breadcrumbs" aria-label="パンくず">
   <ol>
     <li><%= link_to "管理画面", admin_root_path %></li>
     <% if local_assigns[:index_path] %><li><%= link_to section, index_path %></li><% end %>

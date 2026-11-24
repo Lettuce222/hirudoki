@@ -1,10 +1,10 @@
 <% content_for :title, "弁当｜管理画面｜ひるどき" %>
 <%= render "admin/shared/breadcrumbs", current: "弁当" %>
-<div class="catalog-heading">
+<div class="admin-list-heading">
   <h1>弁当</h1>
   <%= link_to "弁当登録", new_admin_bento_path, class: "primary" %>
 </div>
-<div class="catalog-grid" role="region" aria-label="弁当一覧" tabindex="0">
+<div class="admin-table" role="region" aria-label="弁当一覧" tabindex="0">
   <table>
     <thead>
       <tr>
@@ -19,7 +19,7 @@
     <tbody>
       <% @bentos.each do |bento| %>
         <tr>
-          <td><% if bento.image.attached? %><%= image_tag bento.image, class: "catalog-thumb", alt: "" %><% else %><span class="catalog-thumb catalog-placeholder" role="img" aria-label="画像なし">—</span><% end %></td>
+          <td><% if bento.image.attached? %><%= image_tag bento.image, class: "bento-thumbnail", alt: "" %><% else %><span class="bento-thumbnail bento-image-placeholder" role="img" aria-label="画像なし">—</span><% end %></td>
           <td><%= bento.name %></td>
           <td><%= bento.bento_type %></td>
           <td><%= number_with_delimiter(bento.price) %>円</td>
