@@ -8,7 +8,7 @@
 
 直下のコントローラはRails標準の `ApplicationController` を継承する。名前空間に共通の基底クラスを置く場合は `BaseController` とする。たとえば `Admin::BentosController` の直接の親は `Admin::BaseController`、その親は `ApplicationController` になる。将来 `Admin::Reports::BaseController` を置く場合、その親は `Admin::BaseController` になる。
 
-同じ名前空間の一部だけで使う振る舞いは、必要なコントローラでConcernを明示的に読み込む。弁当・日別献立・配達エリアは保存後の遷移とエラー表示を共有する。管理トップにも共通する管理者認証とキャッシュ制御は、管理画面の基底クラスが担当する。
+管理者認証とキャッシュ制御に加え、管理画面で標準とする保存・削除後の応答を `Admin::BaseController` に置く。弁当・日別献立・配達エリアは基底クラスのprivateメソッドを呼び出し、保存成功時の一覧への遷移、入力エラー時のフォーム再表示、削除結果の通知を共有する。
 
 ## 検証
 

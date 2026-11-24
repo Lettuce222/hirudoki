@@ -1,6 +1,4 @@
 class Admin::DailyMenusController < Admin::BaseController
-  include Admin::CatalogResponses
-
   before_action :set_daily_menu, only: %i[edit update destroy]
   before_action :load_bentos, only: %i[new create edit update]
 
