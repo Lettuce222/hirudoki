@@ -1,4 +1,6 @@
-class Admin::BentosController < Admin::CatalogController
+class Admin::BentosController < Admin::BaseController
+  include Admin::CatalogResponses
+
   before_action :set_bento, only: %i[edit update destroy]
 
   def index

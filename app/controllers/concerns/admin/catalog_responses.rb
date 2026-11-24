@@ -1,4 +1,4 @@
-class Admin::CatalogController < Admin::BaseController
+module Admin::CatalogResponses
   private
 
   def save_record(record, index_path)

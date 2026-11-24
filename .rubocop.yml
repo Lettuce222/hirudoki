@@ -6,6 +6,7 @@ plugins:
   - rubocop-factory_bot
 
 require:
+  - ./lib/rubocop/cop/hirudoki/controller_base
   - ./lib/rubocop/cop/hirudoki/order_scope_name
   - ./lib/rubocop/cop/hirudoki/deterministic_spec_date
   - ./lib/rubocop/cop/hirudoki/model_factory
@@ -28,6 +29,12 @@ FactoryBot/ConsistentParenthesesStyle:
 FactoryBot/FactoryNameStyle:
   Enabled: true
   EnforcedStyle: symbol
+
+Hirudoki/ControllerBase:
+  Description: Use one inheritance level per controller namespace.
+  Enabled: true
+  Include:
+    - app/controllers/**/*_controller.rb
 
 Hirudoki/OrderScopeName:
   Description: Name simple ordering scopes asc_by_<column> or desc_by_<column> according to the primary sort key.

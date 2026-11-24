@@ -1,4 +1,6 @@
-class Admin::DeliveryAreasController < Admin::CatalogController
+class Admin::DeliveryAreasController < Admin::BaseController
+  include Admin::CatalogResponses
+
   before_action :set_delivery_area, only: %i[edit update destroy]
 
   def index
