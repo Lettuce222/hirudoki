@@ -74,3 +74,7 @@ Deviseは依存を導入済みで、利用者・管理者の認証モデルと�
 送信元の MAIL_FROM はアプリの起動時に読み込むため、変更後は再起動してください。未設定時の送信元は`ひるどき <registration@example.test>`です。開発時のメールは tmp/mail に保存します。本番では Render の Environment に MAIL_FROM（確認済みの送信元）、SMTP_USERNAME、SMTP_PASSWORD を設定します。初期設定は smtp-relay.brevo.com の587番ポートでSTARTTLSを使います。別の配信先を使う場合は SMTP_ADDRESS と SMTP_PORT で指定できます。メール内のURLは Render の RENDER_EXTERNAL_HOSTNAME を使います。
 
 トップの弁当写真は[毒島みるく撮影の鮭のり弁当（CC0）](https://commons.wikimedia.org/wiki/File:Nori_bento_with_grilled_salmon_lunch_box_of_Lawson.jpg)です。
+
+## 管理者ログイン
+
+管理用URLは `/admin` です。管理者を作成するには、対象環境で `SEED_ADMIN_EMAIL` と `SEED_ADMIN_PASSWORD` を設定して `bin/rails db:seed` を実行します。管理画面に表示する氏名は `SEED_ADMIN_NAME` で指定でき、省略時は「管理者」です。シードは同じメールアドレスの管理者がいれば既存の認証情報を保ちます。初期化後はシード用のパスワードを環境から外せます。
