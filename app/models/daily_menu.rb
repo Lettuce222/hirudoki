@@ -28,9 +28,8 @@ class DailyMenu < ApplicationRecord
   end
 
   def accepting_orders?
-    now = Time.current
-    today = now.to_date
-    served_on.between?(today, today + 14) && (served_on > today || now.hour < 10)
+    today = Date.current
+    served_on.between?(today, today + 14) && Time.current < served_on.in_time_zone.change(hour: 10)
   end
 
   def remaining_quantity(ordered: orders.not_cancelled.sum(:quantity))

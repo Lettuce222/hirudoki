@@ -26,6 +26,6 @@ class OrdersController < ApplicationController
 
   def load_menu
     @menu = DailyMenu.on_sale.find(params[:daily_menu_id])
-    @areas = DeliveryArea.where(active: true).asc_by_postal_code
+    @areas = DeliveryArea.active.asc_by_postal_code
   end
 end
