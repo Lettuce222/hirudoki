@@ -1,10 +1,23 @@
 require "rails_helper"
 
 RSpec.describe DailyMenu, type: :model do
-  let(:served_on) { Date.new(2026, 11, 24) }
+  let(:served_on) { Date.new(2028, 2, 29) }
   let(:salmon) { create(:bento, name: "鮭弁当", bento_type: "和食") }
   let(:saba) { create(:bento, name: "さば弁当", bento_type: "和食") }
   let(:pasta) { create(:bento, name: "パスタ弁当", bento_type: "洋食") }
+
+  it "販売中の献立を指定された提供日・弁当タイプだけで絞り込める" do
+    salmon_menu = create(:daily_menu, served_on:, bento: salmon)
+    next_day_menu = create(:daily_menu, served_on: served_on.tomorrow, bento: salmon)
+    western = create(:daily_menu, served_on:, bento: pasta)
+    saba.update!(on_sale: false)
+    create(:daily_menu, served_on: served_on.yesterday, bento: saba)
+
+    menus = described_class.on_sale
+    expect(menus.filtered_by(served_on: "", bento_type: "")).to contain_exactly(salmon_menu, next_day_menu, western)
+    expect(menus.filtered_by(served_on:)).to contain_exactly(salmon_menu, western)
+    expect(menus.filtered_by(bento_type: "和食")).to contain_exactly(salmon_menu, next_day_menu)
+  end
 
   it "日付、弁当、0以上の整数の提供数上限を指定する" do
     expect(build(:daily_menu, capacity: 0)).to be_valid

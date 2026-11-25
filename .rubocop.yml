@@ -6,6 +6,9 @@ plugins:
   - rubocop-factory_bot
 
 require:
+  - ./lib/rubocop/cop/hirudoki/controller_base
+  - ./lib/rubocop/cop/hirudoki/order_scope_name
+  - ./lib/rubocop/cop/hirudoki/deterministic_spec_date
   - ./lib/rubocop/cop/hirudoki/model_factory
   - ./lib/rubocop/cop/hirudoki/restful_actions
   - ./lib/rubocop/cop/hirudoki/strong_parameters_method
@@ -27,10 +30,29 @@ FactoryBot/FactoryNameStyle:
   Enabled: true
   EnforcedStyle: symbol
 
+Hirudoki/ControllerBase:
+  Description: Use one inheritance level per controller namespace.
+  Enabled: true
+  Include:
+    - app/controllers/**/*_controller.rb
+
+Hirudoki/OrderScopeName:
+  Description: Name simple ordering scopes asc_by_<column> or desc_by_<column> according to the primary sort key.
+  Enabled: true
+  Include:
+    - app/models/**/*.rb
+
+Hirudoki/DeterministicSpecDate:
+  Description: Keep test dates repeatable and express elapsed time in domain units.
+  Enabled: true
+  Include:
+    - spec/**/*.rb
+
 Hirudoki/ModelFactory:
   Description: Use factories for test records of the listed models.
   Enabled: true
   Models:
+    - Administrator
     - Bento
     - DailyMenu
     - DeliveryArea
@@ -64,3 +86,7 @@ RSpec/LeakyConstantDeclaration:
 
 RSpec/LeakyLocalVariable:
   Enabled: true
+
+Style/EmptyMethod:
+  Enabled: true
+  EnforcedStyle: compact

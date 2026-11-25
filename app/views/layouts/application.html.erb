@@ -25,7 +25,11 @@
 
   <body>
     <header class="site-header">
-      <%= link_to "ひるどき", root_path %>
+      <% if controller_path.start_with?("admin/") %>
+        <%= link_to "ひるどき　管理画面", admin_root_path %>
+      <% else %>
+        <%= link_to "ひるどき", root_path %>
+      <% end %>
       <% if current_page?(root_path) %>
         <nav aria-label="利用者メニュー">
           <% if user_signed_in? %>
