@@ -24,6 +24,22 @@ RSpec.describe Order, type: :model do
     end
   end
 
+  it "残数が足りない注文は確定前に検証しても理由が分かる" do
+    travel_to(Time.utc(2028, 2, 28)) do
+      menu.update!(capacity: 0)
+      order = order_for
+      expect(order).not_to be_valid
+      expect(order.errors[:base]).to include("残数が足りません。")
+      expect(order.unit_price).to be_nil
+    end
+  end
+
+  it "配達エリアと個数が未入力なら確定時に両方のエラーが付く" do
+    order = order_for(delivery_area: nil, quantity: nil)
+    expect(order.confirm).to be(false)
+    expect(order.errors.attribute_names).to include(:delivery_area, :quantity)
+  end
+
   it "注文時の単価と税込合計を保存し、価格改定後も同じ金額を表示する" do
     travel_to(Time.utc(2028, 2, 28)) do
       order = order_for(quantity: 2)
