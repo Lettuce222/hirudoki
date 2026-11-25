@@ -22,6 +22,7 @@ module Hirudoki
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
+    config.time_zone = "Tokyo"
     config.i18n.default_locale = :ja
     config.action_mailer.default_options = { from: ENV.fetch("MAIL_FROM", "ひるどき <registration@example.test>") }
 
@@ -35,7 +36,6 @@ module Hirudoki
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-    # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Don't generate system test files.

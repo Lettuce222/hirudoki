@@ -46,3 +46,4 @@
 | [0020](0020-separate-administrator-access.md) | Accepted | 管理者の認証と画面を利用者から分ける |
 | [0021](0021-use-deterministic-dates-in-specs.md) | Accepted | specの入力日は固定し、現在に依存する仕様は基準日時を明示する |
 | [0022](0022-use-one-controller-base-per-namespace.md) | Accepted | コントローラの継承をディレクトリ構成に揃える |
+| [0023](0023-order-cutoff-in-japan.md) | Accepted | 日本時間10:00から当日分を締め切る |

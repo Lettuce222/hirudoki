@@ -1,0 +1,14 @@
+ja:
+  activerecord:
+    attributes:
+      order:
+        quantity: 個数
+        delivery_area: 配達エリア
+        delivery_address: 配達先住所
+        status: 注文状態
+    errors:
+      models:
+        order:
+          attributes:
+            quantity:
+              in: は1〜3個で指定してください

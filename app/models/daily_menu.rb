@@ -2,6 +2,7 @@ class DailyMenu < ApplicationRecord
   scope :desc_by_served_on, -> { order(served_on: :desc, id: :asc) }
 
   belongs_to :bento
+  has_many :orders, dependent: :restrict_with_error
 
   scope :with_bento_type, ->(bento_type) { joins(:bento).where(bentos: { bento_type: }) }
 
@@ -24,6 +25,15 @@ class DailyMenu < ApplicationRecord
       with_connection { |connection| connection.execute("LOCK TABLE daily_menus IN SHARE ROW EXCLUSIVE MODE") }
       uncached { yield }
     end
+  end
+
+  def accepting_orders?
+    today = Date.current
+    served_on.between?(today, today + 14) && Time.current < served_on.in_time_zone.change(hour: 10)
+  end
+
+  def remaining_quantity(ordered: orders.not_cancelled.sum(:quantity))
+    [ capacity - ordered, 0 ].max
   end
 
   private
