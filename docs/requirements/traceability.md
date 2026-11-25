@@ -178,7 +178,8 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | F-022〜027・B-031（献立参照時）・D-004〜006 | `spec/requests/admin/bentos_daily_menus_and_delivery_areas_spec.rb` と `spec/system/admin/bentos_daily_menus_and_delivery_areas_spec.rb`。管理者が弁当・配達エリア・日別献立を管理できること、既存画像の保持、重複登録と参照中の削除拒否を確認。PC・スマートフォンの操作とaxeに合格 | 本番反映後に確認。注文・定期設定を参照する削除制限はLET-34・LET-38で確認 | 2026-11-23 / LET-30 | [LET-30] |
 | F-002・F-003・D-003・Q-004（認証） | 利用者・管理者のrequest/system spec | 本番の専用2アカウントで双方のログインとログアウトに成功。管理者だけで/profile、利用者だけで/admin/daily_menusを開くとリダイレクト | 2026-11-25 / b1751ff | [LET-26]・[LET-28] |
 | F-004〜006（閲覧）・F-022・F-025〜027（登録） | 管理・利用者のsystem spec | 管理画面で画像付き和食弁当・11月27日の献立・配達エリアを登録。利用者が日付とタイプで絞り込み、詳細の画像と残数12個を確認 | 2026-11-25 / b1751ff | [LET-30]・[LET-31] |
-| F-007〜012・B-001〜002（手動注文）・B-004〜006・B-020〜028（手動） | spec/models/order{,_concurrency}_spec.rb、spec/requests/orders_spec.rb、spec/system/manual_orders_spec.rb。税込額、締切、競合、直近住所、マイページへの反映を検証 | 本番はマージ後。定期注文との合算はLET-39、注文の変更とキャンセルはLET-36で確認 | 2026-11-25 / 手動注文PR | [LET-32]・[LET-33]・[LET-34] |
+| F-005（注文後の残数）・F-007〜012・D-006（残数算出）・D-007（手動注文）・B-001〜002（手動注文）・B-004〜006・B-020〜028（手動） | spec/models/order{,_concurrency}_spec.rb、spec/requests/orders_spec.rb、spec/system/manual_orders_spec.rbと [CI全4件](https://github.com/Lettuce222/hirudoki/actions/runs/45604797262)。税込額、締切、競合、直近住所、マイページへの反映を検証 | [Renderデプロイ](https://dashboard.render.com/web/srv-dbtcth0ae00c73acmsm0/deploys/dep-dc3cdfk9v7es73ftuc80)後、テスト利用者が1個を注文し、マイページに注文済・税込702円・指定の配達先が表示された。献立一覧と詳細の残数は12個から11個に減った。定期注文との合算はLET-39、注文の変更とキャンセルはLET-36で確認 | 2026-11-25 / 1e7b285 | [LET-32]・[LET-33]・[LET-34] |
+| B-031〜033（注文参照時） | `spec/requests/admin/bentos_daily_menus_and_delivery_areas_spec.rb`。キャンセル済み注文だけが残る場合も弁当・献立・配達エリアの削除を拒否する。追加後の全RSpecは115件成功 | 注文参照時の削除制限は本番未確認 | 2026-11-25 / LET-34 | [LET-34] |
 
 ## チケット索引
 

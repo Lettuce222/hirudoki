@@ -39,6 +39,22 @@ RSpec.describe "管理者の弁当・日別献立・配達エリア管理", type
     expect { delete admin_bento_path(bento) }.to change(Bento, :count).by(-1)
   end
 
+  it "キャンセル済み注文が参照する弁当・献立・配達エリアを削除できない" do
+    log_in
+    menu = create(:daily_menu, served_on:)
+    area = create(:delivery_area)
+    travel_to(Time.utc(2028, 2, 28)) do
+      create(:order, daily_menu: menu, delivery_area: area).cancelled!
+    end
+
+    expect { delete admin_bento_path(menu.bento) }.not_to change(Bento, :count)
+    expect(response).to redirect_to(admin_bentos_path)
+    expect { delete admin_daily_menu_path(menu) }.not_to change(DailyMenu, :count)
+    expect(response).to redirect_to(admin_daily_menus_path)
+    expect { delete admin_delivery_area_path(area) }.not_to change(DeliveryArea, :count)
+    expect(response).to redirect_to(admin_delivery_areas_path)
+  end
+
   it "郵便番号の入力エラーを修正して保存し、未参照エリアを削除できる" do
     log_in
     post admin_delivery_areas_path, params: { delivery_area: area_attributes.merge(postal_code: "abc") }
