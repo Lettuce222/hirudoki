@@ -1,17 +1,17 @@
 # Work Log Summary
 
-Generated at: 2026-11-25T19:29:28+09:00
+Generated at: 2026-11-25T20:06:53+09:00
 
-Total: 557.9 minutes (9.30 hours)
+Total: 561.6 minutes (9.36 hours)
 
 ## By category
 
 | Category | Minutes | Hours |
 |---|---:|---:|
-| decision | 65.3 | 1.09 |
+| decision | 65.4 | 1.09 |
 | deployment | 3.6 | 0.06 |
 | documentation | 11.3 | 0.19 |
-| implementation | 95.2 | 1.59 |
+| implementation | 98.8 | 1.65 |
 | mixed | 311.6 | 5.19 |
 | planning | 33.7 | 0.56 |
 | setup | 8.9 | 0.15 |
@@ -137,6 +137,8 @@ Total: 557.9 minutes (9.30 hours)
 | 2026-11-25T19:20:02+09:00 | 2026-11-25T19:27:15+09:00 | 7.2 | mixed | LET-16, LET-29, LET-30, LET-31, LET-33, LET-34, LET-37, LET-38 | no | 03の完了証跡と後続チケットの受入条件を同期 | 03のLinear・ADR・要件対応表を同期。RSpec全96件成功、RuboCop 99ファイルで指摘なし。04は本番確認とLET-19の完了が必要 |
 | 2026-11-25T19:27:15+09:00 | 2026-11-25T19:28:21+09:00 | 1.1 | implementation | LET-32, LET-33 | no | 注文確定の実装とRSpec・RuboCopの確認 | PR #25に8b6309cをpush。RSpec 112件成功、RuboCop 110ファイル指摘なし。 |
 | 2026-11-25T19:28:21+09:00 | 2026-11-25T19:29:28+09:00 | 1.1 | testing | LET-32, LET-33 | no | LET-32 注文確定のCI完了確認と検証記録 | PR #25（8b6309c）のCI全4件が成功。RSpec全112件と注文競合2ケースを確認 |
+| 2026-11-25T19:37:35+09:00 | 2026-11-25T19:37:40+09:00 | 0.1 | decision | LET-32 | no | PR #25の注文確定とbefore_createでの検証の分担をレビュー | 通常の入力検証とbefore_createでの受付判定を確認。ロック後の検証と保存をconfirmから読める構成を提案。 |
+| 2026-11-25T20:03:15+09:00 | 2026-11-25T20:06:53+09:00 | 3.6 | implementation | LET-32, LET-33 | no | 注文受付条件をvalidateに戻しconfirmでロック・価格設定・保存する | 注文確定のリファクタリングをPR #25（7d1fe5b）に反映。RSpec全114件とCI全4件が成功。 |
 
 ## Notes
 
@@ -289,4 +291,8 @@ Total: 557.9 minutes (9.30 hours)
 - 2026-11-25T19:24:03+09:00: Fizzyの Signup#complete（実行して成否を返す）、can_change?（可否）、redeem_if（ブロック条件付き）を比較。
 - 2026-11-25T19:25:30+09:00: LET-32 PR #25で注文確定をOrder#confirmに分離し、注文・競合specを実行
 - 2026-11-25T19:27:15+09:00: LET-33・34・36・37・38・39に03からの受入項目を追記。LET-16・29・30・31はDone、03は100%。04のLET-18・19・32〜34とPR #25の状態を確認
+
+### 2026-11-25T20:03:15+09:00 — 注文受付条件をvalidateに戻しconfirmでロック・価格設定・保存する
+
+- 2026-11-25T20:05:18+09:00: 残数不足がvalid?を通ることをRedで再現。confirmとFactoryBotの作成経路を揃え、RSpec全114件・RuboCop 110ファイルが成功。PR #25のCI確認中。
 
