@@ -56,6 +56,7 @@ Hirudoki/ModelFactory:
     - Bento
     - DailyMenu
     - DeliveryArea
+    - Order
     - User
   Include:
     - spec/**/*_spec.rb

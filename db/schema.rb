@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_23_000200) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_000100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -85,6 +85,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_000200) do
     t.check_constraint "postal_code::text ~ '^[0-9]{7}$'::text", name: "delivery_areas_seven_digit_postal_code"
   end
 
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "daily_menu_id", null: false
+    t.bigint "delivery_area_id", null: false
+    t.string "delivery_address", null: false
+    t.integer "quantity", null: false
+    t.integer "unit_price", null: false
+    t.integer "unit_discount", default: 0, null: false
+    t.bigint "total_amount", null: false
+    t.string "status", default: "注文済", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["daily_menu_id"], name: "index_orders_on_daily_menu_id"
+    t.index ["delivery_area_id"], name: "index_orders_on_delivery_area_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
+    t.check_constraint "quantity >= 1 AND quantity <= 3", name: "orders_quantity_range"
+    t.check_constraint "status::text = ANY (ARRAY['注文済'::character varying, '受取済'::character varying, 'キャンセル済'::character varying]::text[])", name: "orders_valid_status"
+    t.check_constraint "unit_price >= 0 AND unit_discount >= 0 AND total_amount >= 0", name: "orders_nonnegative_amounts"
+  end
+
   create_table "registration_invitations", force: :cascade do |t|
     t.string "email", null: false
     t.datetime "sent_at"
@@ -108,5 +128,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_23_000200) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "daily_menus", "bentos"
+  add_foreign_key "orders", "daily_menus"
+  add_foreign_key "orders", "delivery_areas"
+  add_foreign_key "orders", "users"
   add_foreign_key "registration_invitations", "users"
 end

@@ -1,7 +1,8 @@
 require "rails_helper"
-require "timeout"
+require_relative "../support/concurrent_writes"
 
 RSpec.describe "献立の同時更新", type: :model do
+  include ConcurrentWrites
   self.use_transactional_tests = false
 
   let(:served_on) { Date.new(2026, 12, 3) }
@@ -12,30 +13,6 @@ RSpec.describe "献立の同時更新", type: :model do
     ids = [ first_bento.id, second_bento.id ]
     DailyMenu.where(bento_id: ids).delete_all
     Bento.where(id: ids).delete_all
-  end
-
-  # 先行トランザクションを開いたまま、別接続が保存を完了するかロックを待つまで進める。
-  def race(first_write, &second_write)
-    worker = nil
-    backend = Queue.new
-    DailyMenu.transaction do
-      first_write.call
-      worker = Thread.new do
-        DailyMenu.connection_pool.with_connection do |connection|
-          backend << connection.select_value("SELECT pg_backend_pid()")
-          second_write.call
-        end
-      end
-      Timeout.timeout(10) do
-        pid = backend.pop
-        while worker.alive? && !DailyMenu.connection.select_value("SELECT pg_backend_pid() = ANY(pg_blocking_pids(#{Integer(pid)}))")
-          sleep 0.01
-        end
-      end
-    end
-    worker.value
-  ensure
-    worker&.join
   end
 
   it "別の弁当でも、同じ日・同じタイプの同時登録は片方だけ保存する" do

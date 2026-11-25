@@ -10,6 +10,7 @@ body { margin: 0; color: #233b30; background: #fff; font: 1rem/1.7 system-ui, sa
 .primary, .secondary { box-sizing: border-box; display: block; width: 100%; padding: .7rem 1rem; border: 1px solid #245f48; border-radius: .4rem; text-align: center; cursor: pointer; font: inherit; font-weight: 600; text-decoration: none; }
 .primary { color: white; background: #245f48; }
 .secondary { color: #245f48; background: white; }
+.order-form select { width: 100%; min-height: 3rem; margin: 0 0 1rem; padding: .5rem; border: 1px solid #819489; border-radius: .35rem; background: white; color: inherit; font: inherit; }
 .bento-photo { display: block; width: 100%; height: auto; margin-bottom: 1.25rem; border-radius: .5rem; }
 [role=alert] { color: #862d23; margin-bottom: 1rem; }
 [role=status] { background: #edf4ee; padding: .75rem; }

@@ -39,7 +39,7 @@
               <td class="menu-date-column"><%= menu.served_on %></td>
               <td><%= menu.bento.bento_type %></td>
               <td class="menu-quantity"><%= menu.bento.price %>円</td>
-              <td class="menu-quantity"><%= menu.capacity %>個</td>
+              <td class="menu-quantity"><%= menu.remaining_quantity(ordered: @ordered_by_menu.fetch(menu.id, 0)) %>個</td>
             </tr>
           <% end %>
         </tbody>
