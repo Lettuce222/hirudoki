@@ -11,10 +11,9 @@ RSpec.describe Order, type: :model do
   end
 
   it "09:59:59は注文でき、10:00:00とその1秒後は受付を終了する" do
-    zone = Time.find_zone!("Tokyo")
-    travel_to(zone.local(2028, 2, 29, 9, 59, 59)) { expect(order_for.save).to be(true) }
-    travel_to(zone.local(2028, 2, 29, 10)) { expect(order_for.save).to be(false) }
-    travel_to(zone.local(2028, 2, 29, 10, 0, 1)) { expect(order_for.save).to be(false) }
+    travel_to(Time.zone.local(2028, 2, 29, 9, 59, 59)) { expect(order_for.save).to be(true) }
+    travel_to(Time.zone.local(2028, 2, 29, 10)) { expect(order_for.save).to be(false) }
+    travel_to(Time.zone.local(2028, 2, 29, 10, 0, 1)) { expect(order_for.save).to be(false) }
   end
 
   it "日本時間の日付で過去と15日先を拒否し14日先を受け付ける" do

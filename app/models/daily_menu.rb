@@ -27,10 +27,10 @@ class DailyMenu < ApplicationRecord
     end
   end
 
-  def accepting_orders?(now: Time.current)
-    local_time = now.in_time_zone("Tokyo")
-    today = local_time.to_date
-    served_on.between?(today, today + 14) && (served_on > today || local_time.hour < 10)
+  def accepting_orders?
+    now = Time.current
+    today = now.to_date
+    served_on.between?(today, today + 14) && (served_on > today || now.hour < 10)
   end
 
   def remaining_quantity(ordered: orders.not_cancelled.sum(:quantity))
