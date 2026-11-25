@@ -1,8 +1,8 @@
 # Work Log Summary
 
-Generated at: 2026-11-25T20:06:53+09:00
+Generated at: 2026-11-25T20:22:45+09:00
 
-Total: 561.6 minutes (9.36 hours)
+Total: 566.7 minutes (9.45 hours)
 
 ## By category
 
@@ -11,7 +11,7 @@ Total: 561.6 minutes (9.36 hours)
 | decision | 65.4 | 1.09 |
 | deployment | 3.6 | 0.06 |
 | documentation | 11.3 | 0.19 |
-| implementation | 98.8 | 1.65 |
+| implementation | 103.9 | 1.73 |
 | mixed | 311.6 | 5.19 |
 | planning | 33.7 | 0.56 |
 | setup | 8.9 | 0.15 |
@@ -139,6 +139,7 @@ Total: 561.6 minutes (9.36 hours)
 | 2026-11-25T19:28:21+09:00 | 2026-11-25T19:29:28+09:00 | 1.1 | testing | LET-32, LET-33 | no | LET-32 注文確定のCI完了確認と検証記録 | PR #25（8b6309c）のCI全4件が成功。RSpec全112件と注文競合2ケースを確認 |
 | 2026-11-25T19:37:35+09:00 | 2026-11-25T19:37:40+09:00 | 0.1 | decision | LET-32 | no | PR #25の注文確定とbefore_createでの検証の分担をレビュー | 通常の入力検証とbefore_createでの受付判定を確認。ロック後の検証と保存をconfirmから読める構成を提案。 |
 | 2026-11-25T20:03:15+09:00 | 2026-11-25T20:06:53+09:00 | 3.6 | implementation | LET-32, LET-33 | no | 注文受付条件をvalidateに戻しconfirmでロック・価格設定・保存する | 注文確定のリファクタリングをPR #25（7d1fe5b）に反映。RSpec全114件とCI全4件が成功。 |
+| 2026-11-25T20:17:42+09:00 | 2026-11-25T20:22:45+09:00 | 5.1 | implementation | LET-32, LET-33 | no | PR #25の受付日・配達エリアを整理し、クエリキャッシュと競合specを検証 | PR #25に配達エリア・締切判定の変更を反映。RSpec全114件とCI全4件が成功。クエリキャッシュと競合specの設計を確認。 |
 
 ## Notes
 
@@ -295,4 +296,8 @@ Total: 561.6 minutes (9.36 hours)
 ### 2026-11-25T20:03:15+09:00 — 注文受付条件をvalidateに戻しconfirmでロック・価格設定・保存する
 
 - 2026-11-25T20:05:18+09:00: 残数不足がvalid?を通ることをRedで再現。confirmとFactoryBotの作成経路を揃え、RSpec全114件・RuboCop 110ファイルが成功。PR #25のCI確認中。
+
+### 2026-11-25T20:17:42+09:00 — PR #25の受付日・配達エリアを整理し、クエリキャッシュと競合specを検証
+
+- 2026-11-25T20:19:40+09:00: Rails 8.1.4.1 のlock!→reloadを確認。2接続でSQL集計2本をキャッシュに載せ、uncachedを迂回して競合2ケース成功。配達エリア・受付日変更をa350092でpush、RSpec全114件成功。
 
