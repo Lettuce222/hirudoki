@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_25_211000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_212100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -71,6 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_211000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bento_id"], name: "index_daily_menus_on_bento_id"
+    t.index ["id", "served_on"], name: "index_daily_menus_on_id_and_served_on", unique: true
     t.index ["served_on", "bento_id"], name: "index_daily_menus_on_served_on_and_bento_id", unique: true
     t.check_constraint "capacity >= 0", name: "daily_menus_nonnegative_capacity"
   end
@@ -97,12 +98,35 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_211000) do
     t.string "status", default: "注文済", null: false, comment: "注文済・受取済・キャンセル済。キャンセル済の注文は残数と同日注文数の集計から除外する"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "recurring_order_setting_id"
+    t.date "recurring_served_on", comment: "定期注文を生成した対象日。手動注文では空"
     t.index ["daily_menu_id"], name: "index_orders_on_daily_menu_id"
     t.index ["delivery_area_id"], name: "index_orders_on_delivery_area_id"
+    t.index ["recurring_order_setting_id", "recurring_served_on"], name: "index_orders_on_recurring_setting_and_date", unique: true, where: "(recurring_order_setting_id IS NOT NULL)"
+    t.index ["recurring_order_setting_id"], name: "index_orders_on_recurring_order_setting_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
+    t.check_constraint "(recurring_order_setting_id IS NULL) = (recurring_served_on IS NULL)", name: "orders_recurring_setting_and_date"
     t.check_constraint "quantity >= 1 AND quantity <= 3", name: "orders_quantity_range"
     t.check_constraint "status::text = ANY (ARRAY['注文済'::character varying, '受取済'::character varying, 'キャンセル済'::character varying]::text[])", name: "orders_valid_status"
     t.check_constraint "unit_price >= 0 AND unit_discount >= 0 AND total_amount >= 0", name: "orders_nonnegative_amounts"
+  end
+
+  create_table "recurring_order_settings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "weekday", null: false, comment: "月曜日を1、金曜日を5とする曜日"
+    t.string "bento_type", null: false, comment: "生成時に献立を選ぶ弁当タイプ"
+    t.integer "quantity", null: false, comment: "週ごとに注文する個数"
+    t.bigint "delivery_area_id", null: false
+    t.string "delivery_address", null: false
+    t.boolean "active", default: true, null: false, comment: "注文生成の対象に含めるか"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["delivery_area_id"], name: "index_recurring_order_settings_on_delivery_area_id"
+    t.index ["user_id", "weekday"], name: "index_recurring_order_settings_on_user_id_and_weekday", unique: true
+    t.index ["user_id"], name: "index_recurring_order_settings_on_user_id"
+    t.check_constraint "bento_type::text = ANY (ARRAY['和食'::character varying, '洋食'::character varying, '中華'::character varying, 'ヘルシー'::character varying]::text[])", name: "recurring_settings_known_bento_type"
+    t.check_constraint "quantity >= 1 AND quantity <= 3", name: "recurring_settings_quantity_range"
+    t.check_constraint "weekday >= 1 AND weekday <= 5", name: "recurring_settings_weekday_range"
   end
 
   create_table "registration_invitations", force: :cascade do |t|
@@ -139,8 +163,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_211000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "daily_menus", "bentos"
   add_foreign_key "orders", "daily_menus"
+  add_foreign_key "orders", "daily_menus", column: ["daily_menu_id", "recurring_served_on"], primary_key: ["id", "served_on"], name: "fk_orders_recurring_menu_date"
   add_foreign_key "orders", "delivery_areas"
+  add_foreign_key "orders", "recurring_order_settings"
   add_foreign_key "orders", "users"
+  add_foreign_key "recurring_order_settings", "delivery_areas"
+  add_foreign_key "recurring_order_settings", "users"
   add_foreign_key "registration_invitations", "users"
   add_foreign_key "reviews", "orders"
 end

@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :orders, dependent: :restrict_with_error
+  has_many :recurring_order_settings, dependent: :restrict_with_error
 
   include PasswordAuthentication
 
