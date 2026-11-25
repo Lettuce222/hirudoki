@@ -1,22 +1,22 @@
 class Order < ApplicationRecord
-  TAX_PERCENT = 8
+  TAX_RATE = BigDecimal("0.08")
   DAILY_LIMIT = 3
 
   belongs_to :user
   belongs_to :daily_menu
   belongs_to :delivery_area
 
-  scope :not_cancelled, -> { where.not(status: "キャンセル済") }
+  enum :status, { ordered: "注文済", received: "受取済", cancelled: "キャンセル済" }, validate: true
+
   scope :desc_by_created_at, -> { order(created_at: :desc, id: :desc) }
 
   validates :delivery_address, presence: true
   validates :quantity, numericality: { only_integer: true, in: 1..DAILY_LIMIT }
-  validates :status, inclusion: { in: %w[注文済 受取済 キャンセル済] }
   validate :manual_order_available, on: :create
 
   def self.total_for(unit_price:, quantity:, unit_discount: 0)
     subtotal = [ unit_price - unit_discount, 0 ].max * quantity
-    subtotal + subtotal * TAX_PERCENT / 100
+    subtotal + (subtotal * TAX_RATE).floor
   end
 
   private

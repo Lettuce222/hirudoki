@@ -48,7 +48,7 @@ RSpec.describe "手動注文の受付", type: :request do
     travel_to(Time.utc(2028, 2, 28)) do
       create(:order, user:, daily_menu: menu, delivery_area: area)
       latest = create(:order, user:, daily_menu: menu, delivery_address: "駅前二丁目")
-      latest.update!(status: "キャンセル済")
+      latest.cancelled!
       latest.delivery_area.update!(active: false)
       get new_daily_menu_order_path(menu)
       expect(response.body).to include("駅前二丁目")

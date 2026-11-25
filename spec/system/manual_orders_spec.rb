@@ -26,6 +26,7 @@ RSpec.describe "手動注文", type: :system do
         expect(page).to be_axe_clean.according_to(:wcag2a, :wcag2aa, :wcag21aa, :wcag22aa)
         click_button "注文確定"
         expect(page).to have_current_path(profile_path)
+        expect(page).to have_text("注文済")
         expect(page).to have_text("2個")
         expect(page).to have_text("1,404円")
         expect(page).to have_text("駅前一丁目3番地")

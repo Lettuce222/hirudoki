@@ -29,7 +29,19 @@ RSpec.describe Order, type: :model do
       order = order_for(quantity: 2)
       order.save!
       menu.bento.update!(price: 600)
-      expect(order.reload).to have_attributes(unit_price: 101, unit_discount: 0, total_amount: 218, status: "注文済")
+      expect(order.reload).to have_attributes(unit_price: 101, unit_discount: 0, total_amount: 218, status: "ordered")
+    end
+  end
+
+  it "注文状態は英語名で操作し、データベースには対応する日本語を保存する" do
+    travel_to(Time.utc(2028, 2, 28)) do
+      order = order_for
+      order.save!
+      { ordered: "注文済", received: "受取済", cancelled: "キャンセル済" }.each do |key, label|
+        order.update!(status: key)
+        expect(order.reload.status).to eq(key.to_s)
+        expect(order.status_before_type_cast).to eq(label)
+      end
     end
   end
 
@@ -52,7 +64,7 @@ RSpec.describe Order, type: :model do
       first.save!
       expect(order_for(other, quantity: 2).save).to be(false)
       expect(order_for(user: create(:user), quantity: 2).save).to be(false)
-      first.update!(status: "キャンセル済")
+      first.cancelled!
       expect(menu.remaining_quantity).to eq(3)
       expect(order_for(other, quantity: 2).save).to be(true)
     end

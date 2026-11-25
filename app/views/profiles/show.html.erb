@@ -11,7 +11,7 @@
   <ul>
     <% @orders.each do |order| %>
       <li>
-        <strong><%= order.daily_menu.bento.name %></strong>・<%= order.status %><br>
+        <strong><%= order.daily_menu.bento.name %></strong>・<%= Order.statuses.fetch(order.status) %><br>
         <%= order.daily_menu.served_on %> 提供・<%= order.quantity %>個・税込<%= number_with_delimiter(order.total_amount) %>円<br>
         配達先：<%= order.delivery_area.name %> <%= order.delivery_address %>
       </li>
