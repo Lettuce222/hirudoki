@@ -24,7 +24,7 @@ RSpec.describe "手動注文の同時受付", type: :model do
   it "別々の利用者が最後の1個を同時注文しても1個だけ受け付ける" do
     travel_to(Time.utc(2028, 2, 28)) do
       accepted = race(-> { create(:order, user:, daily_menu: menu, delivery_area: area) }) do
-        build(:order, user: other_user, daily_menu: menu, delivery_area: area).save
+        build(:order, user: other_user, daily_menu: menu, delivery_area: area).confirm
       end
       expect(accepted).to be(false)
       expect(menu.remaining_quantity).to eq(0)
@@ -34,7 +34,7 @@ RSpec.describe "手動注文の同時受付", type: :model do
   it "同じ利用者が別の献立を同時注文しても同日3個を超えない" do
     travel_to(Time.utc(2028, 2, 28)) do
       accepted = race(-> { create(:order, user:, daily_menu: other_menu, delivery_area: area, quantity: 3) }) do
-        build(:order, user:, daily_menu: menu, delivery_area: area).save
+        build(:order, user:, daily_menu: menu, delivery_area: area).confirm
       end
       expect(accepted).to be(false)
       expect(user.orders.sum(:quantity)).to eq(3)

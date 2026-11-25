@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
 
   def create
     @order = current_user.orders.build(order_params.merge(daily_menu: @menu))
-    if @order.save
+    if @order.confirm
       redirect_to profile_path, notice: "注文を受け付けました。", status: :see_other
     else
       render :new, status: :unprocessable_content
