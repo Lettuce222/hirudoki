@@ -4,7 +4,7 @@
   padding-inline: 1rem;
 }
 
-.customer-menus a { color: #245f48; text-underline-offset: .17em; }
+:where(.customer-menus) a { color: #245f48; text-underline-offset: .17em; }
 
 .menu-filters {
   display: flex;

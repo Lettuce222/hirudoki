@@ -14,7 +14,10 @@ RSpec.describe "手動注文", type: :system do
         login_as(create(:user), scope: :user)
         page.current_window.resize_to(width, height)
         visit daily_menu_path(menu)
-        click_link "注文手続き"
+        order_link = find_link("注文手続き")
+        colors = order_link.style("color", "background-color")
+        expect(colors["color"]).not_to eq(colors["background-color"])
+        order_link.click
         expect(page).to have_field("配達先住所", with: "")
         expect(page).to have_select("配達エリア", selected: "選択してください")
         expect(page).to have_no_select("配達エリア", with_options: [ "受付休止" ])
