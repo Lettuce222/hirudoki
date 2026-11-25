@@ -111,7 +111,9 @@ RSpec.describe Order, type: :model do
     let!(:area) { create(:delivery_area) }
 
     after do
-      Order.where(daily_menu: [ menu, other_menu ]).delete_all
+      orders = Order.where(daily_menu: [ menu, other_menu ])
+      Review.where(order: orders).delete_all
+      orders.delete_all
       [ menu, other_menu ].each do |record|
         record.destroy!
         record.bento.destroy!
@@ -136,6 +138,46 @@ RSpec.describe Order, type: :model do
         end
         expect(accepted).to be(false)
         expect(user.orders.sum(:quantity)).to eq(3)
+      end
+    end
+
+    it "個数変更と別の利用者の注文が重なっても献立の提供数を超えない" do
+      travel_to(Time.utc(2028, 2, 28)) do
+        menu.update!(capacity: 2)
+        order = create(:order, user:, daily_menu: menu, delivery_area: area)
+        changed = race(-> { create(:order, user: other_user, daily_menu: menu, delivery_area: area) }) do
+          Order.find(order.id).change_quantity(2)
+        end
+
+        expect(changed).to be(false)
+        expect(order.reload.quantity).to eq(1)
+        expect(menu.remaining_quantity).to eq(0)
+      end
+    end
+
+    it "個数変更と同じ利用者の別献立の注文が重なっても同日3個を超えない" do
+      travel_to(Time.utc(2028, 2, 28)) do
+        menu.update!(capacity: 3)
+        order = create(:order, user:, daily_menu: menu, delivery_area: area)
+        changed = race(-> { create(:order, user:, daily_menu: other_menu, delivery_area: area, quantity: 2) }) do
+          Order.find(order.id).change_quantity(2)
+        end
+
+        expect(changed).to be(false)
+        expect(user.orders.sum(:quantity)).to eq(3)
+      end
+    end
+
+    it "同じ注文への評価を同時投稿しても1件だけ受け付ける" do
+      travel_to(Time.utc(2028, 2, 28)) do
+        order = create(:order, user:, daily_menu: menu, delivery_area: area)
+        order.received!
+        posted = race(-> { order.create_review!(rating: 5) }) do
+          Review.new(order: Order.find(order.id), rating: 3).save
+        end
+
+        expect(posted).to be(false)
+        expect(order.reload.review.rating).to eq(5)
       end
     end
   end
