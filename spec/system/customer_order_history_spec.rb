@@ -23,6 +23,15 @@ RSpec.describe "利用者の注文履歴と評価", type: :system do
       click_link menu.bento.name, href: order_path(order)
       expect(page).to have_current_path(order_path(order))
       expect(page).to have_text("定期")
+      expect(page.evaluate_script(<<~JS)).to be(true)
+        (() => {
+          const [date, status, quantity, total, address] = [...document.querySelectorAll(".order-details > div")]
+            .map(field => field.getBoundingClientRect());
+          return date.top === status.top && quantity.top === total.top &&
+            date.left === quantity.left && status.left === total.left && date.left < status.left &&
+            address.left === date.left && address.right === status.right;
+        })()
+      JS
       expect(page.evaluate_script(<<~JS, find_link("個数変更"), find_button("注文キャンセル"))).to be(true)
         (() => {
           const edit = arguments[0].getBoundingClientRect();
@@ -54,6 +63,10 @@ RSpec.describe "利用者の注文履歴と評価", type: :system do
     end
 
     it "#{device}で受取済みの注文の評価を投稿し、献立詳細の平均評価とコメントを確認できる" do
+      menu.bento.update!(description: "だし巻き卵を添えたのり弁当です。")
+      File.open(Rails.root.join("app/assets/images/salmon-bento.jpg")) do |photo|
+        menu.bento.image.attach(io: photo, filename: "salmon-bento.jpg", content_type: "image/jpeg")
+      end
       order = create(:order, user:, daily_menu: menu)
       order.received!
       earlier_order = create(:order, daily_menu: menu)
@@ -63,6 +76,21 @@ RSpec.describe "利用者の注文履歴と評価", type: :system do
       visit profile_path
       click_link menu.bento.name, href: order_path(order)
       click_link "評価投稿"
+      expect(page).to have_css(".review-menu img[alt='日替わり弁当']")
+      expect(page).to have_text("だし巻き卵を添えたのり弁当です。")
+      expect(page).to have_text("#{served_on}・和食")
+      expect(page).to have_text("650円（税抜）")
+      expect(page).to have_text("平均評価 4.0")
+      expect(page).to have_text("また注文したいです。")
+      expect(page.evaluate_script(<<~JS, width > 720)).to be(true)
+        (() => {
+          const menu = document.querySelector(".review-menu").getBoundingClientRect();
+          const form = document.querySelector(".review-input").getBoundingClientRect();
+          const photo = document.querySelector(".review-menu .menu-photo").getBoundingClientRect();
+          return arguments[0] ? menu.top === form.top && menu.right < form.left :
+            menu.bottom < form.top && photo.width <= 112;
+        })()
+      JS
       select "5点", from: "評価"
       fill_in "コメント（任意）", with: "おいしかったです。"
       expect(page.evaluate_script("document.documentElement.scrollWidth")).to be <= width

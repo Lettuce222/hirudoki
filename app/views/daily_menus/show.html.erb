@@ -3,10 +3,8 @@
   <div class="menu-detail">
     <%= render "photo", bento: @menu.bento %>
     <div class="ui-panel">
-      <p><%= @menu.served_on %>・<%= @menu.bento.bento_type %></p>
       <% remaining = @menu.remaining_quantity %>
-      <p><strong><%= @menu.bento.price %>円（税抜）</strong>　残り<%= remaining %>個</p>
-      <p><%= @menu.bento.description %></p>
+      <%= render "information", menu: @menu, remaining: %>
       <% if @menu.accepting_orders? && remaining.positive? %>
         <%= primary_action_link "注文手続き", new_daily_menu_order_path(@menu) %>
       <% elsif remaining.zero? %>
@@ -14,20 +12,7 @@
       <% else %>
         <p>注文の受付期間外です。当日は午前10時に締め切ります。</p>
       <% end %>
-      <h2 id="reviews">評価</h2>
-      <% if @reviews.any? %>
-        <p>平均評価 <strong><%= number_with_precision(@menu.average_rating, precision: 1) %></strong> / 5</p>
-        <ul class="ui-records" aria-label="投稿された評価">
-          <% @reviews.each do |review| %>
-            <li>
-              <strong><%= review.rating %>点</strong>
-              <% if review.comment.present? %><p><%= review.comment %></p><% end %>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p>まだ評価はありません。</p>
-      <% end %>
+      <%= render "reviews", menu: @menu, reviews: @reviews %>
     </div>
   </div>
 <% end %>

@@ -1,7 +1,7 @@
 class ReviewsController < ApplicationController
   before_action :no_store
   before_action :require_user
-  before_action :set_order
+  before_action :set_order, :set_menu, :set_reviews
 
   def new
     return redirect_to @order, alert: "この注文は評価できません。", status: :see_other unless @order.reviewable?
@@ -26,5 +26,13 @@ class ReviewsController < ApplicationController
 
   def set_order
     @order = current_user.orders.find(params.expect(:order_id))
+  end
+
+  def set_menu
+    @menu = @order.daily_menu
+  end
+
+  def set_reviews
+    @reviews = @menu.reviews.desc_by_created_at
   end
 end

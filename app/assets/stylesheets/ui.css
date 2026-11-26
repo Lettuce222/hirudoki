@@ -130,6 +130,8 @@
 .ui-panel > :last-child { margin-bottom: 0; }
 .ui-panel h2:first-child { margin-top: 0; }
 .ui-split { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.order-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.25rem; }
+.order-details-wide { grid-column: 1 / -1; }
 .ui-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
 .ui-records { padding: 0; margin: 0; }
 .ui-records li + li { border-top: 1px solid #d8e1d9; margin-top: .75rem; padding-top: .75rem; }

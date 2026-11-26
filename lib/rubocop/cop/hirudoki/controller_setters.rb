@@ -4,9 +4,9 @@ module RuboCop
       class ControllerSetters < Base
         MSG = "Assign one matching instance variable in a set_* method using only read operations."
         READ_METHODS = %i[
-          [] active asc_by_display_order asc_by_postal_code blob current_user
-          delivery_area_id_in_database expect find find_by image includes joins limit
-          on_sale or order orders params preload recurring_order_settings to_a where
+          [] active asc_by_display_order asc_by_postal_code blob current_user daily_menu
+          delivery_area_id_in_database desc_by_created_at expect find find_by image includes joins limit
+          on_sale or order orders params preload recurring_order_settings reviews to_a where
         ].freeze
         VALUE_TYPES = %i[array cbase const false float hash if int ivar lvar nil pair str sym true].freeze
 
