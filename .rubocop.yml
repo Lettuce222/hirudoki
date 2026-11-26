@@ -10,6 +10,7 @@ require:
   - ./lib/rubocop/cop/hirudoki/order_scope_name
   - ./lib/rubocop/cop/hirudoki/deterministic_spec_date
   - ./lib/rubocop/cop/hirudoki/model_factory
+  - ./lib/rubocop/cop/hirudoki/request_spec_controller
   - ./lib/rubocop/cop/hirudoki/restful_actions
   - ./lib/rubocop/cop/hirudoki/strong_parameters_method
 
@@ -61,6 +62,12 @@ Hirudoki/ModelFactory:
   Include:
     - spec/**/*_spec.rb
 
+Hirudoki/RequestSpecController:
+  Description: Match request spec paths to controllers and require named route helpers.
+  Enabled: true
+  Include:
+    - spec/requests/**/*.rb
+
 Hirudoki/StrongParametersMethod:
   Description: Declare permitted controller attributes in private *_params methods.
   Enabled: true
@@ -81,6 +88,15 @@ Rails/UniqueValidationWithoutIndex:
 
 RSpec:
   Enabled: false
+
+RSpec/ExpectInHook:
+  Enabled: true
+
+RSpec/ExpectInLet:
+  Enabled: true
+
+RSpec/LetSetup:
+  Enabled: true
 
 RSpec/LeakyConstantDeclaration:
   Enabled: true
