@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "アカウントのパスワード", type: :model do
+RSpec.describe PasswordAuthentication, type: :model do
   %i[user administrator].each do |factory|
     context factory.to_s do
       it "半角英数字・記号の6文字から72文字までを使える" do

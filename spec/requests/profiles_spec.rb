@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "マイページ", type: :request do
+RSpec.describe ProfilesController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   let(:user) { create(:user) }

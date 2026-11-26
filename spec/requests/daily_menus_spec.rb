@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "利用者の献立の公開範囲", type: :request do
+RSpec.describe DailyMenusController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   let(:user) { create(:user) }

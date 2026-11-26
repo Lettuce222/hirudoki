@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "管理者ダッシュボード", type: :request do
+RSpec.describe Admin::DashboardsController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   it "未ログインでは管理画面を開けない" do

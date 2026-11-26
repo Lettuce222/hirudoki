@@ -12,6 +12,7 @@ require:
   - ./lib/rubocop/cop/hirudoki/model_factory
   - ./lib/rubocop/cop/hirudoki/request_spec_controller
   - ./lib/rubocop/cop/hirudoki/restful_actions
+  - ./lib/rubocop/cop/hirudoki/spec_described_class
   - ./lib/rubocop/cop/hirudoki/strong_parameters_method
 
 FactoryBot:
@@ -67,6 +68,19 @@ Hirudoki/RequestSpecController:
   Enabled: true
   Include:
     - spec/requests/**/*.rb
+
+Hirudoki/SpecDescribedClass:
+  Description: Describe the class or module that corresponds to a class-backed spec file.
+  Enabled: true
+  Include:
+    - spec/controllers/**/*_spec.rb
+    - spec/helpers/**/*_spec.rb
+    - spec/jobs/**/*_spec.rb
+    - spec/lib/**/*_spec.rb
+    - spec/mailers/**/*_spec.rb
+    - spec/models/**/*_spec.rb
+    - spec/requests/**/*_spec.rb
+    - spec/rubocop/**/*_spec.rb
 
 Hirudoki/StrongParametersMethod:
   Description: Declare permitted controller attributes in private *_params methods.

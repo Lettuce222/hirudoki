@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "メール確認による利用者登録", type: :request do
+RSpec.describe RegistrationsController, type: :request do
   let(:details) { attributes_for(:user).except(:email) }
 
   it "確認リンクから確認済みのアドレスで登録できる" do

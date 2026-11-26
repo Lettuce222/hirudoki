@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "管理者の配達エリア管理", type: :request do
+RSpec.describe Admin::DeliveryAreasController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   let(:area_attributes) { { name: "本町", postal_code: "0012345" } }

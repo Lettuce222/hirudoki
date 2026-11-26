@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Active Storage round trip", type: :model do
+RSpec.describe "Active Storage round trip" do
   it "persists image metadata in PostgreSQL and reads the original bytes from storage" do
     image = Rails.root.join("public/icon.png")
     blob = File.open(image) do |file|
