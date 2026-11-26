@@ -23,6 +23,7 @@ Decided by the author on 2026-11-18. Sources: the author's design policy, texta.
 - The tools from Part 5 are normal tools, not exceptions: value objects, models not backed by a database table, form objects, concerns, and callback objects. Form objects are models and live in `app/models`.
 - Tests: write each `it` description as a simple sentence that reads as the specification. Keep the test pyramid in mind.
 - Writing split (t-wada): How goes in code, What goes in tests, Why goes in commit messages, Why not goes in code comments.
+- Keep expectations in `it`, use `let` for data referenced by examples, and use `before` for shared setup needed only for its side effects.
 - Request specs correspond one-to-one with controllers. Match the controller name and namespace in the spec path, and exercise each controller in its own request spec.
 - Group request specs by authentication state with top-level `context` blocks when the file covers multiple states. Put shared sign-in setup in each authenticated context’s `before`. When every example uses the same authentication state, share any sign-in setup in a top-level `before` without an extra context. Add other contexts only when they distinguish meaningful preconditions.
 - コードの説明コメントは日本語で書く。新規・変更されたRubyのコメントは `bin/check-ruby-comments` で確認する。

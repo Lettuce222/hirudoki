@@ -89,6 +89,15 @@ Rails/UniqueValidationWithoutIndex:
 RSpec:
   Enabled: false
 
+RSpec/ExpectInHook:
+  Enabled: true
+
+RSpec/ExpectInLet:
+  Enabled: true
+
+RSpec/LetSetup:
+  Enabled: true
+
 RSpec/LeakyConstantDeclaration:
   Enabled: true
 
