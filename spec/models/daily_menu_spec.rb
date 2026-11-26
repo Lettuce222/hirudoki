@@ -112,4 +112,22 @@ RSpec.describe DailyMenu, type: :model do
       expect(DailyMenu.exists?(served_on:, bento: first_bento)).to be(false)
     end
   end
+
+  it "献立ごとの評価一覧と評価の平均を取得できる" do
+    menu = create(:daily_menu, served_on:)
+    other_menu = create(:daily_menu, served_on: served_on.tomorrow, bento: menu.bento)
+    expect(menu.average_rating).to be_nil
+
+    travel_to(Time.utc(2028, 2, 28)) do
+      reviews = [ 5, 2 ].map do |rating|
+        order = create(:order, daily_menu: menu)
+        order.received!
+        order.create_review!(rating:)
+      end
+
+      expect(menu.reviews).to contain_exactly(*reviews)
+      expect(menu.average_rating).to eq(3.5)
+      expect(other_menu.average_rating).to be_nil
+    end
+  end
 end

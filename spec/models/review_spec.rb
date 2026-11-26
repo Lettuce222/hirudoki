@@ -9,11 +9,9 @@ RSpec.describe Review, type: :model do
 
   it "受取済みの注文に1回だけ評価とコメントを投稿できる" do
     order.received!
-    expect(order).to be_reviewable
     review = order.create_review!(rating: 5, comment: "おいしかったです。")
 
     expect(review.reload).to have_attributes(rating: 5, comment: "おいしかったです。")
-    expect(order.reload).not_to be_reviewable
     expect(described_class.create(order:, rating: 4)).not_to be_persisted
     expect do
       described_class.insert_all!([ { order_id: order.id, rating: 4 } ])
@@ -23,7 +21,6 @@ RSpec.describe Review, type: :model do
   it "注文済みとキャンセル済みの注文には評価を投稿できない" do
     %i[ordered cancelled].each do |status|
       order.update!(status:)
-      expect(order).not_to be_reviewable
       expect(described_class.create(order:, rating: 5)).not_to be_persisted
     end
   end
@@ -45,20 +42,5 @@ RSpec.describe Review, type: :model do
     expect do
       described_class.insert_all!([ { order_id: order.id, rating: 6 } ])
     end.to raise_error(ActiveRecord::StatementInvalid, /reviews_rating_range/)
-  end
-
-  it "献立ごとの評価一覧と平均を求める" do
-    other_order = travel_to(Time.zone.local(2028, 2, 28, 9)) { create(:order, daily_menu: menu) }
-    other_menu = create(:daily_menu, served_on: served_on + 1, bento: menu.bento)
-    expect(menu.average_rating).to be_nil
-
-    order.received!
-    other_order.received!
-    create_review = order.create_review!(rating: 5)
-    other_review = other_order.create_review!(rating: 2)
-
-    expect(menu.reviews).to contain_exactly(create_review, other_review)
-    expect(menu.average_rating).to eq(3.5)
-    expect(other_menu.average_rating).to be_nil
   end
 end

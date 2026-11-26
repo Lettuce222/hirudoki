@@ -23,15 +23,16 @@ class Order < ApplicationRecord
   def confirm
     return false unless new_record?
 
-    Order.transaction do
-      lock_for_confirmation
+    with_locked_user_and_menu do
+      daily_menu&.bento&.lock!("FOR SHARE")
+      delivery_area&.lock!("FOR SHARE")
       set_price
-      Order.uncached { save }
+      save
     end
   end
 
   def changeable?
-    persisted? && ordered? && !daily_menu.order_cutoff_passed?
+    persisted? && ordered? && daily_menu.before_order_cutoff?
   end
 
   def reviewable?
@@ -56,8 +57,10 @@ class Order < ApplicationRecord
 
   def cancel
     with_order_change_lock do
-      customer_change_allowed? && update(status: :cancelled)
+      customer_change_allowed? && cancelled!
     end
+  rescue ActiveRecord::RecordInvalid
+    false
   end
 
   private
@@ -65,12 +68,9 @@ class Order < ApplicationRecord
   def with_order_change_lock
     return false unless persisted?
 
-    Order.transaction do
-      # 新規注文と同じ順序でロックし、確定済みの個数と状態を読み直す。
-      user.lock!
-      daily_menu.lock!
+    with_locked_user_and_menu do
       reload(lock: true)
-      Order.uncached { yield }
+      yield
     end
   end
 
@@ -82,12 +82,13 @@ class Order < ApplicationRecord
     false
   end
 
-  def lock_for_confirmation
-    # 同じ利用者の別献立と、別利用者の同じ献立の注文を順番に処理する。
-    user&.lock!
-    daily_menu&.lock!
-    daily_menu&.bento&.lock!("FOR SHARE")
-    delivery_area&.lock!("FOR SHARE")
+  def with_locked_user_and_menu
+    Order.transaction do
+      # 同じ利用者の別献立と、別利用者の同じ献立の注文を順番に処理する。
+      user&.lock!
+      daily_menu&.lock!
+      Order.uncached { yield }
+    end
   end
 
   def set_price

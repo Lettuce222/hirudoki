@@ -30,11 +30,11 @@ class DailyMenu < ApplicationRecord
 
   def accepting_orders?
     today = Date.current
-    served_on.between?(today, today + 14) && !order_cutoff_passed?
+    served_on.between?(today, today + 14) && before_order_cutoff?
   end
 
-  def order_cutoff_passed?
-    Time.current >= served_on.in_time_zone.change(hour: 10)
+  def before_order_cutoff?
+    Time.current < served_on.in_time_zone.change(hour: 10)
   end
 
   def average_rating
