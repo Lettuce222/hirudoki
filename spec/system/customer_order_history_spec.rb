@@ -76,8 +76,12 @@ RSpec.describe "利用者の注文履歴と評価", type: :system do
       visit profile_path
       read_columns = <<~JS
         (() => {
-          const grid = getComputedStyle(document.querySelector(".ui-split"));
-          return [grid.gridTemplateColumns, grid.columnGap];
+          const content = document.querySelector("main.content");
+          const padding = getComputedStyle(content);
+          const available = content.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
+          const grid = getComputedStyle(content.querySelector(".ui-split"));
+          const columns = grid.gridTemplateColumns.split(" ").map(width => Math.round(100 * parseFloat(width) / available));
+          return [columns, grid.columnGap];
         })()
       JS
       profile_columns = page.evaluate_script(read_columns)
