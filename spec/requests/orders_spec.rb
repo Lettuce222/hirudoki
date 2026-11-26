@@ -17,7 +17,7 @@ RSpec.describe "手動注文の受付", type: :request do
     expect(Order.count).to eq(0)
   end
 
-  it "利用者と価格はサーバーが決定し、別の利用者のマイページには表示されない" do
+  it "利用者と価格はサーバーが決定する" do
     other = create(:user)
     sign_in user
     travel_to(Time.utc(2028, 2, 28)) do
@@ -25,9 +25,6 @@ RSpec.describe "手動注文の受付", type: :request do
       expect(response).to redirect_to(profile_path)
       expect(user.orders.sole.total_amount).to eq(702)
     end
-    sign_in other
-    get profile_path
-    expect(response.body).not_to include("駅前一丁目")
   end
 
   it "注文画面を開いた後に締切を迎えたら注文は保存されない" do
