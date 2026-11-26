@@ -33,7 +33,8 @@ RSpec.describe "定期注文の設定と生成", type: :system do
         fill_in "配達先住所", with: "駅前一丁目3番地"
         expect(page).to be_axe_clean.according_to(*accessibility_tags)
         click_button "保存"
-        expect(page).to have_text("和食・2個・有効")
+        expect(page).to have_css("thead tr", text: "曜日 弁当タイプ 個数 配達先 状態")
+        expect(page).to have_css("tbody tr", text: "火曜日 和食 2個 駅前 駅前一丁目3番地 有効", normalize_ws: true)
         expect(page).to be_axe_clean.according_to(*accessibility_tags)
 
         visit admin_root_path
@@ -55,10 +56,10 @@ RSpec.describe "定期注文の設定と生成", type: :system do
         expect(page).to have_text("2028-02-29 提供・2個")
         expect(page).to have_text("駅前一丁目3番地")
         click_link "定期注文設定"
-        click_link "火曜日の設定を編集"
+        click_link "火曜日", exact: true
         select "無効", from: "設定の状態"
         click_button "保存"
-        expect(page).to have_text("和食・2個・無効")
+        expect(page).to have_css("tbody tr", text: "火曜日 和食 2個 駅前 駅前一丁目3番地 無効", normalize_ws: true)
       end
     end
   end

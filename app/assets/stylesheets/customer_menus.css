@@ -34,12 +34,6 @@
 }
 .menu-filters .secondary { width: auto; min-height: 3rem; padding: .43rem 1.05rem; }
 
-.menu-grid { overflow-x: auto; max-width: 100%; }
-.menu-grid table { width: 100%; border-collapse: collapse; text-align: left; line-height: 1.45; }
-.menu-grid :is(th, td) { border: 1px solid #becbc3; padding: .65rem .8rem; vertical-align: middle; }
-.menu-grid thead { background: #f1f5f1; }
-.menu-grid th[scope=row] a { text-decoration: underline; }
-.menu-grid tbody tr:nth-child(even) { background: #fbfcfa; }
 .menu-quantity { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .menu-date-compact { display: none; }
 .menu-thumbnail { width: 1%; }
@@ -61,8 +55,6 @@
   .menu-filters { padding: .65rem; gap: .5rem; }
   .menu-filter { flex: 1 1 7rem; }
   .menu-filters .secondary { flex-basis: 100%; }
-  .menu-grid table { font-size: .86rem; }
-  .menu-grid :is(th, td) { padding: .45rem .3rem; }
   .menu-date-column { display: none; }
   .menu-date-compact { display: block; font-size: .77rem; font-weight: 400; color: #526459; }
   .menu-thumbnail .menu-photo { width: 3.8rem; }
