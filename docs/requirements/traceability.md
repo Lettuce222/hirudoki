@@ -174,7 +174,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | Q-008・Q-009（ホームのアクセシビリティ） | `spec/system/home_spec.rb`でPC・モバイルにaxeを実行。言語未指定で両方失敗し、修正後はChrome 158で全20例成功 | 本番反映前 | 2026-11-19 / ローカル | [LET-25の検証記録](https://linear.app/lettuce222/issue/LET-25#comment-d61b2737-2aef-4e32-962a-f5191b629164) |
 | F-001・F-002（一意性）・D-002 | spec/models/registration_invitation_spec.rb、spec/requests/registration_invitations_spec.rb、spec/requests/registrations_spec.rb、spec/system/registration_spec.rb。確認メール経由の登録、旧URLの失効、必須項目の修正、登録直後のセッションを確認 | 本人が迷惑メールフォルダで確認メールを受信し、リンクから登録を完了してマイページを表示 | 2026-11-19 / 448b26a | [LET-26の本番確認](https://linear.app/lettuce222/issue/LET-26#comment-702ab9df-3c6e-4774-bcf4-11719155450c) |
 | F-002（再ログイン） | spec/system/user_sessions_spec.rb。PC・スマートフォンで誤入力からの再試行、マイページへの再ログイン、ログアウト後のアクセス制限を確認。全42例成功 | 本番反映後に操作確認 | 2026-11-23 / 利用者セッションPR | [LET-26] |
-| F-003・D-003・Q-004（管理者の認証部分） | spec/models/administrator_spec.rb、spec/requests/admin/dashboards_spec.rb、spec/requests/admin/sessions_spec.rb、spec/requests/profiles_spec.rb、spec/system/admin_sessions_spec.rb。シードの再実行、別利用者・管理者の権限、PCとスマートフォンのログインとログアウトを確認。全51例成功 | 本番のシード管理者による確認はマージ後 | 2026-11-23 / 管理者認証PR | [LET-15]・[LET-28] |
+| F-003・D-003・Q-004（管理者の認証部分） | spec/models/administrator_spec.rb、spec/requests/admin/top_spec.rb、spec/requests/admin/sessions_spec.rb、spec/requests/profiles_spec.rb、spec/system/admin_sessions_spec.rb。シードの再実行、別利用者・管理者の権限、PCとスマートフォンのログインとログアウトを確認。全51例成功 | 本番のシード管理者による確認はマージ後 | 2026-11-23 / 管理者認証PR | [LET-15]・[LET-28] |
 | F-022〜027・B-031（献立参照時）・D-004〜006 | `spec/requests/admin/bentos_spec.rb`、`spec/requests/admin/daily_menus_spec.rb`、`spec/requests/admin/delivery_areas_spec.rb` と `spec/system/admin/bentos_daily_menus_and_delivery_areas_spec.rb`。管理者が弁当・配達エリア・日別献立を管理できること、既存画像の保持、重複登録と参照中の削除拒否を確認。PC・スマートフォンの操作とaxeに合格 | 本番反映後に確認。注文・定期設定を参照する削除制限はLET-34・LET-38で確認 | 2026-11-23 / LET-30 | [LET-30] |
 | F-002・F-003・D-003・Q-004（認証） | 利用者・管理者のrequest/system spec | 本番の専用2アカウントで双方のログインとログアウトに成功。管理者だけで/profile、利用者だけで/admin/daily_menusを開くとリダイレクト | 2026-11-25 / b1751ff | [LET-26]・[LET-28] |
 | F-004〜006（閲覧）・F-022・F-025〜027（登録） | 管理・利用者のsystem spec | 管理画面で画像付き和食弁当・11月27日の献立・配達エリアを登録。利用者が日付とタイプで絞り込み、詳細の画像と残数12個を確認 | 2026-11-25 / b1751ff | [LET-30]・[LET-31] |
@@ -187,6 +187,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | B-005・B-007〜019・B-020（定期注文）・D-007（生成元） | `spec/models/recurring_order_generation_spec.rb`。受付期間、販売状況と残数、注文時の金額、理由付きスキップ、同日3個の制限、キャンセル後の再実行と同時実行を確認。全124例成功 | 本番未確認。管理画面での生成と結果はLET-39・LET-40で確認 | 2026-11-25 / LET-39・LET-40 | [LET-39]・[LET-40] |
 | F-013〜015・F-016（マイページへの表示）・F-028〜029・B-007〜008・B-012・B-016 | `spec/requests/recurring_order_settings_spec.rb`、`spec/requests/admin/recurring_order_generations_spec.rb`、`spec/system/recurring_orders_spec.rb`。曜日別設定の登録と無効化、提供日指定、生成・スキップ件数と利用者名・理由、同日の再実行、注文履歴への反映を確認。PC・スマートフォンでaxe検証 | 本番反映前 | 2026-11-26 / PR #30 | [LET-38]・[LET-39]・[LET-40] |
 | F-013〜015・Q-008（定期注文設定の表示） | `spec/system/recurring_orders_spec.rb`。PCで幅900px以上の一覧と2列フォーム、スマートフォンで横にはみ出さない一覧と1列フォームを確認。登録・編集とaxeを含む全RSpec 200例成功。本番用アセットの生成を確認 | 本番反映前 | 2026-11-26 / LET-38 | [LET-38] |
+| F-003・Q-004（管理画面トップの命名変更） | `spec/requests/admin/top_spec.rb` と `spec/system/admin_sessions_spec.rb` を含む全RSpec 200例成功。管理者のログイン後表示と、未ログイン・利用者のアクセス制限を確認 | 本番反映前 | 2026-11-26 / ローカル | [LET-28] |
 
 ## チケット索引
 
