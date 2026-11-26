@@ -28,7 +28,10 @@ class OrdersController < ApplicationController
   end
 
   def update
-    if @order.change_quantity(quantity_params[:quantity])
+    attributes = update_params
+    return cancel_order if attributes[:intent] == "cancel"
+
+    if @order.change_quantity(attributes[:quantity])
       redirect_to @order, notice: "個数を変更しました。", status: :see_other
     else
       render :edit, status: :unprocessable_content
@@ -37,8 +40,16 @@ class OrdersController < ApplicationController
 
   private
 
-  def quantity_params
-    params.expect(order: [ :quantity ])
+  def cancel_order
+    if @order.cancel
+      redirect_to @order, notice: "注文をキャンセルしました。", status: :see_other
+    else
+      redirect_to @order, alert: @order.errors.full_messages.to_sentence, status: :see_other
+    end
+  end
+
+  def update_params
+    params.expect(order: [ :quantity, :intent ])
   end
 
   def set_order

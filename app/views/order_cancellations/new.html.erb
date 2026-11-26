@@ -1,7 +1,0 @@
-<% navigation = render "shared/breadcrumbs", items: [ [ "マイページ", profile_path ], [ "注文詳細", order_path(@order) ], [ "注文キャンセル" ] ] %>
-<%= render layout: "shared/page", locals: { title: "注文キャンセル", navigation:, width: :form } do %>
-  <div class="ui-panel">
-    <p><%= @order.daily_menu.served_on.iso8601 %> 提供の<%= @order.daily_menu.bento.name %>（<%= @order.quantity %>個）をキャンセルします。</p>
-    <%= button_to "キャンセル確定", order_cancellation_path(@order), class: "btn btn-danger" %>
-  </div>
-<% end %>

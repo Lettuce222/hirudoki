@@ -33,15 +33,15 @@ RSpec.describe "利用者の注文履歴と評価", type: :system do
       expect(page).to have_text("個数を変更しました。")
       expect(page).to have_text("税込1,296円")
 
-      click_link "注文キャンセル"
-      expect(page).to have_button("キャンセル確定")
-      expect(page).to have_no_css("html[aria-busy=true]", visible: :all)
-      expect(page).to be_axe_clean.according_to(*tags)
-      click_button "キャンセル確定"
+      dismiss_confirm("この注文をキャンセルしますか？") { click_button "注文キャンセル" }
+      expect(page).to have_current_path(order_path(order))
+      expect(page).to have_no_text("キャンセル済")
+
+      accept_confirm("この注文をキャンセルしますか？") { click_button "注文キャンセル" }
       expect(page).to have_current_path(order_path(order))
       expect(page).to have_text("キャンセル済")
       expect(page).to have_no_link("個数変更")
-      expect(page).to have_no_link("注文キャンセル")
+      expect(page).to have_no_button("注文キャンセル")
       visit daily_menu_path(menu)
       expect(page).to have_text("残り3個")
     end
