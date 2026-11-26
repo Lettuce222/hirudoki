@@ -211,6 +211,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | F-013〜016・F-028〜029・B-007〜019 | `spec/models/recurring_order_generation_spec.rb`、`spec/requests/admin/recurring_order_generations_spec.rb`、`spec/system/recurring_orders_spec.rb` が成功。平日の生成、再実行と理由付きスキップ、マイページへの反映を確認 | 確認用利用者の有効な定期設定を5件確認。管理画面で日曜を指定して生成0件・スキップ0件を確認。平日の生成と再実行は隔離したテストDBで確認 | `21a5136` | [LET-38]・[LET-39]・[LET-40] |
 | B-026・D-001・Q-003 | `spec/models/daily_menu_spec.rb` で提供日変更時の同日上限、`spec/design_rules_spec.rb` でアプリ管理テーブルの日時を確認 | 日別献立の提供日編集フォームを表示。DBを含む `/up` が200。日時追加マイグレーションの完了と既存弁当画像の移行前後のSHA-256一致を確認 | [Renderで稼働中の `21a5136`](https://dashboard.render.com/web/srv-dbtcth0ae00c73acmsm0/deploys/dep-dc40k3t9el5s73arks1g) | [LET-30]・[LET-46] |
 | Q-007〜011 | クリーン環境で全RSpec 238件が成功。RuboCopは155ファイルで指摘0件。Brakemanの警告は0件。[GitHub Actions](https://github.com/Lettuce222/hirudoki/actions/runs/45801593885) | PC幅の管理画面とスマートフォン幅の利用者画面で、上記の主要操作を確認 | `21a5136` | [LET-45]・[LET-46] |
+| F-005・F-006・F-024・Q-005 | `spec/demo_seed_spec.rb` で確認用の弁当8品の画像登録と、再実行時に既存画像を保持することを検証。開発DBで全8枚を読み戻した | 未登録の7品に画像を登録。管理画面で9品、利用者の献立一覧・詳細で確認用8品の画像を読み込み、既存の焼き鮭の写真は登録前後で同じ内容だった | 2026-11-26 / 画像登録とシード更新 | [LET-27]・[LET-44] |
 
 ## チケット索引
 
