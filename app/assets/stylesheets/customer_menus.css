@@ -33,7 +33,6 @@
 }
 
 .ui-table a.menu-order-action {
-  min-height: 2.75rem;
   color: var(--action-color);
   text-decoration: none;
 }

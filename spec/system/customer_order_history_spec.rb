@@ -23,6 +23,13 @@ RSpec.describe "利用者の注文履歴と評価", type: :system do
       click_link menu.bento.name, href: order_path(order)
       expect(page).to have_current_path(order_path(order))
       expect(page).to have_text("定期")
+      expect(page.evaluate_script(<<~JS, find_link("個数変更"), find_button("注文キャンセル"))).to be(true)
+        (() => {
+          const edit = arguments[0].getBoundingClientRect();
+          const cancel = arguments[1].getBoundingClientRect();
+          return edit.height === cancel.height && edit.top === cancel.top;
+        })()
+      JS
       expect(page.evaluate_script("document.documentElement.scrollWidth")).to be <= width
       expect(page).to be_axe_clean.according_to(*tags)
 
