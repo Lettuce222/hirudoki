@@ -1,0 +1,62 @@
+<% content_for :title, "製造・配達リスト｜管理画面｜ひるどき" %>
+<%= render "admin/shared/breadcrumbs", current: "製造・配達リスト" %>
+<h1>製造・配達リスト</h1>
+<%= form_with url: admin_production_and_delivery_list_path, method: :get, class: "admin-form" do |form| %>
+  <%= form.label :served_on, "提供日" %>
+  <%= form.date_field :served_on, value: @served_on, required: true %>
+  <%= form.submit "表示", class: "primary" %>
+<% end %>
+<% if @served_on %>
+  <h2>製造リスト</h2>
+  <% if @production_quantities.any? %>
+    <div class="admin-table" role="region" aria-label="製造リスト" tabindex="0">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">弁当</th>
+            <th scope="col">合計個数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @production_quantities.each do |(_, bento_name), quantity| %>
+            <tr><th scope="row"><%= bento_name %></th><td><%= quantity %>個</td></tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p>製造する弁当はありません。</p>
+  <% end %>
+
+  <h2>配達リスト</h2>
+  <% if @deliveries.any? %>
+    <div class="admin-table" role="region" aria-label="配達リスト" tabindex="0">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">注文番号</th>
+            <th scope="col">配達エリア</th>
+            <th scope="col">住所</th>
+            <th scope="col">電話番号</th>
+            <th scope="col">弁当</th>
+            <th scope="col">個数</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @deliveries.each do |order| %>
+            <tr>
+              <th scope="row"><%= link_to "注文 ##{order.id}", admin_order_path(order) %></th>
+              <td><%= order.delivery_area.name %></td>
+              <td><%= order.delivery_address %></td>
+              <td><%= order.user.phone %></td>
+              <td><%= order.daily_menu.bento.name %></td>
+              <td><%= order.quantity %>個</td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <p>配達する注文はありません。</p>
+  <% end %>
+<% end %>

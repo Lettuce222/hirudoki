@@ -10,10 +10,21 @@ class Order < ApplicationRecord
   enum :status, { ordered: "注文済", received: "受取済", cancelled: "キャンセル済" }, validate: true
 
   scope :desc_by_created_at, -> { order(created_at: :desc, id: :desc) }
+  scope :served_on, ->(dates) { joins(:daily_menu).where(daily_menus: { served_on: dates }) }
 
   validates :delivery_address, presence: true
   validates :quantity, numericality: { only_integer: true, in: 1..DAILY_LIMIT }
   validate :order_availability, on: :create
+
+  def self.production_quantities(date)
+    not_cancelled.served_on(date).joins(daily_menu: :bento)
+      .group("bentos.id", "bentos.name").order("bentos.name", "bentos.id").sum(:quantity)
+  end
+
+  def self.for_delivery(date)
+    not_cancelled.served_on(date).preload(:user, :delivery_area, daily_menu: :bento)
+      .order(:delivery_area_id, :id)
+  end
 
   def self.total_for(unit_price:, quantity:, unit_discount: 0)
     subtotal = [ unit_price - unit_discount, 0 ].max * quantity
@@ -29,6 +40,11 @@ class Order < ApplicationRecord
       set_price
       save
     end
+  end
+
+  def recurring?
+    # 定期注文のマイグレーション前は手動注文だけを扱う。
+    has_attribute?(:recurring_order_setting_id) && self[:recurring_order_setting_id].present?
   end
 
   def changeable?
@@ -56,26 +72,42 @@ class Order < ApplicationRecord
   end
 
   def cancel
-    with_order_change_lock do
-      customer_change_allowed? && cancelled!
-    end
-  rescue ActiveRecord::RecordInvalid
-    false
+    transition_status(:cancelled) { customer_change_allowed? }
+  end
+
+  def change_status(new_status)
+    transition_status(new_status)
   end
 
   private
+
+  def transition_status(new_status)
+    with_order_change_lock do
+      next false if block_given? && !yield
+
+      unless Order.statuses.key?(new_status)
+        errors.add(:status, :inclusion)
+        next false
+      end
+
+      if cancelled? && new_status.to_s != "cancelled"
+        check_quantity_limits(menu_orders: daily_menu.orders.not_cancelled, user_orders: user.orders.not_cancelled)
+      end
+      errors.empty? && update(status: new_status)
+    end
+  end
 
   def with_order_change_lock
     return false unless persisted?
 
     with_locked_user_and_menu do
       reload(lock: true)
+      errors.clear
       yield
     end
   end
 
   def customer_change_allowed?
-    errors.clear
     return true if changeable?
 
     errors.add(:base, "この注文は変更・キャンセルできません。")
@@ -113,7 +145,7 @@ class Order < ApplicationRecord
   def check_quantity_limits(menu_orders:, user_orders:)
     remaining = daily_menu.remaining_quantity(ordered: menu_orders.sum(:quantity))
     errors.add(:base, "残数が足りません。") if quantity > remaining
-    ordered = user_orders.joins(:daily_menu).where(daily_menus: { served_on: daily_menu.served_on }).sum(:quantity)
+    ordered = user_orders.served_on(daily_menu.served_on).sum(:quantity)
     errors.add(:base, "同じ提供日には合計3個まで注文できます。") if ordered + quantity > DAILY_LIMIT
   end
 end

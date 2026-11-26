@@ -231,6 +231,17 @@ RSpec.describe Order, type: :model do
       expect(existing_order.reload).to have_attributes(quantity: 2, status: "ordered")
     end
 
+    it "画面表示後に受取済みになった注文は利用者がキャンセルできない" do
+      travel_to(Time.zone.local(2028, 2, 29, 9)) do
+        stale_order = described_class.find(order.id)
+        order.change_status(:received)
+
+        expect(stale_order.cancel).to be(false)
+        expect(stale_order.errors[:base]).to include("この注文は変更・キャンセルできません。")
+        expect(order.reload).to be_received
+      end
+    end
+
     it "受取済みまたはキャンセル済みの注文は変更もキャンセルもできない" do
       travel_to(Time.zone.local(2028, 2, 29, 9)) do
         %i[received cancelled].each do |status|
@@ -253,6 +264,70 @@ RSpec.describe Order, type: :model do
 
       order.create_review!(rating: 5)
       expect(order).not_to be_reviewable
+    end
+  end
+
+  context "管理者が注文を管理する場合" do
+    let(:served_on) { Date.new(2028, 2, 29) }
+    let(:menu) { create(:daily_menu, served_on:, capacity: 5, bento: create(:bento, name: "焼き鮭", price: 101)) }
+    let(:other_menu) { create(:daily_menu, served_on:, bento: create(:bento, name: "煮物", bento_type: "洋食")) }
+    let(:user) { create(:user) }
+
+    around do |example|
+      travel_to(Time.zone.local(2028, 2, 28, 9)) { example.run }
+    end
+
+    it "管理者は締切後でも注文を受取済み・キャンセル済みに変更できる" do
+      order = create(:order, daily_menu: menu, user:, quantity: 2)
+      travel(1.day + 1.hour)
+
+      expect(order.change_status(:received)).to be(true)
+      expect(order.reload).to be_received
+      expect(menu.remaining_quantity).to eq(3)
+
+      expect(order.change_status(:cancelled)).to be(true)
+      expect(order.reload).to be_cancelled
+      expect(menu.remaining_quantity).to eq(5)
+    end
+
+    it "管理者がキャンセル済み注文を戻しても残数と同日上限を超えない" do
+      order = create(:order, daily_menu: menu, user:, quantity: 3)
+      order.change_status(:cancelled)
+      replacement = create(:order, daily_menu: menu, user:, quantity: 3)
+
+      expect(order.change_status(:ordered)).to be(false)
+      expect(order.errors[:base]).to include("残数が足りません。", "同じ提供日には合計3個まで注文できます。")
+      expect(Order.find(order.id)).to be_cancelled
+
+      replacement.change_status(:cancelled)
+      expect(order.change_status(:ordered)).to be(true)
+      expect(order.reload).to be_ordered
+    end
+
+    it "管理者が未知の状態を指定しても現在の状態が保たれる" do
+      order = create(:order, daily_menu: menu)
+
+      expect(order.change_status("無効な状態")).to be(false)
+      expect(order.errors[:status]).to be_present
+      expect(order.reload).to be_ordered
+    end
+
+    it "指定日の製造数を弁当ごとに合計し、配達にはキャンセル以外の各注文を載せる" do
+      first = create(:order, daily_menu: menu, quantity: 2)
+      second = create(:order, daily_menu: menu, quantity: 1)
+      second.change_status(:received)
+      cancelled = create(:order, daily_menu: menu, quantity: 1)
+      cancelled.change_status(:cancelled)
+      other = create(:order, daily_menu: other_menu, quantity: 2)
+      tomorrow = served_on.next_day
+      create(:order, daily_menu: create(:daily_menu, served_on: tomorrow))
+
+      expect(Order.production_quantities(served_on)).to eq(
+        { [ menu.bento.id, "焼き鮭" ] => 3, [ other_menu.bento.id, "煮物" ] => 2 }
+      )
+      expect(Order.for_delivery(served_on)).to contain_exactly(first, second, other)
+      expect(Order.production_quantities(served_on.prev_day)).to be_empty
+      expect(Order.for_delivery(served_on.prev_day)).to be_empty
     end
   end
 end

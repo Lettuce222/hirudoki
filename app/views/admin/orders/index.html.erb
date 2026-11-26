@@ -1,0 +1,35 @@
+<% content_for :title, "注文一覧｜管理画面｜ひるどき" %>
+<%= render "admin/shared/breadcrumbs", current: "注文一覧" %>
+<h1>注文一覧</h1>
+<% if @orders.any? %>
+  <div class="admin-table" role="region" aria-label="注文一覧" tabindex="0">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">注文番号</th>
+          <th scope="col">提供日</th>
+          <th scope="col">利用者</th>
+          <th scope="col">弁当</th>
+          <th scope="col">個数</th>
+          <th scope="col">注文区分</th>
+          <th scope="col">状態</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <th scope="row"><%= link_to "注文 ##{order.id}", admin_order_path(order) %></th>
+            <td><%= order.daily_menu.served_on.iso8601 %></td>
+            <td><%= order.user.name %></td>
+            <td><%= order.daily_menu.bento.name %></td>
+            <td><%= order.quantity %>個</td>
+            <td><%= order.recurring? ? "定期" : "手動" %></td>
+            <td><%= Order.statuses.fetch(order.status) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>注文はまだありません。</p>
+<% end %>
