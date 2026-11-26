@@ -13,7 +13,17 @@ class Admin::DailyMenusController < Admin::BaseController
 
   def create
     @daily_menu = DailyMenu.new(daily_menu_params)
-    save_record(@daily_menu, admin_daily_menus_path)
+    if @daily_menu.save
+      redirect_to admin_daily_menus_path, notice: "保存しました。", status: :see_other
+    else
+      render :form, status: :unprocessable_content
+    end
+  rescue ActiveRecord::RecordNotUnique
+    @daily_menu.errors.add(:bento, "は同じ提供日にすでに登録されています")
+    render :form, status: :unprocessable_content
+  rescue ActiveRecord::InvalidForeignKey
+    @daily_menu.errors.add(:bento, "を選び直してください")
+    render :form, status: :unprocessable_content
   end
 
   def edit
@@ -21,12 +31,28 @@ class Admin::DailyMenusController < Admin::BaseController
   end
 
   def update
-    @daily_menu.assign_attributes(daily_menu_params)
-    save_record(@daily_menu, admin_daily_menus_path)
+    if @daily_menu.update(daily_menu_params)
+      redirect_to admin_daily_menus_path, notice: "保存しました。", status: :see_other
+    else
+      render :form, status: :unprocessable_content
+    end
+  rescue ActiveRecord::RecordNotUnique
+    @daily_menu.errors.add(:bento, "は同じ提供日にすでに登録されています")
+    render :form, status: :unprocessable_content
+  rescue ActiveRecord::InvalidForeignKey
+    @daily_menu.errors.add(:bento, "を選び直してください")
+    render :form, status: :unprocessable_content
   end
 
   def destroy
-    destroy_record(@daily_menu, admin_daily_menus_path)
+    if @daily_menu.destroy
+      redirect_to admin_daily_menus_path, notice: "削除しました。", status: :see_other
+    else
+      alert = @daily_menu.errors[:base].first || "日別献立を削除できませんでした。"
+      redirect_to admin_daily_menus_path, alert:, status: :see_other
+    end
+  rescue ActiveRecord::InvalidForeignKey
+    redirect_to admin_daily_menus_path, alert: "日別献立を削除できませんでした。注文履歴を確認してください。", status: :see_other
   end
 
   private

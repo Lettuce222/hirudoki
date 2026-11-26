@@ -12,7 +12,14 @@ class Admin::BentosController < Admin::BaseController
 
   def create
     @bento = Bento.new(bento_params)
-    save_record(@bento, admin_bentos_path)
+    if @bento.save
+      redirect_to admin_bentos_path, notice: "保存しました。", status: :see_other
+    else
+      render :form, status: :unprocessable_content
+    end
+  rescue ActiveRecord::RecordNotUnique, ActiveRecord::InvalidForeignKey
+    @bento.errors.add(:base, "弁当を保存できませんでした。入力内容を確認してから、もう一度保存してください。")
+    render :form, status: :unprocessable_content
   end
 
   def edit
@@ -20,12 +27,25 @@ class Admin::BentosController < Admin::BaseController
   end
 
   def update
-    @bento.assign_attributes(bento_params)
-    save_record(@bento, admin_bentos_path)
+    if @bento.update(bento_params)
+      redirect_to admin_bentos_path, notice: "保存しました。", status: :see_other
+    else
+      render :form, status: :unprocessable_content
+    end
+  rescue ActiveRecord::RecordNotUnique, ActiveRecord::InvalidForeignKey
+    @bento.errors.add(:base, "弁当を保存できませんでした。入力内容を確認してから、もう一度保存してください。")
+    render :form, status: :unprocessable_content
   end
 
   def destroy
-    destroy_record(@bento, admin_bentos_path)
+    if @bento.destroy
+      redirect_to admin_bentos_path, notice: "削除しました。", status: :see_other
+    else
+      alert = @bento.errors[:base].first || "弁当を削除できませんでした。"
+      redirect_to admin_bentos_path, alert:, status: :see_other
+    end
+  rescue ActiveRecord::InvalidForeignKey
+    redirect_to admin_bentos_path, alert: "弁当を削除できませんでした。日別献立で使われていないか確認してください。", status: :see_other
   end
 
   private
