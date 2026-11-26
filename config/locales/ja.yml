@@ -20,7 +20,15 @@ ja:
       invalid: "の形式を確認してください"
       taken: "は登録済みです"
   activerecord:
+    errors:
+      models:
+        review:
+          attributes:
+            order_id:
+              taken: "は評価済みです。"
     attributes:
+      review:
+        order_id: 注文
       user:
         name: 氏名
         email: メールアドレス

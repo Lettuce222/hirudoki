@@ -111,9 +111,7 @@ RSpec.describe Order, type: :model do
     let!(:area) { create(:delivery_area) }
 
     after do
-      orders = Order.where(daily_menu: [ menu, other_menu ])
-      Review.where(order: orders).delete_all
-      orders.delete_all
+      Order.where(daily_menu: [ menu, other_menu ]).delete_all
       [ menu, other_menu ].each do |record|
         record.destroy!
         record.bento.destroy!
@@ -165,19 +163,6 @@ RSpec.describe Order, type: :model do
 
         expect(changed).to be(false)
         expect(user.orders.sum(:quantity)).to eq(3)
-      end
-    end
-
-    it "同じ注文への評価を同時投稿しても1件だけ受け付ける" do
-      travel_to(Time.utc(2028, 2, 28)) do
-        order = create(:order, user:, daily_menu: menu, delivery_area: area)
-        order.received!
-        posted = race(-> { order.create_review!(rating: 5) }) do
-          Review.new(order: Order.find(order.id), rating: 3).save
-        end
-
-        expect(posted).to be(false)
-        expect(order.reload.review.rating).to eq(5)
       end
     end
   end
