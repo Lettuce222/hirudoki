@@ -12,7 +12,7 @@ RSpec.describe "定期注文の設定と生成", type: :system do
     create(:recurring_order_setting, user: create(:user, name: "花子"), delivery_area: area, bento_type: "洋食")
   end
 
-  [ [ "PC", 1280, 900 ], [ "スマートフォン", 390, 844 ] ].each do |device, width, height|
+  [ [ "PC", 1280, 900, 900, true ], [ "スマートフォン", 390, 844, 300, false ] ].each do |device, width, height, min_table_width, side_by_side|
     it "#{device}で定期注文設定を保存し、生成件数とスキップ理由を確認できる" do
       travel_to(Time.zone.local(2028, 2, 28, 9)) do
         create(:daily_menu, served_on:)
@@ -24,6 +24,9 @@ RSpec.describe "定期注文の設定と生成", type: :system do
         expect(page).to have_current_path(profile_path)
         click_link "定期注文設定"
         click_link "定期設定登録"
+        weekday_top = page.evaluate_script("arguments[0].getBoundingClientRect().top", find_field("曜日"))
+        bento_type_top = page.evaluate_script("arguments[0].getBoundingClientRect().top", find_field("弁当タイプ"))
+        expect(weekday_top == bento_type_top).to eq(side_by_side)
         expect(page).to have_select("曜日", options: %w[曜日を選択 月曜日 火曜日 水曜日 木曜日 金曜日])
         expect(page).to have_select("配達エリア", options: [ "配達エリアを選択", area.name ])
         select "火曜日", from: "曜日"
@@ -34,6 +37,8 @@ RSpec.describe "定期注文の設定と生成", type: :system do
         expect(page).to be_axe_clean.according_to(*accessibility_tags)
         click_button "保存"
         expect(page).to have_css("thead tr", text: "曜日 弁当タイプ 個数 配達先 状態")
+        expect(page.evaluate_script("arguments[0].getBoundingClientRect().width", find("table"))).to be >= min_table_width
+        expect(page.evaluate_script("document.documentElement.scrollWidth")).to be <= width
         expect(page).to have_css("tbody tr", text: "火曜日 和食 2個 駅前 駅前一丁目3番地 有効", normalize_ws: true)
         expect(page).to be_axe_clean.according_to(*accessibility_tags)
 

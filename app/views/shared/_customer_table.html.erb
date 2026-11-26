@@ -1,0 +1,15 @@
+<%# locals: (label:, columns:) %>
+<div class="customer-data-table" role="region" aria-label="<%= label %>" tabindex="0">
+  <table>
+    <thead>
+      <tr>
+        <% columns.each do |column| %>
+          <th scope="col"><%= column %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= yield %>
+    </tbody>
+  </table>
+</div>

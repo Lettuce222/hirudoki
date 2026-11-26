@@ -10,7 +10,7 @@ RSpec.describe "ボタンの文言" do
 
   it "ビューのHTMLボタンには承認した名詞を表示する" do
     files = root.glob("app/views/**/*.html.erb")
-    selector = "button, [role=button], a.primary, a.secondary, input[type=submit], input[type=button], input[type=reset]"
+    selector = "button, [role=button], a.primary, a.secondary, a.btn, input[type=submit], input[type=button], input[type=reset]"
     files.each do |file|
       Nokogiri::HTML5.parse(file.read).css(selector).each do |control|
         label = control.name == "input" ? control["value"] : control.text.strip
@@ -25,7 +25,7 @@ RSpec.describe "ボタンの文言" do
       source = RuboCop::ProcessedSource.new(ruby, RUBY_VERSION.to_f)
       expect(source.valid_syntax?).to be(true), file.to_s
       source.ast&.each_node(:send) do |call|
-        next unless %i[button_tag button_to submit submit_tag button].include?(call.method_name) || button_link?(call)
+        next unless %i[button_tag button_to submit submit_tag button customer_primary_link].include?(call.method_name) || button_link?(call)
 
         argument = call.first_argument
         label = argument&.str_type? ? argument.value : nil
@@ -46,7 +46,7 @@ RSpec.describe "ボタンの文言" do
 
       case key.value
       when :role then value.value.to_s == "button"
-      when :class then (value.value.to_s.split & %w[primary secondary]).any?
+      when :class then (value.value.to_s.split & %w[primary secondary btn]).any?
       end
     end
   end

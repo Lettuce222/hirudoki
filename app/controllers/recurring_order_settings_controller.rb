@@ -1,4 +1,6 @@
 class RecurringOrderSettingsController < ApplicationController
+  default_form_builder Railsui::FormBuilder
+
   before_action :no_store
   before_action :require_user
   before_action :load_setting, only: %i[edit update]

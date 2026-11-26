@@ -23,7 +23,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="<%= content_for(:body_class) %>">
     <header class="site-header">
       <% if controller_path.start_with?("admin/") %>
         <%= link_to "ひるどき　管理画面", admin_root_path %>
