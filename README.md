@@ -4,9 +4,9 @@
 
 ## Requirements
 
-- Ruby 3.4.12
+- Ruby 3.4.13（`.ruby-version`）
 - PostgreSQL 18
-- Bundler 4.1.0（Gemfile.lock）
+- Bundler 4.1.0（`Gemfile.lock`）
 
 バージョン判断は [ADR 0008](docs/adr/0008-pin-runtime-and-dependency-versions.md)、テスト方針は [ADR 0009](docs/adr/0009-use-rspec-capybara-and-red-green-refactor.md) を参照してください。
 
@@ -61,11 +61,34 @@ RenderのBlueprintで `render.yaml` を読み込みます。buildは `bin/render
 
 本番URL: https://hirudoki.onrender.com/ 。検証記録は [Walking Skeleton](docs/testing/walking-skeleton.md) を参照してください。
 
-Active Storageの3テーブルは、画像メタデータ・添付関連・variant管理のために追加しています。PDF指定の業務8テーブルの代わりではありません。現段階の画像配線確認では業務用の仮テーブルは作りません。
+認証された本番シェルから `bin/rails runner script/storage-smoke.rb` を実行すると、同じblobを再利用して保存済み画像を検証し、表示用pathとチェックサムを出力します。
 
-認証された本番シェルから `bin/rails runner script/storage-smoke.rb` を実行すると、同じblobを再利用して保存済み画像を検証し、表示用pathとチェックサムを出力します。これは公開のアップロード機能ではありません。後続の弁当管理ではPNG/JPEG/WebP・5MB以下の入力制約と画像なし時の代替表示を実装します。
+## 確認用データとテストアカウント
 
-Deviseは依存を導入済みで、利用者・管理者の認証モデルと画面は後続タスクで実装します。
+開発環境のセットアップ後に、次のコマンドで確認用データを投入します。
+
+```sh
+bin/rails runner db/seeds/demo.rb
+```
+
+| 役割 | ログイン画面 | 開発環境のメールアドレス | 開発環境のパスワード |
+|---|---|---|---|
+| 利用者 | `/users/sign_in` | `demo-user@example.test` | `hirudoki-local-user` |
+| 管理者 | `/admin/sign_in` | `demo-admin@example.test` | `hirudoki-local-admin` |
+
+和食・洋食・中華・ヘルシーの日替わり弁当と配達エリアを登録します。実行日の日本時間を基準に、当日から14日先まで各日4タイプの献立を用意します。利用者には月曜から金曜までの定期注文設定を登録します。
+
+- 利用者でログインすると献立一覧が開きます。提供日で絞り込み、受付中の献立から注文できます。
+- 管理者の「定期注文生成」では、受付期間内の平日を指定して注文を生成できます。同じ日を再度指定すると、生成済みの設定がスキップされたことを確認できます。
+
+本番ではRenderのシェルで、提出用として用意した管理者・利用者のメールアドレスとパスワードをそれぞれ `SEED_ADMIN_EMAIL`、`SEED_ADMIN_PASSWORD`、`SEED_USER_EMAIL`、`SEED_USER_PASSWORD` に設定し、`RAILS_ENV=production bin/rails runner db/seeds/demo.rb` を実行します。本番のログイン情報は提出時に別途共有します。
+
+動作確認期間が変わったら、このコマンドを再実行して新しい提供日を補います。作成済みのアカウントのパスワード・既存の定期設定・登録済みの同日同タイプの献立はそのまま使います。既存献立の弁当が非販売のときは、実行結果に対象の日付とタイプを表示します。
+
+## 指定以外のテーブル
+
+- `registration_invitations` はメール確認前の招待と送信日時を保持するために追加しています。登録が済んだ招待を利用者に紐づけ、リンクの再利用を防ぎます。
+- `active_storage_blobs`、`active_storage_attachments`、`active_storage_variant_records` は、弁当画像のメタデータ、弁当との関連、変換済み画像をRails標準のActive Storageで管理するために追加しています。
 
 ## 利用者登録とメール
 
@@ -77,4 +100,4 @@ Deviseは依存を導入済みで、利用者・管理者の認証モデルと�
 
 ## 管理者ログイン
 
-管理用URLは `/admin` です。管理者を作成するには、対象環境で `SEED_ADMIN_EMAIL` と `SEED_ADMIN_PASSWORD` を設定して `bin/rails db:seed` を実行します。管理画面に表示する氏名は `SEED_ADMIN_NAME` で指定でき、省略時は「管理者」です。シードは同じメールアドレスの管理者がいれば既存の認証情報を保ちます。初期化後はシード用のパスワードを環境から外せます。
+管理用URLは `/admin` です。管理者を作成するには、対象環境で `SEED_ADMIN_EMAIL` と `SEED_ADMIN_PASSWORD` を設定して `bin/rails db:seed` を実行します。管理者の氏名は `SEED_ADMIN_NAME` で指定でき、省略時は「管理者」です。シードは同じメールアドレスの管理者がいれば既存の認証情報を保ちます。初期化後はシード用のパスワードを環境から外せます。
