@@ -33,6 +33,18 @@ RSpec.describe Admin::DeliveryAreasController, type: :request do
 
       expect { delete admin_delivery_area_path(area) }.not_to change(DeliveryArea, :count)
       expect(response).to redirect_to(admin_delivery_areas_path)
+      follow_redirect!
+      expect(response.body).to include("注文履歴に使われているため、この配達エリアは削除できません。", "「有効」のチェックを外してください。")
+    end
+
+    it "定期注文設定が参照する配達エリアは削除できない" do
+      area = create(:delivery_area)
+      create(:recurring_order_setting, delivery_area: area)
+
+      expect { delete admin_delivery_area_path(area) }.not_to change(DeliveryArea, :count)
+      expect(response).to redirect_to(admin_delivery_areas_path)
+      follow_redirect!
+      expect(response.body).to include("定期注文設定に使われているため、この配達エリアは削除できません。", "「有効」のチェックを外してください。")
     end
   end
 end
