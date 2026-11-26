@@ -1,6 +1,6 @@
 <% navigation = render "shared/breadcrumbs", items: [ [ "マイページ", profile_path ], [ "注文詳細", order_path(@order) ], [ "評価投稿" ] ] %>
 <%= render layout: "shared/page", locals: { title: "評価投稿", navigation:, width: :form } do %>
-  <div class="review-layout">
+  <div class="ui-split review-layout">
     <section class="ui-panel review-menu">
       <%= render "daily_menus/photo", bento: @menu.bento %>
       <%= render "daily_menus/information", menu: @menu, remaining: @menu.remaining_quantity, show_name: true %>

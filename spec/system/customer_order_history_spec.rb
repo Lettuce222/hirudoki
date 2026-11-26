@@ -87,7 +87,7 @@ RSpec.describe "利用者の注文履歴と評価", type: :system do
           const menu = document.querySelector(".review-menu").getBoundingClientRect();
           const form = document.querySelector(".review-input").getBoundingClientRect();
           const photo = document.querySelector(".review-menu .menu-photo").getBoundingClientRect();
-          return arguments[0] ? menu.top === form.top && menu.right < form.left :
+          return arguments[0] ? form.top === menu.top && form.right < menu.left :
             menu.bottom < form.top && photo.width <= 112;
         })()
       JS
