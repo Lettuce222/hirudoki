@@ -6,6 +6,7 @@ plugins:
   - rubocop-factory_bot
 
 require:
+  - ./lib/rubocop/cop/hirudoki/always_negated_predicate
   - ./lib/rubocop/cop/hirudoki/controller_base
   - ./lib/rubocop/cop/hirudoki/order_scope_name
   - ./lib/rubocop/cop/hirudoki/deterministic_spec_date
@@ -31,6 +32,12 @@ FactoryBot/ConsistentParenthesesStyle:
 FactoryBot/FactoryNameStyle:
   Enabled: true
   EnforcedStyle: symbol
+
+Hirudoki/AlwaysNegatedPredicate:
+  Description: Flag application predicates whose direct calls are all negated.
+  Enabled: true
+  Include:
+    - app/**/*.rb
 
 Hirudoki/ControllerBase:
   Description: Use one inheritance level per controller namespace.
