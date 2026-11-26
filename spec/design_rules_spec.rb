@@ -1,3 +1,4 @@
+require "rails_helper"
 require "pathname"
 require "rubocop"
 
@@ -11,6 +12,18 @@ RSpec.describe "設計ルール" do
 
     expect(unexpected_directories).to be_empty,
       "許可されていないディレクトリ: #{unexpected_directories.join(', ')}。ドメインモデルはapp/modelsに置いてください"
+  end
+
+  it "アプリケーションのすべてのテーブルに必須の作成日時と更新日時がある" do
+    missing_timestamps = ApplicationRecord.with_connection do |connection|
+      rails_metadata_tables = [ connection.pool.schema_migration.table_name, connection.pool.internal_metadata.table_name ]
+      (connection.tables - rails_metadata_tables).reject do |table|
+        required_columns = connection.columns(table).reject(&:null).map(&:name)
+        %w[created_at updated_at].all? { |name| required_columns.include?(name) }
+      end
+    end
+
+    expect(missing_timestamps).to be_empty
   end
 
   it "クラス・モジュール・定数にServiceやPresenterという名前を付けない" do
