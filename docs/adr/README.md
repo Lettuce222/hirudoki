@@ -47,4 +47,4 @@
 | [0021](0021-use-deterministic-dates-in-specs.md) | Accepted | specの入力日は固定し、現在に依存する仕様は基準日時を明示する |
 | [0022](0022-use-one-controller-base-per-namespace.md) | Accepted | コントローラの継承をディレクトリ構成に揃える |
 | [0023](0023-order-cutoff-in-japan.md) | Accepted | 日本時間10:00から当日分を締め切る |
-| [0024](0024-serialize-order-writes-and-key-recurring-generation.md) | Proposed | 注文の同時受付と同日の定期注文の二重生成を防ぐ |
+| [0024](0024-serialize-order-writes-and-key-recurring-generation.md) | Accepted | DB制約・条件付き更新・固定順の行ロックで競合を扱う |
