@@ -30,7 +30,11 @@ class DailyMenu < ApplicationRecord
 
   def self.order_window_open_for?(served_on)
     now = Time.current
-    served_on.between?(now.to_date, now.to_date + 14) && now < order_cutoff_at(served_on)
+    served_on.between?(now.to_date, now.to_date + 14) && before_order_cutoff?(served_on, now:)
+  end
+
+  def self.before_order_cutoff?(served_on, now:)
+    now < order_cutoff_at(served_on)
   end
 
   def self.order_cutoff_at(served_on)
@@ -42,7 +46,7 @@ class DailyMenu < ApplicationRecord
   end
 
   def before_order_cutoff?
-    Time.current < DailyMenu.order_cutoff_at(served_on)
+    DailyMenu.before_order_cutoff?(served_on, now: Time.current)
   end
 
   def average_rating
