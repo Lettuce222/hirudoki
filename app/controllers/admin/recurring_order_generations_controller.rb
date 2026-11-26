@@ -2,7 +2,8 @@ class Admin::RecurringOrderGenerationsController < Admin::BaseController
   def new
     now = Time.current
     today = now.to_date
-    served_on = DailyMenu.before_order_cutoff?(today, now:) ? today : today.tomorrow
+    cutoff = DailyMenu.order_cutoff_at(today)
+    served_on = now < cutoff ? today : today.tomorrow
     @generation = RecurringOrderGeneration.new(served_on:)
   end
 
