@@ -18,7 +18,7 @@ class DailyMenu < ApplicationRecord
 
   validates :served_on, presence: true
   validates :capacity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validate :unique_bento_type_on_served_on
+  validate :validate_schedule
 
   # 献立がまだない提供日も保護するため、行ではなく献立テーブルをロックする。
   def self.with_schedule_lock
@@ -55,7 +55,7 @@ class DailyMenu < ApplicationRecord
 
   private
 
-  def unique_bento_type_on_served_on
+  def validate_schedule
     return unless bento && served_on
     return unless new_record? || will_save_change_to_served_on? || will_save_change_to_bento_id?
 
@@ -66,11 +66,14 @@ class DailyMenu < ApplicationRecord
       end
 
       validate_rescheduled_orders if persisted? && will_save_change_to_served_on?
-
-      bento_type = bento.new_record? ? bento.bento_type : Bento.where(id: bento_id).pick(:bento_type)
-      same_type_menus = DailyMenu.with_bento_type(bento_type).where(served_on:)
-      errors.add(:bento, "のタイプは同じ提供日にすでに登録されています") if same_type_menus.where.not(id:).exists?
+      unique_bento_type_on_served_on
     end
+  end
+
+  def unique_bento_type_on_served_on
+    bento_type = bento.new_record? ? bento.bento_type : Bento.where(id: bento_id).pick(:bento_type)
+    same_type_menus = DailyMenu.with_bento_type(bento_type).where(served_on:)
+    errors.add(:bento, "のタイプは同じ提供日にすでに登録されています") if same_type_menus.where.not(id:).exists?
   end
 
   def validate_rescheduled_orders
