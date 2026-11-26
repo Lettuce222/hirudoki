@@ -6,6 +6,7 @@ class RecurringOrderSetting < ApplicationRecord
   has_many :orders, dependent: :restrict_with_error
 
   scope :active, -> { where(active: true) }
+  scope :asc_by_weekday, -> { order(:weekday) }
 
   validates :weekday, numericality: { only_integer: true, in: WEEKDAYS }, uniqueness: { scope: :user_id }
   validates :bento_type, inclusion: { in: Bento::BENTO_TYPES }

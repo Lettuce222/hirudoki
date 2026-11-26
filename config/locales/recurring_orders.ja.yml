@@ -1,0 +1,14 @@
+ja:
+  activerecord:
+    attributes:
+      recurring_order_setting:
+        weekday: 曜日
+        bento_type: 弁当タイプ
+        quantity: 個数
+        delivery_area: 配達エリア
+        delivery_address: 配達先住所
+        active: 設定の状態
+  activemodel:
+    attributes:
+      recurring_order_generation:
+        served_on: 提供日

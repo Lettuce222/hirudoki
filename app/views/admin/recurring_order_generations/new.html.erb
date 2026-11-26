@@ -1,0 +1,29 @@
+<% content_for :title, "定期注文生成｜管理画面｜ひるどき" %>
+<%= render "admin/shared/breadcrumbs", current: "定期注文生成" %>
+<h1>定期注文生成</h1>
+<%= render "admin/shared/errors", record: @generation %>
+<%= form_with model: @generation, url: admin_recurring_order_generations_path, method: :post, class: "admin-form", data: { turbo: false } do |form| %>
+  <%= form.label :served_on, "提供日" %>
+  <%= form.date_field :served_on, min: Date.current, max: Date.current + 14, required: true %>
+  <%= form.submit "定期注文生成", class: "primary" %>
+<% end %>
+<% if @generated %>
+  <h2>生成結果</h2>
+  <p><%= @generation.served_on.iso8601 %> 提供</p>
+  <p role="status">生成 <%= @generation.orders.size %>件・スキップ <%= @generation.skips.size %>件</p>
+  <% if @generation.skips.any? %>
+    <div class="admin-table" role="region" aria-label="スキップした定期注文" tabindex="0">
+      <table>
+        <thead><tr><th scope="col">利用者</th><th scope="col">理由</th></tr></thead>
+        <tbody>
+          <% @generation.skips.each do |skip| %>
+            <tr><td><%= skip.user_name %></td><td><%= skip.reason %></td></tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+  <% if @generation.orders.any? %>
+    <p><%= link_to "注文一覧", admin_orders_path %></p>
+  <% end %>
+<% end %>

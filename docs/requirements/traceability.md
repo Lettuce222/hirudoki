@@ -185,6 +185,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | F-034〜035・B-029〜030（請求） | `spec/requests/admin/users_spec.rb`、`spec/models/user_spec.rb`、`spec/system/admin/order_operations_spec.rb`。一覧・詳細、提供月ごとの保存済み金額の合算、締切後のキャンセル除外を確認 | 本番未確認 | 2026-11-26 / PR #29 | [LET-43] |
 | F-013〜014（設定のモデル）・B-033（定期設定参照時）・D-008 | `spec/models/recurring_order_setting_spec.rb`。曜日の一意性、タイプと数量、無効エリアを選べないこと、無効化した設定が参照するエリアの削除制限を確認 | 本番未確認。定期設定の画面操作はLET-38で確認 | 2026-11-25 / LET-38 | [LET-38] |
 | B-005・B-007〜019・B-020（定期注文）・D-007（生成元） | `spec/models/recurring_order_generation_spec.rb`。受付期間、販売状況と残数、注文時の金額、理由付きスキップ、同日3個の制限、キャンセル後の再実行と同時実行を確認。全124例成功 | 本番未確認。管理画面での生成と結果はLET-39・LET-40で確認 | 2026-11-25 / LET-39・LET-40 | [LET-39]・[LET-40] |
+| F-013〜015・F-016（マイページへの表示）・F-028〜029・B-007〜008・B-012・B-016 | `spec/requests/recurring_order_settings_spec.rb`、`spec/requests/admin/recurring_order_generations_spec.rb`、`spec/system/recurring_orders_spec.rb`。曜日別設定の登録と無効化、提供日指定、生成・スキップ件数と利用者名・理由、同日の再実行、注文履歴への反映を確認。PC・スマートフォンでaxe検証 | 本番反映前 | 2026-11-26 / PR #30 | [LET-38]・[LET-39]・[LET-40] |
 
 ## チケット索引
 
