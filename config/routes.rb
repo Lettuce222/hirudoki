@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users, only: :sessions, controllers: { sessions: "user_sessions" }
   devise_for :administrators, path: "admin", only: :sessions, controllers: { sessions: "admin/sessions" }
   namespace :admin do
-    root "dashboards#show"
+    root "top#show"
     resources :orders, only: %i[index show update]
     resources :recurring_order_generations, only: %i[new create]
     resource :production_and_delivery_list, only: :show
