@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Health", type: :request do
+RSpec.describe HealthController, type: :request do
   let(:health_check_query) { "SELECT 1" }
 
   it "checks database connectivity" do

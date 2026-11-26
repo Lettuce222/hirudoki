@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "管理者の日別献立管理", type: :request do
+RSpec.describe Admin::DailyMenusController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   let(:served_on) { Date.new(2028, 2, 29) }

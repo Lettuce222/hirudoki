@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "登録確認メール", type: :request do
+RSpec.describe RegistrationInvitationsController, type: :request do
   it "確認メールを送り、利用者レコードは作成しない" do
     expect { post registration_invitation_path, params: { email: "hana@example.org" } }.not_to change(User, :count)
     expect(response).to redirect_to(registration_invitation_path)

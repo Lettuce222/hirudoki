@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "管理者セッション", type: :request do
+RSpec.describe Admin::SessionsController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   it "同じメールアドレスでも利用者のパスワードで管理者としてログインできない" do

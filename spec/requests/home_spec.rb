@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "Home", type: :request do
+RSpec.describe HomeController, type: :request do
   describe "GET /" do
     it "renders the application name" do
       get root_path

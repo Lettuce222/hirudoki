@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "管理者の弁当管理", type: :request do
+RSpec.describe Admin::BentosController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   let(:bento) { create(:bento, name: "焼き鮭", price: 500) }

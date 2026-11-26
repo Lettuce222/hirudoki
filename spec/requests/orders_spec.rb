@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "手動注文の受付", type: :request do
+RSpec.describe OrdersController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   let(:user) { create(:user) }
