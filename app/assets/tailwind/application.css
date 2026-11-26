@@ -2,6 +2,8 @@
 @import "./railsui/forms.css";
 @import "./railsui/buttons.css";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-primary-50: var(--color-emerald-50);
   --color-primary-100: var(--color-emerald-100);

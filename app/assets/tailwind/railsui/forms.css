@@ -151,7 +151,7 @@
         var(--color-gray-300) var(--range-fill)
       );
 
-      @media (prefers-color-scheme: dark) {
+      @variant dark {
         background: linear-gradient(
           to right,
           var(--color-primary-500) var(--range-fill),
@@ -168,7 +168,7 @@
         var(--color-gray-300) var(--range-fill)
       );
 
-      @media (prefers-color-scheme: dark) {
+      @variant dark {
         background: linear-gradient(
           to right,
           var(--color-primary-500) var(--range-fill),
@@ -185,7 +185,7 @@
         var(--color-gray-300) var(--range-fill)
       );
 
-      @media (prefers-color-scheme: dark) {
+      @variant dark {
         background: linear-gradient(
           to right,
           var(--color-primary-500) var(--range-fill),
