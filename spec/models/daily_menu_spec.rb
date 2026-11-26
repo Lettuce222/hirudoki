@@ -64,6 +64,69 @@ RSpec.describe DailyMenu, type: :model do
     expect(menu.reload.served_on).to eq(served_on)
   end
 
+  context "手動注文がある献立の提供日を変更する場合" do
+    let(:menu) { create(:daily_menu, served_on:, bento: salmon) }
+    let(:destination) { create(:daily_menu, served_on: served_on.tomorrow, bento: pasta) }
+    let(:user) { create(:user) }
+
+    around do |example|
+      travel_to(Time.zone.local(2028, 2, 28, 9)) { example.run }
+    end
+
+    before { create(:order, daily_menu: menu, user:, quantity: 2) }
+
+    it "移動先で同じ利用者の注文が合計3個を超える場合は提供日を変えられない" do
+      create(:order, daily_menu: destination, user:, quantity: 2)
+
+      expect(menu.update(served_on: destination.served_on)).to be(false)
+      expect(menu.errors[:served_on]).to include("の変更先で同じ利用者の注文が合計3個を超えます")
+      expect(menu.reload.served_on).to eq(served_on)
+    end
+
+    it "キャンセル済みを除いた注文が移動先で合計3個なら提供日を変更できる" do
+      create(:order, daily_menu: destination, user:, quantity: 2).cancelled!
+      create(:order, daily_menu: destination, user:, quantity: 1)
+
+      expect(menu.update(served_on: destination.served_on)).to be(true)
+      expect(user.orders.not_cancelled.served_on(destination.served_on).sum(:quantity)).to eq(3)
+    end
+  end
+
+  context "提供日の変更と移動先への注文が競合する場合" do
+    include ConcurrentWrites
+    self.use_transactional_tests = false
+
+    let(:menu) { create(:daily_menu, served_on:, bento: salmon) }
+    let(:destination) { create(:daily_menu, served_on: served_on.tomorrow, bento: pasta) }
+    let(:user) { create(:user) }
+    let(:area) { create(:delivery_area) }
+
+    around do |example|
+      travel_to(Time.zone.local(2028, 2, 28, 9)) { example.run }
+    end
+
+    before { create(:order, daily_menu: menu, user:, delivery_area: area, quantity: 2) }
+
+    after do
+      Order.where(user:).delete_all
+      menu.destroy!
+      destination.destroy!
+      salmon.destroy!
+      pasta.destroy!
+      user.destroy!
+      area.destroy!
+    end
+
+    it "先行した注文を含めると同日合計が3個を超える献立の移動を拒否する" do
+      moved = race(-> { create(:order, daily_menu: destination, user:, delivery_area: area, quantity: 2) }) do
+        menu.update(served_on: destination.served_on)
+      end
+
+      expect(moved).to be(false)
+      expect(menu.reload.served_on).to eq(served_on)
+    end
+  end
+
   it "献立が参照している弁当は削除できず、非販売には変更できる" do
     create(:daily_menu, served_on:, bento: salmon)
     expect(salmon.destroy).to be(false)
