@@ -1,7 +1,9 @@
 # PDF要件とLinearチケットの対応表
 
-基準日: 2026-11-16  
-原典: [技術試験「ひるどき」課題とレギュレーション](../../../技術試験_ひるどき_課題とレギュレーション.pdf)（全11ページ）  
+基準日は2026年11月16日です。
+
+原典は配布PDF『技術試験「ひるどき」課題とレギュレーション』（全11ページ）です。
+
 進捗の正本: [Linear「ひるどき 技術試験」](https://linear.app/lettuce222/project/ひるどき-技術試験-e8f010c8e2bd)
 
 ## この表の使い方
@@ -196,6 +198,19 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | F-030〜035・B-029〜030 | `spec/requests/admin/orders_spec.rb`、`spec/requests/admin/production_and_delivery_lists_spec.rb`、`spec/requests/admin/users_spec.rb`、`spec/system/admin/order_operations_spec.rb` | スマートフォン幅で、注文一覧と配達リストの非キャンセル注文、配達明細の弁当別個数と製造数が一致。確認用利用者の提供月の注文詳細を合算し、月別請求表示と一致 | 2026-11-26 / e41106b | [LET-41]・[LET-42]・[LET-43] |
 | F-006（評価表示）・F-016〜021 | 既存model specに注文変更・キャンセル・評価の検証がある。PDFを再照合し、利用者の履歴詳細と操作、献立詳細の評価集計への画面導線が不足していることを確認 | 確認用利用者のマイページでは注文履歴が1件表示され、詳細リンクや変更・キャンセル・評価の操作が見つからなかった。献立詳細の評価表示は固定の空表示。本番の再確認は画面実装後 | 2026-11-26 / e41106b | [LET-35]・[LET-36]・[LET-37] |
 | B-034・Q-004〜006 | `spec/demo_seed_spec.rb` を含む全RSpec 208件成功。空の開発DBに確認用シードを2回実行し、60献立、弁当8品、定期設定5件、2役割のアカウント、画像の読み戻しを確認 | 既存の確認用アカウントで両役割のログインに成功。確認時点の本番は和食の献立1件、有効な配達エリア1件、確認用利用者の定期設定0件。シードの投入と再確認はレビュー後 | 2026-11-26 / 本番 e41106b | [LET-44]・[LET-45]・[LET-46] |
+
+### 2026年11月26日の提出前確認
+
+前の表には、各確認時点の本番反映状況を記録している。以下は本番で稼働中のアプリ `21a5136` に対する確認結果。
+
+| 要件ID | 開発環境の結果・specパス | 本番の操作・結果 | 対象コミット | Linear |
+|---|---|---|---|---|
+| B-034・Q-004〜006 | `spec/demo_seed_spec.rb` が成功。空のPostgreSQLにREADMEの手順でセットアップし、デモシードを2回実行。60件の献立と2役割の認証情報を確認 | 既存の両アカウントでログインし、管理画面と利用者の定期設定画面から不足分を登録。11月26日〜12月10日の各日に販売中の4タイプが揃い、弁当9品・有効エリア3件・有効な定期設定5件を確認 | `21a5136` | [LET-44]・[LET-45]・[LET-46] |
+| F-007・F-012・F-017〜020・F-031〜035・B-005・B-029〜030 | `spec/system/manual_orders_spec.rb`、`spec/system/customer_order_history_spec.rb`、`spec/system/admin/order_operations_spec.rb` が成功 | スマートフォン幅で確認用注文を作成し、履歴から1個を2個に変更。管理画面で製造数・配達明細・請求増額を照合。利用者のキャンセル後に残数・請求額が元に戻り、配達明細から除かれた | `21a5136` | [LET-33]・[LET-35]・[LET-36]・[LET-42]・[LET-43] |
+| F-006・F-021 | `spec/models/review_spec.rb`、`spec/requests/reviews_spec.rb`、`spec/system/customer_order_history_spec.rb` が成功。受取済みの条件、二重投稿の拒否、投稿後の評価一覧と平均を確認 | 献立詳細の評価欄を表示。評価投稿と平均の変化はsystem specで確認 | `21a5136` | [LET-37] |
+| F-013〜016・F-028〜029・B-007〜019 | `spec/models/recurring_order_generation_spec.rb`、`spec/requests/admin/recurring_order_generations_spec.rb`、`spec/system/recurring_orders_spec.rb` が成功。平日の生成、再実行と理由付きスキップ、マイページへの反映を確認 | 確認用利用者の有効な定期設定を5件確認。管理画面で日曜を指定して生成0件・スキップ0件を確認。平日の生成と再実行は隔離したテストDBで確認 | `21a5136` | [LET-38]・[LET-39]・[LET-40] |
+| B-026・D-001・Q-003 | `spec/models/daily_menu_spec.rb` で提供日変更時の同日上限、`spec/design_rules_spec.rb` でアプリ管理テーブルの日時を確認 | 日別献立の提供日編集フォームを表示。DBを含む `/up` が200。日時追加マイグレーションの完了と既存弁当画像の移行前後のSHA-256一致を確認 | [Renderで稼働中の `21a5136`](https://dashboard.render.com/web/srv-dbtcth0ae00c73acmsm0/deploys/dep-dc40k3t9el5s73arks1g) | [LET-30]・[LET-46] |
+| Q-007〜011 | クリーン環境で全RSpec 238件が成功。RuboCopは155ファイルで指摘0件。Brakemanの警告は0件。[GitHub Actions](https://github.com/Lettuce222/hirudoki/actions/runs/45801593885) | PC幅の管理画面とスマートフォン幅の利用者画面で、上記の主要操作を確認 | `21a5136` | [LET-45]・[LET-46] |
 
 ## チケット索引
 

@@ -27,7 +27,7 @@ brew services start postgresql@18
 
 ## Development
 
-RailsとTailwind CSSのwatch processを起動します。
+RailsとTailwind CSSを起動し、ブラウザで http://localhost:3000/ を開きます。
 
 ```sh
 bin/dev
@@ -45,11 +45,15 @@ system specを含む実行前に `RAILS_ENV=test bin/rails db:prepare` と `bin/
 
 ## Architecture decisions
 
-重要な意思決定と代替案は [`docs/adr/`](docs/adr/) に記録します。
+重要な意思決定と代替案は [設計判断の一覧](docs/adr/) に記録しています。
+
+- 注文確定・個数変更は、利用者と献立を同じ順序でロックします。残数は、キャンセル済みを除いた注文から算出します。[注文の競合制御と定期生成](docs/adr/0024-serialize-order-writes-and-key-recurring-generation.md)
+- 朝10時の締切は日本時間で判定します。注文の単価と割引単価を保存し、月別請求は提供月のキャンセルされていない注文の保存済み合計を足します。[締切の設計判断](docs/adr/0023-order-cutoff-in-japan.md)
+- 利用者と管理者は認証と管理画面への権限を分けています。[管理者認証の設計判断](docs/adr/0020-separate-administrator-access.md)
 
 ## Work log
 
-課題に関する全作業を `bin/work-log` で記録します。開始・中断・終了の運用は [`docs/work-log/README.md`](docs/work-log/README.md)、提出用の集計は [`docs/work-log/summary.md`](docs/work-log/summary.md) を参照してください。エージェントは [`AGENTS.md`](AGENTS.md) と [work-log skill](.agents/skills/work-log/SKILL.md) に従います。
+課題に関する全作業を `bin/work-log` で記録します。開始・中断・終了の運用は [`docs/work-log/README.md`](docs/work-log/README.md)、リポジトリでの集計は [`docs/work-log/summary.md`](docs/work-log/summary.md) を参照してください。提出時点の集計は提出資料に同梱します。エージェントは [`AGENTS.md`](AGENTS.md) と [work-log skill](.agents/skills/work-log/SKILL.md) に従います。
 
 ## Requirement traceability
 
@@ -81,7 +85,13 @@ bin/rails runner db/seeds/demo.rb
 - 利用者でログインすると献立一覧が開きます。提供日で絞り込み、受付中の献立から注文できます。
 - 管理者の「定期注文生成」では、受付期間内の平日を指定して注文を生成できます。同じ日を再度指定すると、生成済みの設定がスキップされたことを確認できます。
 
-本番ではRenderのシェルで、提出用として用意した管理者・利用者のメールアドレスとパスワードをそれぞれ `SEED_ADMIN_EMAIL`、`SEED_ADMIN_PASSWORD`、`SEED_USER_EMAIL`、`SEED_USER_PASSWORD` に設定し、`RAILS_ENV=production bin/rails runner db/seeds/demo.rb` を実行します。本番のログイン情報は提出時に別途共有します。
+本番ではRenderのシェルで、提出用として用意した管理者・利用者のメールアドレスとパスワードをそれぞれ `SEED_ADMIN_EMAIL`、`SEED_ADMIN_PASSWORD`、`SEED_USER_EMAIL`、`SEED_USER_PASSWORD` に設定し、`RAILS_ENV=production bin/rails runner db/seeds/demo.rb` を実行します。本番のログイン情報は提出時に別途共有します。本番の入口は[利用者ログイン](https://hirudoki.onrender.com/users/sign_in)と[管理者ログイン](https://hirudoki.onrender.com/admin/sign_in)です。
+
+### 本番の確認手順
+
+1. 利用者でログインし、明日以降の提供日を選びます。献立の「注文手続き」から個数と配達先を指定し、マイページで注文を開きます。
+2. 管理者でログインし、「製造・配達リスト」で同じ提供日を選びます。「利用者一覧」から確認用利用者を開くと、提供月の請求額を確認できます。
+3. 定期注文を試すには、管理画面の「定期注文生成」で、手動注文とは別の受付期間内の平日を選びます。同じ日をもう一度指定すると、生成済みの設定のスキップ理由が表示されます。
 
 動作確認期間が変わったら、このコマンドを再実行して新しい提供日を補います。作成済みのアカウントのパスワード・既存の定期設定・登録済みの同日同タイプの献立はそのまま使います。既存献立の弁当が非販売のときは、実行結果に対象の日付とタイプを表示します。
 
