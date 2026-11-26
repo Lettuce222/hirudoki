@@ -26,10 +26,15 @@ ja:
       models:
         review:
           attributes:
+            rating:
+              not_a_number: "は1〜5の整数で入力してください。"
+              not_an_integer: "は1〜5の整数で入力してください。"
+              in: "は1〜5の整数で入力してください。"
             order_id:
               taken: "は評価済みです。"
     attributes:
       review:
+        rating: 評価
         order_id: 注文
       user:
         name: 氏名

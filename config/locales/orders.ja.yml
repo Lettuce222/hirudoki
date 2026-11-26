@@ -11,4 +11,6 @@ ja:
         order:
           attributes:
             quantity:
+              not_a_number: は1〜3個で指定してください
+              not_an_integer: は1〜3個で指定してください
               in: は1〜3個で指定してください

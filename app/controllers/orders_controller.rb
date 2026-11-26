@@ -1,7 +1,8 @@
 class OrdersController < ApplicationController
   before_action :no_store
   before_action :require_user
-  before_action :load_menu
+  before_action :load_menu, only: %i[new create]
+  before_action :set_order, only: %i[show edit update]
 
   def new
     previous = current_user.orders.desc_by_created_at.first
@@ -18,7 +19,31 @@ class OrdersController < ApplicationController
     end
   end
 
+  def show; end
+
+  def edit
+    unless @order.changeable?
+      redirect_to @order, alert: "この注文は変更できません。", status: :see_other
+    end
+  end
+
+  def update
+    if @order.change_quantity(quantity_params[:quantity])
+      redirect_to @order, notice: "個数を変更しました。", status: :see_other
+    else
+      render :edit, status: :unprocessable_content
+    end
+  end
+
   private
+
+  def quantity_params
+    params.expect(order: [ :quantity ])
+  end
+
+  def set_order
+    @order = current_user.orders.find(params.expect(:id))
+  end
 
   def order_params
     params.expect(order: [ :quantity, :delivery_address, :delivery_area_id ])

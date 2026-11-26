@@ -14,8 +14,20 @@
       <% else %>
         <p>注文の受付期間外です。当日は午前10時に締め切ります。</p>
       <% end %>
-      <h2>評価</h2>
-      <p>まだ評価はありません。</p>
+      <h2 id="reviews">評価</h2>
+      <% if @reviews.any? %>
+        <p>平均評価 <strong><%= number_with_precision(@menu.average_rating, precision: 1) %></strong> / 5</p>
+        <ul class="ui-records" aria-label="投稿された評価">
+          <% @reviews.each do |review| %>
+            <li>
+              <strong><%= review.rating %>点</strong>
+              <% if review.comment.present? %><p><%= review.comment %></p><% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>まだ評価はありません。</p>
+      <% end %>
     </div>
   </div>
 <% end %>

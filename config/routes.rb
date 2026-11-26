@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   resource :registration, only: %i[new create]
   resource :profile, only: :show
   resources :recurring_order_settings, only: %i[index new create edit update]
+  resources :orders, only: %i[show edit update] do
+    resource :cancellation, only: %i[new create], controller: "order_cancellations"
+    resource :review, only: %i[new create]
+  end
   resources :daily_menus, only: %i[index show] do
     resources :orders, only: %i[new create]
   end

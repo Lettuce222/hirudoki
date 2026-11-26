@@ -1,0 +1,12 @@
+<% navigation = render "shared/breadcrumbs", items: [ [ "マイページ", profile_path ], [ "注文詳細", order_path(@order) ], [ "評価投稿" ] ] %>
+<%= render layout: "shared/page", locals: { title: "評価投稿", navigation:, width: :form } do %>
+  <p><%= @order.daily_menu.bento.name %></p>
+  <%= render "shared/form_errors", record: @review %>
+  <% if @order.reviewable? %>
+    <%= form_with model: @review, url: order_review_path(@order), class: "ui-form ui-form--stacked" do |form| %>
+      <%= form.select :rating, 5.downto(1).map { |rating| [ "#{rating}点", rating ] }, { include_blank: "選択してください" }, label: "評価", required: true %>
+      <%= form.text_area :comment, rows: 3, label: "コメント（任意）" %>
+      <div class="ui-form-actions"><%= form.submit "評価投稿" %></div>
+    <% end %>
+  <% end %>
+<% end %>
