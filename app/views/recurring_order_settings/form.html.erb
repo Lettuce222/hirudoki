@@ -1,35 +1,15 @@
 <% title = @setting.persisted? ? "定期注文設定の編集" : "定期注文設定の登録" %>
-<% content_for :title, "#{title}｜ひるどき" %>
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
-<% end %>
-<p><%= link_to "定期注文設定一覧", recurring_order_settings_path %></p>
-<h1><%= title %></h1>
-<% if @setting.errors.any? %>
-  <ul role="alert">
-    <% @setting.errors.full_messages.each do |message| %>
-      <li><%= message %></li>
-    <% end %>
-  </ul>
-<% end %>
-<%= form_with model: @setting, class: "order-form" do |form| %>
-  <%= form.label :weekday, "曜日" %>
-  <%= form.select :weekday, RecurringOrderSetting::WEEKDAYS.map { |day| [t("date.day_names").fetch(day), day] }, { prompt: "曜日を選択" }, required: true %>
-
-  <%= form.label :bento_type, "弁当タイプ" %>
-  <%= form.select :bento_type, Bento::BENTO_TYPES, { prompt: "タイプを選択" }, required: true %>
-
-  <%= form.label :quantity, "個数" %>
-  <%= form.select :quantity, 1..Order::DAILY_LIMIT, {}, required: true %>
-
-  <%= form.label :delivery_area_id, "配達エリア" %>
-  <%= form.select :delivery_area_id, @areas.map { |area| [area.active? ? area.name : "#{area.name}（受付終了）", area.id] }, { prompt: "配達エリアを選択" }, required: true %>
-
-  <%= form.label :delivery_address, "配達先住所" %>
-  <%= form.text_field :delivery_address, required: true, autocomplete: "street-address" %>
-
-  <%= form.label :active, "設定の状態" %>
-  <%= form.select :active, [["有効", true], ["無効", false]] %>
-
-  <%= form.submit "保存", class: "primary" %>
+<%= render layout: "shared/customer_page", locals: { title:, back: [ "定期注文設定一覧", recurring_order_settings_path ], width: :form } do %>
+  <%= render "shared/customer_form_errors", record: @setting %>
+  <%= form_with model: @setting, class: "customer-form" do |form| %>
+    <%= form.select :weekday, weekday_options, { prompt: "曜日を選択" }, label: "曜日", required: true %>
+    <%= form.select :bento_type, Bento::BENTO_TYPES, { prompt: "タイプを選択" }, label: "弁当タイプ", required: true %>
+    <%= form.select :quantity, 1..Order::DAILY_LIMIT, {}, label: "個数", required: true %>
+    <%= form.select :delivery_area_id, delivery_area_options(@areas), { prompt: "配達エリアを選択" }, label: "配達エリア", required: true %>
+    <div class="customer-form-wide">
+      <%= form.text_field :delivery_address, label: "配達先住所", required: true, autocomplete: "street-address" %>
+    </div>
+    <%= form.select :active, [ [ "有効", true ], [ "無効", false ] ], {}, label: "設定の状態" %>
+    <div class="customer-form-actions"><%= form.submit "保存" %></div>
+  <% end %>
 <% end %>
