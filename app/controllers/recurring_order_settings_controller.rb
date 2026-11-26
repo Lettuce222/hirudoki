@@ -1,7 +1,7 @@
 class RecurringOrderSettingsController < ApplicationController
   before_action :no_store
   before_action :require_user
-  before_action :load_setting, only: %i[edit update]
+  before_action :set_setting, only: %i[edit update]
 
   def index
     @settings = paginate(current_user.recurring_order_settings.asc_by_weekday.preload(:delivery_area))
@@ -28,7 +28,7 @@ class RecurringOrderSettingsController < ApplicationController
 
   private
 
-  def load_setting
+  def set_setting
     @setting = current_user.recurring_order_settings.find(params.expect(:id))
   end
 
@@ -51,7 +51,11 @@ class RecurringOrderSettingsController < ApplicationController
   end
 
   def show_form(status: :ok)
-    @areas = DeliveryArea.active.or(DeliveryArea.where(id: @setting.delivery_area_id_in_database)).asc_by_postal_code
+    set_areas
     render :form, status:
+  end
+
+  def set_areas
+    @areas = DeliveryArea.active.or(DeliveryArea.where(id: @setting.delivery_area_id_in_database)).asc_by_postal_code
   end
 end

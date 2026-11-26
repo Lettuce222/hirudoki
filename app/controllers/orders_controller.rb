@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :no_store
   before_action :require_user
-  before_action :load_menu, only: %i[new create]
+  before_action :set_menu, :set_areas, only: %i[new create]
   before_action :set_order, only: %i[show edit update]
 
   def new
@@ -49,8 +49,11 @@ class OrdersController < ApplicationController
     params.expect(order: [ :quantity, :delivery_address, :delivery_area_id ])
   end
 
-  def load_menu
-    @menu = DailyMenu.on_sale.find(params[:daily_menu_id])
+  def set_menu
+    @menu = DailyMenu.on_sale.find(params.expect(:daily_menu_id))
+  end
+
+  def set_areas
     @areas = DeliveryArea.active.asc_by_postal_code
   end
 end
