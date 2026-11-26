@@ -9,7 +9,6 @@ RSpec.describe OrdersController, type: :request do
   let(:attributes) { { quantity: 1, delivery_area_id: area.id, delivery_address: "駅前一丁目" } }
   let(:order) { travel_to(Time.zone.local(2028, 2, 29, 9)) { create(:order, daily_menu: menu, user:) } }
   let(:other_order) { travel_to(Time.zone.local(2028, 2, 29, 9)) { create(:order, daily_menu: menu) } }
-  let(:cancellation) { { order: { intent: "cancel" } } }
 
   context "利用者としてログインしていない場合" do
     it "未ログインと管理者専用のセッションからは注文できない" do
@@ -24,13 +23,6 @@ RSpec.describe OrdersController, type: :request do
     it "注文詳細を開けない" do
       get order_path(order)
       expect(response).to redirect_to(root_path)
-    end
-
-    it "注文をキャンセルできない" do
-      patch order_path(order), params: cancellation
-
-      expect(response).to redirect_to(root_path)
-      expect(order.reload).to be_ordered
     end
   end
 
@@ -88,35 +80,6 @@ RSpec.describe OrdersController, type: :request do
       patch order_path(other_order), params: { order: { quantity: 2 } }
       expect(response).to have_http_status(:not_found)
       expect(other_order.reload.quantity).to eq(1)
-    end
-
-    it "別の利用者の注文をキャンセルできない" do
-      patch order_path(other_order), params: cancellation
-
-      expect(response).to have_http_status(:not_found)
-      expect(other_order.reload).to be_ordered
-    end
-
-    it "締切前にキャンセルすると注文詳細に戻り、献立の残数が戻る" do
-      started_order = order
-
-      travel_to(Time.zone.local(2028, 2, 29, 9, 59, 59)) do
-        expect { patch order_path(started_order), params: cancellation }.to change { menu.remaining_quantity }.by(1)
-        expect(response).to redirect_to(order_path(started_order))
-        expect(started_order.reload).to be_cancelled
-      end
-    end
-
-    it "締切を迎えると注文をキャンセルできない" do
-      started_order = order
-
-      travel_to(Time.zone.local(2028, 2, 29, 10)) do
-        patch order_path(started_order), params: cancellation
-
-        expect(response).to redirect_to(order_path(started_order))
-        expect(flash[:alert]).to include("この注文は変更・キャンセルできません。")
-        expect(started_order.reload).to be_ordered
-      end
     end
 
     it "締切前は個数だけを変更し、保存済みの単価で再計算する" do

@@ -14,8 +14,8 @@
       <p>個数変更・キャンセルは<%= DailyMenu.order_cutoff_at(@order.daily_menu.served_on).strftime("%Y-%m-%d %H:%M") %>より前に受け付けます。</p>
       <div class="ui-links">
         <%= primary_action_link "個数変更", edit_order_path(@order) %>
-        <%= button_to "注文キャンセル", order_path(@order), method: :patch, class: "btn btn-white",
-          params: { order: { intent: "cancel" } }, form: { data: { turbo_confirm: "この注文をキャンセルしますか？" } } %>
+        <%= button_to "注文キャンセル", order_cancellation_path(@order), class: "btn btn-white",
+          form: { data: { turbo_confirm: "この注文をキャンセルしますか？" } } %>
       </div>
     <% elsif @order.ordered? %>
       <p>個数変更とキャンセルの受付は終了しました。</p>
