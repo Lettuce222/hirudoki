@@ -6,7 +6,7 @@
   <% if @menu.accepting_orders? && remaining.positive? && @areas.any? %>
     <p>個数と配達先を指定してください。代金は月末締めの請求書払いです。</p>
     <%= form_with model: [@menu, @order], class: "ui-form" do |form| %>
-      <%= form.select :quantity, order_quantity_options(@menu, remaining), {}, label: "個数" %>
+      <%= form.select :quantity, order_quantity_options(unit_price: @menu.bento.price, remaining:), {}, label: "個数" %>
       <%= form.select :delivery_area_id, @areas.map { |area| [ area.name, area.id ] }, { include_blank: "選択してください" }, label: "配達エリア", required: true %>
       <%= form.text_field :delivery_address, label: "配達先住所", required: true, autocomplete: "street-address", wrapper: { class: "ui-form-wide" } %>
       <div class="ui-form-actions"><%= form.submit "注文確定" %></div>

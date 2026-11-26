@@ -1,6 +1,8 @@
 class Review < ApplicationRecord
   belongs_to :order
 
+  scope :desc_by_created_at, -> { order(created_at: :desc, id: :desc) }
+
   validates :order_id, uniqueness: true, on: :update
   validates :rating, numericality: { only_integer: true, in: 1..5 }
   validate :order_is_reviewable, on: :create

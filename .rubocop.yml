@@ -6,6 +6,7 @@ plugins:
   - rubocop-factory_bot
 
 require:
+  - ./lib/rubocop/cop/hirudoki/controller_setters
   - ./lib/rubocop/cop/hirudoki/always_negated_predicate
   - ./lib/rubocop/cop/hirudoki/controller_base
   - ./lib/rubocop/cop/hirudoki/order_scope_name
@@ -41,6 +42,12 @@ Hirudoki/AlwaysNegatedPredicate:
 
 Hirudoki/ControllerBase:
   Description: Use one inheritance level per controller namespace.
+  Enabled: true
+  Include:
+    - app/controllers/**/*_controller.rb
+
+Hirudoki/ControllerSetters:
+  Description: Keep controller instance variable setup in single-assignment read-only set_* methods.
   Enabled: true
   Include:
     - app/controllers/**/*_controller.rb

@@ -8,7 +8,8 @@
         <ul class="ui-records">
           <% @orders.each do |order| %>
             <li>
-              <strong><%= order.daily_menu.bento.name %></strong>・<%= Order.statuses.fetch(order.status) %><br>
+              <% name = order.daily_menu.bento.name %>
+              <strong><%= link_to name, order_path(order), aria: { label: "#{order.daily_menu.served_on}提供の#{name}の注文詳細" } %></strong>・<%= Order.statuses.fetch(order.status) %><br>
               <%= order.daily_menu.served_on %> 提供・<%= order.quantity %>個・税込<%= number_with_delimiter(order.total_amount) %>円<br>
               配達先：<%= order.delivery_area.name %> <%= order.delivery_address %>
             </li>
