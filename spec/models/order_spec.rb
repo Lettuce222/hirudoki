@@ -231,6 +231,17 @@ RSpec.describe Order, type: :model do
       expect(existing_order.reload).to have_attributes(quantity: 2, status: "ordered")
     end
 
+    it "画面表示後に受取済みになった注文は利用者がキャンセルできない" do
+      travel_to(Time.zone.local(2028, 2, 29, 9)) do
+        stale_order = described_class.find(order.id)
+        order.change_status(:received)
+
+        expect(stale_order.cancel).to be(false)
+        expect(stale_order.errors[:base]).to include("この注文は変更・キャンセルできません。")
+        expect(order.reload).to be_received
+      end
+    end
+
     it "受取済みまたはキャンセル済みの注文は変更もキャンセルもできない" do
       travel_to(Time.zone.local(2028, 2, 29, 9)) do
         %i[received cancelled].each do |status|

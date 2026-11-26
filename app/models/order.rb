@@ -72,16 +72,19 @@ class Order < ApplicationRecord
   end
 
   def cancel
-    with_order_change_lock do
-      customer_change_allowed? && cancelled!
-    end
-  rescue ActiveRecord::RecordInvalid
-    false
+    transition_status(:cancelled) { customer_change_allowed? }
   end
 
   def change_status(new_status)
+    transition_status(new_status)
+  end
+
+  private
+
+  def transition_status(new_status)
     with_order_change_lock do
-      errors.clear
+      next false if block_given? && !yield
+
       unless Order.statuses.key?(new_status)
         errors.add(:status, :inclusion)
         next false
@@ -94,19 +97,17 @@ class Order < ApplicationRecord
     end
   end
 
-  private
-
   def with_order_change_lock
     return false unless persisted?
 
     with_locked_user_and_menu do
       reload(lock: true)
+      errors.clear
       yield
     end
   end
 
   def customer_change_allowed?
-    errors.clear
     return true if changeable?
 
     errors.add(:base, "この注文は変更・キャンセルできません。")
