@@ -18,3 +18,15 @@ body { margin: 0; color: #233b30; background: #fff; font: 1rem/1.7 system-ui, sa
 [role=status] { background: #edf4ee; padding: .75rem; }
 :focus-visible { outline: 3px solid #9b6912; outline-offset: 3px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+.customer-table { overflow-x: auto; max-width: 100%; }
+.customer-table table { width: 100%; border-collapse: collapse; text-align: left; line-height: 1.45; }
+.customer-table :is(th, td) { border: 1px solid #becbc3; padding: .65rem .8rem; vertical-align: middle; }
+.customer-table thead { background: #f1f5f1; }
+.customer-table th[scope=row] a { text-decoration: underline; }
+.customer-table tbody tr:nth-child(even) { background: #fbfcfa; }
+
+@media (max-width: 720px) {
+  .customer-table table { font-size: .86rem; }
+  .customer-table :is(th, td) { padding: .45rem .3rem; }
+}

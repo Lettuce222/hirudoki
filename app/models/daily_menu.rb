@@ -28,13 +28,21 @@ class DailyMenu < ApplicationRecord
     end
   end
 
+  def self.order_window_open_for?(served_on)
+    now = Time.current
+    served_on.between?(now.to_date, now.to_date + 14) && now < order_cutoff_at(served_on)
+  end
+
+  def self.order_cutoff_at(served_on)
+    served_on.in_time_zone.change(hour: 10)
+  end
+
   def accepting_orders?
-    today = Date.current
-    served_on.between?(today, today + 14) && before_order_cutoff?
+    DailyMenu.order_window_open_for?(served_on)
   end
 
   def before_order_cutoff?
-    Time.current < served_on.in_time_zone.change(hour: 10)
+    Time.current < DailyMenu.order_cutoff_at(served_on)
   end
 
   def average_rating
@@ -55,6 +63,14 @@ class DailyMenu < ApplicationRecord
       if persisted? && !DailyMenu.exists?(id:, served_on: served_on_in_database, bento_id: bento_id_in_database)
         errors.add(:base, "献立が更新されました。読み込み直してください")
         next
+      end
+
+      if persisted? && will_save_change_to_served_on?
+        DailyMenu.lock.find(id)
+        if orders.where.not(recurring_order_setting_id: nil).exists?
+          errors.add(:served_on, "は定期注文があるため変更できません")
+          next
+        end
       end
 
       bento_type = bento.new_record? ? bento.bento_type : Bento.where(id: bento_id).pick(:bento_type)

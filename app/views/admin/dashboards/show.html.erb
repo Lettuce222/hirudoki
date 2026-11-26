@@ -6,6 +6,7 @@
 <p><%= current_administrator.name %></p>
 <ul class="admin-nav">
   <li><%= link_to "注文一覧", admin_orders_path %></li>
+  <li><%= link_to "定期注文生成", new_admin_recurring_order_generation_path %></li>
   <li><%= link_to "製造・配達リスト", admin_production_and_delivery_list_path %></li>
   <li><%= link_to "利用者一覧", admin_users_path %></li>
   <li><%= link_to "日別献立", admin_daily_menus_path %></li>

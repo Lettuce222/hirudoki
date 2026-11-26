@@ -1,0 +1,38 @@
+<% content_for :title, "定期注文設定｜ひるどき" %>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+<p><%= link_to "マイページ", profile_path %></p>
+<h1>定期注文設定</h1>
+<p><%= link_to "定期設定登録", new_recurring_order_setting_path, class: "primary" %></p>
+<% if @settings.any? %>
+  <div class="customer-table" role="region" aria-label="定期注文設定一覧" tabindex="0">
+    <table>
+      <thead class="whitespace-nowrap">
+        <tr>
+          <th scope="col">曜日</th>
+          <th scope="col">弁当タイプ</th>
+          <th scope="col">個数</th>
+          <th scope="col">配達先</th>
+          <th scope="col">状態</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @settings.each do |setting| %>
+          <% weekday = t("date.day_names").fetch(setting.weekday) %>
+          <tr>
+            <th scope="row" class="whitespace-nowrap">
+              <%= link_to weekday, edit_recurring_order_setting_path(setting), aria: { label: "#{weekday}の設定を編集" } %>
+            </th>
+            <td><%= setting.bento_type %></td>
+            <td class="whitespace-nowrap"><%= setting.quantity %>個</td>
+            <td><%= setting.delivery_area.name %><br><%= setting.delivery_address %></td>
+            <td><%= setting.active? ? "有効" : "無効" %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% else %>
+  <p>定期注文の設定はまだありません。</p>
+<% end %>

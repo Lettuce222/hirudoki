@@ -1,10 +1,12 @@
 class Order < ApplicationRecord
   TAX_RATE = BigDecimal("0.08")
   DAILY_LIMIT = 3
+  RECURRING_UNIT_DISCOUNT = 50
 
   belongs_to :user
   belongs_to :daily_menu
   belongs_to :delivery_area
+  belongs_to :recurring_order_setting, optional: true
   has_one :review, dependent: :restrict_with_error
 
   enum :status, { ordered: "注文済", received: "受取済", cancelled: "キャンセル済" }, validate: true
@@ -43,8 +45,7 @@ class Order < ApplicationRecord
   end
 
   def recurring?
-    # 定期注文のマイグレーション前は手動注文だけを扱う。
-    has_attribute?(:recurring_order_setting_id) && self[:recurring_order_setting_id].present?
+    recurring_order_setting_id.present?
   end
 
   def changeable?
@@ -127,7 +128,8 @@ class Order < ApplicationRecord
     return unless daily_menu && quantity
 
     self.unit_price = daily_menu.bento.price
-    self.unit_discount = 0
+    self.unit_discount = recurring? ? RECURRING_UNIT_DISCOUNT : 0
+    self.recurring_served_on = daily_menu.served_on if recurring? && recurring_served_on.nil?
     self.total_amount = Order.total_for(unit_price:, quantity:, unit_discount:)
   end
 
@@ -137,15 +139,29 @@ class Order < ApplicationRecord
     errors.add(:base, "この弁当は販売を終了しました。") unless daily_menu.bento.on_sale?
     errors.add(:base, "この配達エリアは受付を終了しました。") unless delivery_area.active?
     errors.add(:base, "この献立の注文受付期間外です。") unless daily_menu.accepting_orders?
+    check_recurring_source if recurring?
     return if errors.any?
 
-    check_quantity_limits(menu_orders: daily_menu.orders.not_cancelled, user_orders: user.orders.not_cancelled)
+    check_quantity_limits(menu_orders: daily_menu.orders.not_cancelled, user_orders: user.orders.not_cancelled, check_capacity: !recurring?)
   end
 
-  def check_quantity_limits(menu_orders:, user_orders:)
-    remaining = daily_menu.remaining_quantity(ordered: menu_orders.sum(:quantity))
-    errors.add(:base, "残数が足りません。") if quantity > remaining
+  def check_quantity_limits(menu_orders:, user_orders:, check_capacity: true)
+    if check_capacity
+      remaining = daily_menu.remaining_quantity(ordered: menu_orders.sum(:quantity))
+      errors.add(:base, "残数が足りません。") if quantity > remaining
+    end
     ordered = user_orders.served_on(daily_menu.served_on).sum(:quantity)
     errors.add(:base, "同じ提供日には合計3個まで注文できます。") if ordered + quantity > DAILY_LIMIT
+  end
+
+  def check_recurring_source
+    if recurring_order_setting&.active? && recurring_order_setting.user_id == user_id &&
+      recurring_order_setting.weekday == daily_menu.served_on.wday &&
+      recurring_order_setting.bento_type == daily_menu.bento.bento_type &&
+      recurring_order_setting.delivery_area_id == delivery_area_id && recurring_served_on == daily_menu.served_on
+      return
+    end
+
+    errors.add(:base, "定期注文設定と献立が一致しません。")
   end
 end

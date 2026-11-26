@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboards#show"
     resources :orders, only: %i[index show update]
+    resources :recurring_order_generations, only: %i[new create]
     resource :production_and_delivery_list, only: :show
     resources :users, only: %i[index show]
     resources :bentos, :delivery_areas, :daily_menus, except: :show
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
   resource :registration_invitation, only: %i[new create show]
   resource :registration, only: %i[new create]
   resource :profile, only: :show
+  resources :recurring_order_settings, only: %i[index new create edit update]
   resources :daily_menus, only: %i[index show] do
     resources :orders, only: %i[new create]
   end
