@@ -106,7 +106,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 
 | 要件ID | PDF出典 | 指定設計 | 確認方法 | 対応チケット |
 |---|---|---|---|---|
-| D-001 | p.7〜8 / 4 | 指定8テーブルを削除・役割変更しない。全表に作成/更新日時。追加表は理由をREADMEへ | schemaとREADMEで下記8種類・日時・追加理由を照合。Devise/Active Storage等の追加も説明 | [LET-16]・[LET-29]・[LET-45]・[LET-46] |
+| D-001 | p.7〜8 / 4 | 指定8テーブルを削除・役割変更しない。全表に作成/更新日時。追加表は理由をREADMEへ | `db/schema.rb`・`spec/design_rules_spec.rb`で業務8種類と追加したアプリ用テーブルの作成・更新日時を確認。追加テーブルの理由はREADMEに記載 | [LET-16]・[LET-29]・[LET-45]・[LET-46] |
 | D-002 | p.8 / 利用者 | 氏名string必須、メールstring必須/一意、ハッシュ化パスワードstring必須、電話string必須 | schema・登録validation・重複拒否・保存値の非平文を確認 | [LET-26] |
 | D-003 | p.8 / 管理者 | 氏名string必須、メールstring必須/一意、ハッシュ化パスワードstring必須 | schema・seed・認証specと保存値を確認 | [LET-28] |
 | D-004 | p.8 / 弁当 | 弁当名string必須、説明text、タイプstring必須/4種、価格integer必須/0以上、販売boolean必須/既定true、表示順integer必須、画像1枚 | schema・model specで各制約。管理画面で負価格やタイプ不正を拒否 | [LET-29]・[LET-30]・[LET-27] |
