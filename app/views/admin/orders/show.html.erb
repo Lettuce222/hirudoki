@@ -1,0 +1,19 @@
+<% content_for :title, "注文詳細｜管理画面｜ひるどき" %>
+<%= render "admin/shared/breadcrumbs", current: "注文詳細", section: "注文一覧", index_path: admin_orders_path %>
+<h1>注文 #<%= @order.id %></h1>
+<%= render "admin/shared/errors", record: @order %>
+<%= form_with model: [:admin, @order], class: "admin-form" do |form| %>
+  <%= form.label :status, "注文状態" %>
+  <%= form.select :status, Order.statuses.map { |status, label| [label, status] } %>
+  <%= form.submit "保存", class: "primary" %>
+<% end %>
+<dl>
+  <dt>提供日</dt><dd><%= @order.daily_menu.served_on.iso8601 %></dd>
+  <dt>利用者</dt><dd><%= link_to @order.user.name, admin_user_path(@order.user) %></dd>
+  <dt>弁当</dt><dd><%= @order.daily_menu.bento.name %></dd>
+  <dt>個数</dt><dd><%= @order.quantity %>個</dd>
+  <dt>注文区分</dt><dd><%= @order.recurring? ? "定期" : "手動" %></dd>
+  <dt>配達先</dt><dd><%= @order.delivery_area.name %> <%= @order.delivery_address %></dd>
+  <dt>電話番号</dt><dd><%= @order.user.phone %></dd>
+  <dt>合計</dt><dd>税込<%= number_with_delimiter(@order.total_amount) %>円</dd>
+</dl>
