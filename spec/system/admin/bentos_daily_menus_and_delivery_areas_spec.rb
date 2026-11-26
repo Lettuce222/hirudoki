@@ -26,6 +26,14 @@ RSpec.describe "管理者の弁当・献立・配達エリア管理", type: :sys
       expect(page).to have_css("table td", text: "650円")
       click_link "編集"
       expect(page).to have_css("img[alt='焼き鮭弁当の登録画像']")
+      sale_checkbox = find_field("販売中", type: "checkbox")
+      expect(page.evaluate_script(<<~JS, sale_checkbox)).to be(true)
+        (() => {
+          const bounds = arguments[0].getBoundingClientRect();
+          const label = arguments[0].labels[0].getBoundingClientRect();
+          return bounds.width === bounds.height && label.left >= bounds.right && label.top < bounds.bottom;
+        })()
+      JS
       uncheck "販売中"
       click_button "保存"
       expect(page).to have_text("非販売")

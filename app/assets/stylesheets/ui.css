@@ -103,7 +103,10 @@
 .ui-form--filter :is(.form-input, .form-select, .btn) { height: 3rem; line-height: normal; }
 .ui-form--filter .ui-form-actions { border: 0; padding: 0; }
 .ui-form .form-group { min-width: 0; }
-.ui-form :where(input, select):not([type="submit"], [type="hidden"]) { min-height: 2.75rem; }
+.ui-form :is(.form-input, .form-select) { min-height: 2.75rem; }
+.ui-form :has(> .form-input-checkbox) { display: flex; align-items: center; gap: .5rem; }
+.ui-form .form-input-checkbox { flex-shrink: 0; background-repeat: no-repeat; }
+.ui-form .form-input-checkbox + label { margin: 0; }
 .ui-form-wide, .ui-form-actions { grid-column: 1 / -1; }
 .ui-form-actions { border-top: 1px solid #e0e7e0; padding-top: 1rem; }
 .ui-form-actions .btn { min-width: 9rem; }
