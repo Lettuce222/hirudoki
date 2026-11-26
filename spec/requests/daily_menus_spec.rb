@@ -30,6 +30,33 @@ RSpec.describe DailyMenusController, type: :request do
     expect(response.body).not_to include("パスタ弁当", "さば弁当")
   end
 
+  context "絞り込み後の献立が20件を超える場合" do
+    let(:first_day) { Date.new(2028, 2, 29) }
+    let(:salmon) { create(:bento, bento_type: "和食") }
+
+    before do
+      21.times { |offset| create(:daily_menu, bento: salmon, served_on: first_day + offset) }
+      create(:daily_menu, bento: create(:bento, bento_type: "洋食"), served_on: first_day)
+      sign_in user
+    end
+
+    it "最初の20件を表示し、次ページに絞り込み条件を引き継ぐ" do
+      get daily_menus_path, params: { bento_type: "和食" }
+
+      document = Capybara.string(response.body)
+      expect(document).to have_css("tbody tr", count: 20)
+      expect(document).to have_link("次へ", href: daily_menus_path(bento_type: "和食", page: 2))
+    end
+
+    it "最後のページに残りの献立を表示する" do
+      get daily_menus_path, params: { bento_type: "和食", page: 2 }
+
+      document = Capybara.string(response.body)
+      expect(document).to have_css("tbody tr", count: 1, text: (first_day + 20).iso8601)
+      expect(document).to have_no_link("次へ")
+    end
+  end
+
   it "ログイン前に献立一覧や詳細を直接開くとトップに戻る" do
     get daily_menus_path
     expect(response).to redirect_to(root_path)

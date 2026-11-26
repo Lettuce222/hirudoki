@@ -9,6 +9,15 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def paginate(records, filters: {})
+    @pagination = Pagination.new(records, page: pagination_params[:page], filters:)
+    @pagination.records
+  end
+
+  def pagination_params
+    params.permit(:page)
+  end
+
   def require_user
     redirect_to root_path unless user_signed_in?
   end

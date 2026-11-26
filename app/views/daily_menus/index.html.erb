@@ -4,23 +4,36 @@
     <%= form.select :bento_type, Bento::BENTO_TYPES, { include_blank: "すべて", selected: @filters[:bento_type] }, label: "弁当タイプ" %>
     <div class="ui-form-actions"><%= form.submit "絞り込み" %></div>
   <% end %>
-  <% if @menus.empty? %>
-    <p>条件に合う献立はありません。</p>
-  <% else %>
-    <% columns = [ "画像", "弁当名", [ "提供日", "menu-date-column" ], "タイプ", "税抜価格", "残数" ] %>
-    <%= render layout: "shared/table", locals: { label: "献立一覧", columns: } do %>
-      <% @menus.each do |menu| %>
-        <tr>
-          <td class="menu-thumbnail"><%= render "photo", bento: menu.bento %></td>
-          <th scope="row">
-            <%= link_to menu.bento.name, daily_menu_path(menu, @filters.to_h) %>
-            <span class="menu-date-compact"><%= menu.served_on %></span>
-          </th>
-          <td class="menu-date-column"><%= menu.served_on %></td>
-          <td><%= menu.bento.bento_type %></td>
-          <td class="menu-quantity"><%= menu.bento.price %>円</td>
-          <td class="menu-quantity"><%= menu.remaining_quantity(ordered: @ordered_by_menu.fetch(menu.id, 0)) %>個</td>
-        </tr>
+  <%= render layout: "shared/paginated_list", locals: { pagination: @pagination } do %>
+    <% if @menus.empty? %>
+      <p>条件に合う献立はありません。</p>
+    <% else %>
+      <% columns = [ "画像", "弁当名", [ "提供日", "menu-date-column" ], [ "タイプ", "menu-type-column" ], "税抜価格", "残数", [ "注文", "menu-order-cell" ] ] %>
+      <%= render layout: "shared/table", locals: { label: "献立一覧", columns: } do %>
+        <% @menus.each do |menu| %>
+          <% remaining = menu.remaining_quantity(ordered: @ordered_by_menu.fetch(menu.id, 0)) %>
+          <tr>
+            <td class="menu-thumbnail"><%= render "photo", bento: menu.bento %></td>
+            <th scope="row">
+              <%= link_to menu.bento.name, daily_menu_path(menu, @filters.to_h) %>
+              <span class="menu-date-compact"><%= menu.served_on %></span>
+              <span class="menu-type-compact"><%= menu.bento.bento_type %></span>
+            </th>
+            <td class="menu-date-column"><%= menu.served_on %></td>
+            <td class="menu-type-column"><%= menu.bento.bento_type %></td>
+            <td class="menu-quantity"><%= menu.bento.price %>円</td>
+            <td class="menu-quantity"><%= remaining %>個</td>
+            <td class="menu-order-cell">
+              <% if menu.accepting_orders? && remaining.positive? %>
+                <%= link_to "注文手続き", new_daily_menu_order_path(menu), class: "btn btn-white menu-order-action", aria: { label: "#{menu.bento.name}の注文手続き" } %>
+              <% elsif remaining.zero? %>
+                <span class="menu-order-unavailable">売り切れ</span>
+              <% else %>
+                <span class="menu-order-unavailable">受付期間外</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

@@ -1,16 +1,18 @@
 <% primary_action = primary_action_link("弁当登録", new_admin_bento_path) %>
 <%= render layout: "admin/shared/page", locals: { title: "弁当", primary_action: } do %>
-  <%= render layout: "shared/table", locals: { label: "弁当一覧", columns: [ "画像", "弁当名", "タイプ", "税抜価格", "販売", "操作" ] } do %>
-    <% @bentos.each do |bento| %>
-      <tr>
-        <td><% if bento.image.attached? %><%= image_tag bento.image, class: "bento-thumbnail", alt: "" %><% else %><span class="bento-thumbnail bento-image-placeholder" role="img" aria-label="画像なし">—</span><% end %></td>
-        <td><%= bento.name %></td>
-        <td><%= bento.bento_type %></td>
-        <td><%= number_with_delimiter(bento.price) %>円</td>
-        <td><%= bento.on_sale? ? "販売中" : "非販売" %></td>
-        <td><%= link_to "編集", edit_admin_bento_path(bento), aria: { label: "#{bento.name}の編集" } %></td>
-      </tr>
+  <%= render layout: "shared/paginated_list", locals: { pagination: @pagination } do %>
+    <%= render layout: "shared/table", locals: { label: "弁当一覧", columns: [ "画像", "弁当名", "タイプ", "税抜価格", "販売", "操作" ] } do %>
+      <% @bentos.each do |bento| %>
+        <tr>
+          <td><% if bento.image.attached? %><%= image_tag bento.image, class: "bento-thumbnail", alt: "" %><% else %><span class="bento-thumbnail bento-image-placeholder" role="img" aria-label="画像なし">—</span><% end %></td>
+          <td><%= bento.name %></td>
+          <td><%= bento.bento_type %></td>
+          <td><%= number_with_delimiter(bento.price) %>円</td>
+          <td><%= bento.on_sale? ? "販売中" : "非販売" %></td>
+          <td><%= link_to "編集", edit_admin_bento_path(bento), aria: { label: "#{bento.name}の編集" } %></td>
+        </tr>
+      <% end %>
     <% end %>
+    <% if @bentos.empty? %><p>弁当はまだ登録されていません。</p><% end %>
   <% end %>
-  <% if @bentos.empty? %><p>弁当はまだ登録されていません。</p><% end %>
 <% end %>

@@ -132,7 +132,9 @@
 .ui-links { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
 .ui-records { padding: 0; margin: 0; }
 .ui-records li + li { border-top: 1px solid #d8e1d9; margin-top: .75rem; padding-top: .75rem; }
-.ui-delete { margin-top: 1rem; }
+.ui-page-heading:has(.ui-page-delete) { flex-direction: row; align-items: center; }
+.ui-page-delete { margin-left: auto; }
+.ui-page-delete .btn { min-height: 2.75rem; }
 
 @media (max-width: 720px) {
   .ui-split { grid-template-columns: minmax(0, 1fr); }
@@ -156,3 +158,15 @@
 }
 
 .ui-page .btn-danger:hover { background: #fff2ef; }
+
+.content .ui-list-count { margin: 1rem 0 .6rem; }
+
+.ui-pagination .btn { min-height: 2.75rem; }
+
+.ui-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  margin-block: .75rem 1rem;
+}

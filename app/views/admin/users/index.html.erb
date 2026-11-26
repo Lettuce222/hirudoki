@@ -1,15 +1,17 @@
 <%= render layout: "admin/shared/page", locals: { title: "利用者一覧" } do %>
-  <% if @users.any? %>
-    <%= render layout: "shared/table", locals: { label: "利用者一覧", columns: [ "氏名", "メールアドレス", "電話番号" ] } do %>
-      <% @users.each do |user| %>
-        <tr>
-          <th scope="row"><%= link_to user.name, admin_user_path(user) %></th>
-          <td><%= user.email %></td>
-          <td><%= user.phone %></td>
-        </tr>
+  <%= render layout: "shared/paginated_list", locals: { pagination: @pagination } do %>
+    <% if @users.any? %>
+      <%= render layout: "shared/table", locals: { label: "利用者一覧", columns: [ "氏名", "メールアドレス", "電話番号" ] } do %>
+        <% @users.each do |user| %>
+          <tr>
+            <th scope="row"><%= link_to user.name, admin_user_path(user) %></th>
+            <td><%= user.email %></td>
+            <td><%= user.phone %></td>
+          </tr>
+        <% end %>
       <% end %>
+    <% else %>
+      <p>利用者はまだ登録されていません。</p>
     <% end %>
-  <% else %>
-    <p>利用者はまだ登録されていません。</p>
   <% end %>
 <% end %>

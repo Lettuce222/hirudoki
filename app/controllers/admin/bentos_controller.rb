@@ -2,7 +2,7 @@ class Admin::BentosController < Admin::BaseController
   before_action :set_bento, only: %i[edit update destroy]
 
   def index
-    @bentos = Bento.with_attached_image.asc_by_display_order
+    @bentos = paginate(Bento.with_attached_image.asc_by_display_order)
   end
 
   def new

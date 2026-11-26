@@ -1,21 +1,23 @@
 <% primary_action = primary_action_link("定期設定登録", new_recurring_order_setting_path) %>
-<%= render layout: "shared/page", locals: { title: "定期注文設定", navigation: link_to("マイページ", profile_path), primary_action: } do %>
-  <% if @settings.any? %>
-    <%= render layout: "shared/table", locals: { label: "定期注文設定一覧", columns: [ "曜日", "弁当タイプ", "個数", "配達先", "状態" ] } do %>
-      <% @settings.each do |setting| %>
-        <% weekday = weekday_name(setting.weekday) %>
-        <tr>
-          <th scope="row">
-            <%= link_to weekday, edit_recurring_order_setting_path(setting), aria: { label: "#{weekday}の設定を編集" } %>
-          </th>
-          <td><%= setting.bento_type %></td>
-          <td><%= setting.quantity %>個</td>
-          <td class="ui-address"><strong><%= setting.delivery_area.name %></strong><br><%= setting.delivery_address %></td>
-          <td><span class="ui-status <%= "ui-status--active" if setting.active? %>"><%= setting.active? ? "有効" : "無効" %></span></td>
-        </tr>
+<%= render layout: "shared/page", locals: { title: "定期注文設定", primary_action: } do %>
+  <%= render layout: "shared/paginated_list", locals: { pagination: @pagination } do %>
+    <% if @settings.any? %>
+      <%= render layout: "shared/table", locals: { label: "定期注文設定一覧", columns: [ "曜日", "弁当タイプ", "個数", "配達先", "状態" ] } do %>
+        <% @settings.each do |setting| %>
+          <% weekday = weekday_name(setting.weekday) %>
+          <tr>
+            <th scope="row">
+              <%= link_to weekday, edit_recurring_order_setting_path(setting), aria: { label: "#{weekday}の設定を編集" } %>
+            </th>
+            <td><%= setting.bento_type %></td>
+            <td><%= setting.quantity %>個</td>
+            <td class="ui-address"><strong><%= setting.delivery_area.name %></strong><br><%= setting.delivery_address %></td>
+            <td><span class="ui-status <%= "ui-status--active" if setting.active? %>"><%= setting.active? ? "有効" : "無効" %></span></td>
+          </tr>
+        <% end %>
       <% end %>
+    <% else %>
+      <p>定期注文の設定はまだありません。</p>
     <% end %>
-  <% else %>
-    <p>定期注文の設定はまだありません。</p>
   <% end %>
 <% end %>

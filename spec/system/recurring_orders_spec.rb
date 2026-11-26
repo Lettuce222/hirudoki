@@ -21,7 +21,7 @@ RSpec.describe "定期注文の設定と生成", type: :system do
         fill_in "メールアドレス", with: user.email
         fill_in "パスワード", with: user.password
         click_button "ログイン"
-        expect(page).to have_current_path(profile_path)
+        expect(page).to have_current_path(daily_menus_path)
         click_link "定期注文設定"
         click_link "定期設定登録"
         weekday_top = page.evaluate_script("arguments[0].getBoundingClientRect().top", find_field("曜日"))

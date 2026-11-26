@@ -1,5 +1,6 @@
 <% action = @delivery_area.persisted? ? "編集" : "登録" %>
-<%= render layout: "admin/shared/page", locals: { title: "配達エリアの#{action}", section: "配達エリア", index_path: admin_delivery_areas_path, current: action, width: :form } do %>
+<% delete_action = render("admin/shared/delete", record: @delivery_area) if @delivery_area.persisted? %>
+<%= render layout: "admin/shared/page", locals: { title: "配達エリアの#{action}", section: "配達エリア", index_path: admin_delivery_areas_path, current: action, width: :form, primary_action: delete_action } do %>
   <%= render "shared/form_errors", record: @delivery_area %>
   <%= form_with model: [:admin, @delivery_area], class: "ui-form" do |form| %>
     <%= form.text_field :name, label: "エリア名", required: true %>
@@ -10,5 +11,4 @@
     <%= form.check_box :active, label: "有効" %>
     <div class="ui-form-actions"><%= form.submit "保存" %></div>
   <% end %>
-  <%= render "admin/shared/delete", record: @delivery_area %>
 <% end %>

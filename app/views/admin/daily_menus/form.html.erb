@@ -1,5 +1,6 @@
 <% action = @daily_menu.persisted? ? "編集" : "登録" %>
-<%= render layout: "admin/shared/page", locals: { title: "日別献立の#{action}", section: "日別献立", index_path: admin_daily_menus_path, current: action, width: :form } do %>
+<% delete_action = render("admin/shared/delete", record: @daily_menu) if @daily_menu.persisted? %>
+<%= render layout: "admin/shared/page", locals: { title: "日別献立の#{action}", section: "日別献立", index_path: admin_daily_menus_path, current: action, width: :form, primary_action: delete_action } do %>
   <%= render "shared/form_errors", record: @daily_menu %>
   <%= form_with model: [:admin, @daily_menu], class: "ui-form" do |form| %>
     <%= form.date_field :served_on, label: "提供日", required: true %>
@@ -10,5 +11,4 @@
     <%= form.number_field :capacity, label: "提供数上限（個）", min: 0, required: true %>
     <div class="ui-form-actions"><%= form.submit "保存" %></div>
   <% end %>
-  <%= render "admin/shared/delete", record: @daily_menu %>
 <% end %>

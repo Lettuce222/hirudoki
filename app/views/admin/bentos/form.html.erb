@@ -1,5 +1,6 @@
 <% action = @bento.persisted? ? "編集" : "登録" %>
-<%= render layout: "admin/shared/page", locals: { title: "弁当の#{action}", section: "弁当", index_path: admin_bentos_path, current: action, width: :form } do %>
+<% delete_action = render("admin/shared/delete", record: @bento) if @bento.persisted? %>
+<%= render layout: "admin/shared/page", locals: { title: "弁当の#{action}", section: "弁当", index_path: admin_bentos_path, current: action, width: :form, primary_action: delete_action } do %>
   <%= render "shared/form_errors", record: @bento %>
   <%= form_with model: [:admin, @bento], class: "ui-form" do |form| %>
     <%= form.text_field :name, label: "弁当名", required: true, wrapper: { class: "ui-form-wide" } %>
@@ -17,5 +18,4 @@
     <%= form.check_box :on_sale, label: "販売中" %>
     <div class="ui-form-actions"><%= form.submit "保存" %></div>
   <% end %>
-  <%= render "admin/shared/delete", record: @bento %>
 <% end %>

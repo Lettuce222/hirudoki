@@ -1,3 +1,1 @@
-<% if record.persisted? %>
-  <%= button_to "削除", [:admin, record], method: :delete, class: "btn btn-danger", form: { class: "ui-delete", data: { turbo_confirm: "削除してよろしいですか？" } } %>
-<% end %>
+<%= button_to "削除", [:admin, record], method: :delete, class: "btn btn-danger", form: { class: "ui-page-delete", data: { turbo_confirm: "削除してよろしいですか？" } } %>

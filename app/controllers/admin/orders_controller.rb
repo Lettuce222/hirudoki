@@ -2,7 +2,7 @@ class Admin::OrdersController < Admin::BaseController
   before_action :set_order, only: %i[show update]
 
   def index
-    @orders = Order.desc_by_created_at.preload(:user, daily_menu: :bento)
+    @orders = paginate(Order.desc_by_created_at.preload(:user, daily_menu: :bento))
   end
 
   def show; end

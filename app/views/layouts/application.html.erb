@@ -31,16 +31,25 @@
       <% if controller_path.start_with?("admin/") %>
         <%= link_to "ひるどき　管理画面", admin_root_path %>
       <% else %>
-        <%= link_to "ひるどき", root_path %>
-      <% end %>
-      <% if current_page?(root_path) %>
-        <nav aria-label="利用者メニュー">
-          <% if user_signed_in? %>
-            <%= link_to "マイページ", profile_path %>
-          <% else %>
-            <%= link_to "ログイン", new_user_session_path %>
-          <% end %>
-        </nav>
+        <% brand_path = user_signed_in? ? daily_menus_path : new_user_session_path %>
+        <%= link_to brand_path, class: "site-brand" do %>
+          <span class="site-brand-mark" aria-hidden="true"></span>
+          <span>ひるどき</span>
+        <% end %>
+        <% if user_signed_in? || current_page?(root_path) %>
+          <nav class="site-user-nav" aria-label="利用者メニュー">
+            <% if user_signed_in? %>
+              <%= link_to "献立一覧", daily_menus_path, class: "btn btn-transparent site-order-link", aria: { current: ("page" if current_page?(daily_menus_path)) } %>
+              <%= link_to "定期注文設定", recurring_order_settings_path, class: "btn btn-transparent site-order-link", aria: { current: ("page" if current_page?(recurring_order_settings_path)) } %>
+              <%= link_to profile_path, class: "site-profile-link", title: "マイページ" do %>
+                <span class="site-profile-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">マイページ</span>
+              <% end %>
+            <% else %>
+              <%= link_to "ログイン", new_user_session_path %>
+            <% end %>
+          </nav>
+        <% end %>
       <% end %>
     </header>
     <main class="content">

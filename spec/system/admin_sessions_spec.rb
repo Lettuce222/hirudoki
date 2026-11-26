@@ -14,7 +14,7 @@ RSpec.describe "管理者ログイン", type: :system do
       fill_in "パスワード", with: administrator.password
       click_button "ログイン"
       expect(page).to have_css("h1", text: "管理画面")
-      expect(page).to have_text(administrator.name)
+      expect(page).to have_no_text(administrator.name)
       expect(page).to be_axe_clean.according_to(*accessibility_tags)
       click_button "ログアウト"
       expect(page).to have_css("h1", text: "管理者ログイン")
@@ -38,7 +38,7 @@ RSpec.describe "管理者ログイン", type: :system do
     fill_in "パスワード", with: "before-change"
     click_button "ログイン"
 
+    expect(page).to have_current_path(admin_root_path)
     expect(page).to have_css("h1", text: "管理画面")
-    expect(page).to have_text("管理担当")
   end
 end

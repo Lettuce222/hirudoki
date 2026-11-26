@@ -1,5 +1,4 @@
 <%= render layout: "admin/shared/page", locals: { title: "管理画面", current: nil } do %>
-  <p><%= current_administrator.name %></p>
   <ul class="admin-nav">
     <li><%= link_to "注文一覧", admin_orders_path %></li>
     <li><%= link_to "定期注文生成", new_admin_recurring_order_generation_path %></li>

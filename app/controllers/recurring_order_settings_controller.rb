@@ -4,7 +4,7 @@ class RecurringOrderSettingsController < ApplicationController
   before_action :load_setting, only: %i[edit update]
 
   def index
-    @settings = current_user.recurring_order_settings.asc_by_weekday.preload(:delivery_area)
+    @settings = paginate(current_user.recurring_order_settings.asc_by_weekday.preload(:delivery_area))
   end
 
   def new

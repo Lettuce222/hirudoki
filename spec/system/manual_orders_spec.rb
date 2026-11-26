@@ -13,10 +13,12 @@ RSpec.describe "手動注文", type: :system do
         create(:delivery_area, name: "受付休止", active: false)
         login_as(create(:user), scope: :user)
         page.current_window.resize_to(width, height)
-        visit daily_menu_path(menu)
-        contrast = be_axe_clean.within("a.btn-primary").checking_only("color-contrast").audit(page)
+        visit daily_menus_path
+        expect(page).to have_css("tbody tr td:last-child a.btn-white", text: "注文手続き")
+        contrast = be_axe_clean.within("a.menu-order-action").checking_only("color-contrast").audit(page)
         expect(contrast.results.passes.map(&:id)).to include(:"color-contrast")
-        click_link "注文手続き"
+        click_link "注文手続き", href: new_daily_menu_order_path(menu)
+        expect(page).to have_current_path(new_daily_menu_order_path(menu))
         expect(page).to have_field("配達先住所", with: "")
         expect(page).to have_select("配達エリア", selected: "選択してください")
         expect(page).to have_no_select("配達エリア", with_options: [ "受付休止" ])

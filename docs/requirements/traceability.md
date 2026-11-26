@@ -188,6 +188,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | F-013〜015・F-016（マイページへの表示）・F-028〜029・B-007〜008・B-012・B-016 | `spec/requests/recurring_order_settings_spec.rb`、`spec/requests/admin/recurring_order_generations_spec.rb`、`spec/system/recurring_orders_spec.rb`。曜日別設定の登録と無効化、提供日指定、生成・スキップ件数と利用者名・理由、同日の再実行、注文履歴への反映を確認。PC・スマートフォンでaxe検証 | 本番反映前 | 2026-11-26 / PR #30 | [LET-38]・[LET-39]・[LET-40] |
 | F-013〜015・Q-008（定期注文設定の表示） | `spec/system/recurring_orders_spec.rb`。PCで幅900px以上の一覧と2列フォーム、スマートフォンで横にはみ出さない一覧と1列フォームを確認。登録・編集とaxeを含む全RSpec 200例成功。本番用アセットの生成を確認 | 本番反映前 | 2026-11-26 / LET-38 | [LET-38] |
 | Q-008（利用者・管理者の画面共通化） | 隔離した開発環境でログインと登録を含む29画面をPC（1280×900）とスマートフォン（390×844）で表示し、共通のページ枠、横はみ出し、axeを確認。既存のsystem specによる登録・注文・管理操作を含む全RSpec 201例成功。`spec/system/user_sessions_spec.rb`で端末のダーク配色でも入力欄が白いことを確認 | 本番反映前。本番用アセットの生成は確認済み | 2026-11-26 / LET-50 | [LET-50] |
+| F-002（ログイン後）・F-004〜005（献立一覧）・F-007・F-012・F-013（定期注文設定への導線）・Q-008 | 2026年11月26日に開発プレビューの第4版を承認。PC・スマートフォンでログインから献立一覧、行末の「注文手続き」、マイページの注文履歴までを確認。20件ごとのページ送りと絞り込みの維持、管理画面の削除確認を検証。`spec/system/user_sessions_spec.rb`、`spec/system/manual_orders_spec.rb`、`spec/requests/daily_menus_spec.rb`、`spec/system/admin/bentos_daily_menus_and_delivery_areas_spec.rb`を含む全RSpec 203件成功 | 本番反映前 | 2026-11-26 / PR #35 | [LET-33]・[LET-50] |
 
 ## チケット索引
 
