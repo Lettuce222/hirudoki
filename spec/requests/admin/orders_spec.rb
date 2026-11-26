@@ -65,7 +65,7 @@ RSpec.describe Admin::OrdersController, type: :request do
 
       expect(response).to have_http_status(:unprocessable_content)
       expect(response.body).to include("注文状態")
-      expect(Nokogiri::HTML(response.body).at_css("ul[role=alert]")).to be_present
+      expect(Nokogiri::HTML(response.body).at_css("[role=alert] ul li")).to be_present
       expect(order.reload).to be_ordered
     end
   end

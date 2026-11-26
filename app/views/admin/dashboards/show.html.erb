@@ -1,16 +1,13 @@
-<% content_for :title, "管理画面｜ひるどき" %>
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
+<%= render layout: "admin/shared/page", locals: { title: "管理画面", current: nil } do %>
+  <p><%= current_administrator.name %></p>
+  <ul class="admin-nav">
+    <li><%= link_to "注文一覧", admin_orders_path %></li>
+    <li><%= link_to "定期注文生成", new_admin_recurring_order_generation_path %></li>
+    <li><%= link_to "製造・配達リスト", admin_production_and_delivery_list_path %></li>
+    <li><%= link_to "利用者一覧", admin_users_path %></li>
+    <li><%= link_to "日別献立", admin_daily_menus_path %></li>
+    <li><%= link_to "弁当", admin_bentos_path %></li>
+    <li><%= link_to "配達エリア", admin_delivery_areas_path %></li>
+  </ul>
+  <%= button_to "ログアウト", destroy_administrator_session_path, method: :delete, class: "btn btn-white" %>
 <% end %>
-<h1>管理画面</h1>
-<p><%= current_administrator.name %></p>
-<ul class="admin-nav">
-  <li><%= link_to "注文一覧", admin_orders_path %></li>
-  <li><%= link_to "定期注文生成", new_admin_recurring_order_generation_path %></li>
-  <li><%= link_to "製造・配達リスト", admin_production_and_delivery_list_path %></li>
-  <li><%= link_to "利用者一覧", admin_users_path %></li>
-  <li><%= link_to "日別献立", admin_daily_menus_path %></li>
-  <li><%= link_to "弁当", admin_bentos_path %></li>
-  <li><%= link_to "配達エリア", admin_delivery_areas_path %></li>
-</ul>
-<%= button_to "ログアウト", destroy_administrator_session_path, method: :delete, class: "secondary" %>

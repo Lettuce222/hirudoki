@@ -49,12 +49,13 @@ RSpec.describe "定期注文の設定と生成", type: :system do
         click_link "定期注文生成"
         fill_in "提供日", with: served_on
         click_button "定期注文生成"
-        expect(page).to have_text("生成 1件・スキップ 1件")
+        expect(page).to have_current_path(admin_recurring_order_generations_path)
+        expect(page).to have_css("[role=status]", text: "生成 1件・スキップ 1件")
         expect(page).to have_css("tr", text: "花子 販売中の献立がありません。")
         expect(page).to be_axe_clean.according_to(*accessibility_tags)
 
         click_button "定期注文生成"
-        expect(page).to have_text("生成 0件・スキップ 2件")
+        expect(page).to have_css("[role=status]", text: "生成 0件・スキップ 2件")
         expect(page).to have_css("tr", text: "太郎 この対象日は生成済みです。")
 
         visit profile_path

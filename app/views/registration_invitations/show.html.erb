@@ -1,5 +1,7 @@
-<% content_for :title, "送信案内｜ひるどき" %>
-<h1>確認メールをご確認ください</h1>
-<p><%= @email %> に届いたメールを開き、本文のリンクから登録を続けてください。</p>
-<p>メールが届かない場合は、1分ほど待ってから再送してください。</p>
-<%= button_to "確認メール再送", registration_invitation_path, params: { email: @email }, class: "secondary" %>
+<%= render layout: "shared/page", locals: { title: "確認メールをご確認ください", document_title: "送信案内", width: :narrow } do %>
+  <div class="ui-panel">
+    <p><%= @email %> に届いたメールを開き、本文のリンクから登録を続けてください。</p>
+    <p>メールが届かない場合は、1分ほど待ってから再送してください。</p>
+    <%= button_to "確認メール再送", registration_invitation_path, params: { email: @email }, class: "btn btn-white" %>
+  </div>
+<% end %>

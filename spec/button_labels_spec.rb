@@ -25,7 +25,7 @@ RSpec.describe "ボタンの文言" do
       source = RuboCop::ProcessedSource.new(ruby, RUBY_VERSION.to_f)
       expect(source.valid_syntax?).to be(true), file.to_s
       source.ast&.each_node(:send) do |call|
-        next unless %i[button_tag button_to submit submit_tag button customer_primary_link].include?(call.method_name) || button_link?(call)
+        next unless %i[button_tag button_to submit submit_tag button primary_action_link].include?(call.method_name) || button_link?(call)
 
         argument = call.first_argument
         label = argument&.str_type? ? argument.value : nil

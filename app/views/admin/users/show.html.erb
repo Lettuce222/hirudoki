@@ -1,20 +1,27 @@
-<% content_for :title, "利用者詳細｜管理画面｜ひるどき" %>
-<%= render "admin/shared/breadcrumbs", current: "利用者詳細", section: "利用者一覧", index_path: admin_users_path %>
-<h1><%= @user.name %></h1>
-<h2>月別請求</h2>
-<%= form_with url: admin_user_path(@user), method: :get, class: "admin-form" do |form| %>
-  <%= form.label :month, "請求月" %>
-  <%= form.month_field :month, value: @month&.strftime("%Y-%m"), required: true %>
-  <%= form.submit "表示", class: "primary" %>
+<%= render layout: "admin/shared/page", locals: { title: @user.name, document_title: "利用者詳細", current: "利用者詳細", section: "利用者一覧", index_path: admin_users_path } do %>
+  <div class="ui-split">
+    <section class="ui-panel">
+      <h2>月別請求</h2>
+      <%= form_with url: admin_user_path(@user), method: :get, class: "ui-form ui-form--filter" do |form| %>
+        <%= form.form_group :month do %>
+          <%= form.label :month, "請求月" %>
+          <%= form.month_field :month, class: "form-input", value: @month&.strftime("%Y-%m"), required: true %>
+        <% end %>
+        <div class="ui-form-actions"><%= form.submit "表示" %></div>
+      <% end %>
+      <% if @month %>
+        <dl>
+          <dt><%= @month.strftime("%Y年%m月") %>の請求額</dt>
+          <dd>税込<%= number_with_delimiter(@monthly_bill) %>円</dd>
+        </dl>
+      <% end %>
+    </section>
+    <section class="ui-panel">
+      <h2>登録情報</h2>
+      <dl>
+        <dt>メールアドレス</dt><dd><%= @user.email %></dd>
+        <dt>電話番号</dt><dd><%= @user.phone %></dd>
+      </dl>
+    </section>
+  </div>
 <% end %>
-<% if @month %>
-  <dl>
-    <dt><%= @month.strftime("%Y年%m月") %>の請求額</dt>
-    <dd>税込<%= number_with_delimiter(@monthly_bill) %>円</dd>
-  </dl>
-<% end %>
-<h2>登録情報</h2>
-<dl>
-  <dt>メールアドレス</dt><dd><%= @user.email %></dd>
-  <dt>電話番号</dt><dd><%= @user.phone %></dd>
-</dl>

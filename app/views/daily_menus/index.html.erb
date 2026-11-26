@@ -1,49 +1,27 @@
-<% content_for :title, "献立｜ひるどき" %>
-<div class="customer-menus">
-  <h1>献立</h1>
-  <%= form_with url: daily_menus_path, method: :get, class: "menu-filters" do |form| %>
-    <div class="menu-filter">
-      <%= form.label :served_on, "提供日" %>
-      <%= form.date_field :served_on, value: @filters[:served_on] %>
-    </div>
-    <div class="menu-filter">
-      <%= form.label :bento_type, "弁当タイプ" %>
-      <%= form.select :bento_type, Bento::BENTO_TYPES, { include_blank: "すべて", selected: @filters[:bento_type] } %>
-    </div>
-    <%= form.submit "絞り込み", class: "secondary" %>
+<%= render layout: "shared/page", locals: { title: "献立" } do %>
+  <%= form_with url: daily_menus_path, method: :get, class: "ui-form ui-form--filter menu-filters" do |form| %>
+    <%= form.date_field :served_on, label: "提供日", value: @filters[:served_on] %>
+    <%= form.select :bento_type, Bento::BENTO_TYPES, { include_blank: "すべて", selected: @filters[:bento_type] }, label: "弁当タイプ" %>
+    <div class="ui-form-actions"><%= form.submit "絞り込み" %></div>
   <% end %>
   <% if @menus.empty? %>
     <p>条件に合う献立はありません。</p>
   <% else %>
-    <div class="customer-table">
-      <table>
-        <caption class="visually-hidden">献立一覧</caption>
-        <thead>
-          <tr>
-            <th scope="col">画像</th>
-            <th scope="col">弁当名</th>
-            <th scope="col" class="menu-date-column">提供日</th>
-            <th scope="col">タイプ</th>
-            <th scope="col">税抜価格</th>
-            <th scope="col">残数</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @menus.each do |menu| %>
-            <tr>
-              <td class="menu-thumbnail"><%= render "photo", bento: menu.bento %></td>
-              <th scope="row">
-                <%= link_to menu.bento.name, daily_menu_path(menu, @filters.to_h) %>
-                <span class="menu-date-compact"><%= menu.served_on %></span>
-              </th>
-              <td class="menu-date-column"><%= menu.served_on %></td>
-              <td><%= menu.bento.bento_type %></td>
-              <td class="menu-quantity"><%= menu.bento.price %>円</td>
-              <td class="menu-quantity"><%= menu.remaining_quantity(ordered: @ordered_by_menu.fetch(menu.id, 0)) %>個</td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+    <% columns = [ "画像", "弁当名", [ "提供日", "menu-date-column" ], "タイプ", "税抜価格", "残数" ] %>
+    <%= render layout: "shared/table", locals: { label: "献立一覧", columns: } do %>
+      <% @menus.each do |menu| %>
+        <tr>
+          <td class="menu-thumbnail"><%= render "photo", bento: menu.bento %></td>
+          <th scope="row">
+            <%= link_to menu.bento.name, daily_menu_path(menu, @filters.to_h) %>
+            <span class="menu-date-compact"><%= menu.served_on %></span>
+          </th>
+          <td class="menu-date-column"><%= menu.served_on %></td>
+          <td><%= menu.bento.bento_type %></td>
+          <td class="menu-quantity"><%= menu.bento.price %>円</td>
+          <td class="menu-quantity"><%= menu.remaining_quantity(ordered: @ordered_by_menu.fetch(menu.id, 0)) %>個</td>
+        </tr>
+      <% end %>
+    <% end %>
   <% end %>
-</div>
+<% end %>

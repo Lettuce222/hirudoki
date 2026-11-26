@@ -1,28 +1,33 @@
-<% content_for :title, "マイページ｜ひるどき" %>
-<% content_for :head do %>
-  <meta name="turbo-cache-control" content="no-cache">
+<%= render layout: "shared/page", locals: { title: "マイページ" } do %>
+  <nav class="ui-links" aria-label="マイページのメニュー">
+    <%= link_to "献立一覧", daily_menus_path %>
+    <%= link_to "定期注文設定", recurring_order_settings_path %>
+  </nav>
+  <div class="ui-split">
+    <section class="ui-panel">
+      <h2>注文履歴</h2>
+      <% if @orders.empty? %>
+        <p>まだ注文はありません。</p>
+      <% else %>
+        <ul class="ui-records">
+          <% @orders.each do |order| %>
+            <li>
+              <strong><%= order.daily_menu.bento.name %></strong>・<%= Order.statuses.fetch(order.status) %><br>
+              <%= order.daily_menu.served_on %> 提供・<%= order.quantity %>個・税込<%= number_with_delimiter(order.total_amount) %>円<br>
+              配達先：<%= order.delivery_area.name %> <%= order.delivery_address %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </section>
+    <section class="ui-panel">
+      <h2>登録情報</h2>
+      <dl>
+        <dt>氏名</dt><dd><%= current_user.name %></dd>
+        <dt>メールアドレス</dt><dd><%= current_user.email %></dd>
+        <dt>電話番号</dt><dd><%= current_user.phone %></dd>
+      </dl>
+      <%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-white" %>
+    </section>
+  </div>
 <% end %>
-<h1>マイページ</h1>
-<p><%= link_to "献立一覧", daily_menus_path %></p>
-<p><%= link_to "定期注文設定", recurring_order_settings_path %></p>
-<h2>注文履歴</h2>
-<% if @orders.empty? %>
-  <p>まだ注文はありません。</p>
-<% else %>
-  <ul>
-    <% @orders.each do |order| %>
-      <li>
-        <strong><%= order.daily_menu.bento.name %></strong>・<%= Order.statuses.fetch(order.status) %><br>
-        <%= order.daily_menu.served_on %> 提供・<%= order.quantity %>個・税込<%= number_with_delimiter(order.total_amount) %>円<br>
-        配達先：<%= order.delivery_area.name %> <%= order.delivery_address %>
-      </li>
-    <% end %>
-  </ul>
-<% end %>
-<h2>登録情報</h2>
-<dl>
-  <dt>氏名</dt><dd><%= current_user.name %></dd>
-  <dt>メールアドレス</dt><dd><%= current_user.email %></dd>
-  <dt>電話番号</dt><dd><%= current_user.phone %></dd>
-</dl>
-<%= button_to "ログアウト", destroy_user_session_path, method: :delete, class: "secondary" %>

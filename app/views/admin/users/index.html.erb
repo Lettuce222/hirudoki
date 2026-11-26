@@ -1,27 +1,15 @@
-<% content_for :title, "利用者一覧｜管理画面｜ひるどき" %>
-<%= render "admin/shared/breadcrumbs", current: "利用者一覧" %>
-<h1>利用者一覧</h1>
-<% if @users.any? %>
-  <div class="admin-table" role="region" aria-label="利用者一覧" tabindex="0">
-    <table>
-      <thead>
+<%= render layout: "admin/shared/page", locals: { title: "利用者一覧" } do %>
+  <% if @users.any? %>
+    <%= render layout: "shared/table", locals: { label: "利用者一覧", columns: [ "氏名", "メールアドレス", "電話番号" ] } do %>
+      <% @users.each do |user| %>
         <tr>
-          <th scope="col">氏名</th>
-          <th scope="col">メールアドレス</th>
-          <th scope="col">電話番号</th>
+          <th scope="row"><%= link_to user.name, admin_user_path(user) %></th>
+          <td><%= user.email %></td>
+          <td><%= user.phone %></td>
         </tr>
-      </thead>
-      <tbody>
-        <% @users.each do |user| %>
-          <tr>
-            <th scope="row"><%= link_to user.name, admin_user_path(user) %></th>
-            <td><%= user.email %></td>
-            <td><%= user.phone %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% else %>
-  <p>利用者はまだ登録されていません。</p>
+      <% end %>
+    <% end %>
+  <% else %>
+    <p>利用者はまだ登録されていません。</p>
+  <% end %>
 <% end %>

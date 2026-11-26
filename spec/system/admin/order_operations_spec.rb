@@ -19,6 +19,7 @@ RSpec.describe "管理者の注文・日別リスト・請求額の確認", type
       click_button "ログイン"
       click_link "注文一覧"
       expect(page).to have_css("h1", text: "注文一覧")
+      expect(page.evaluate_script("document.documentElement.scrollWidth")).to be <= width
       expect(page).to be_axe_clean.according_to(*accessibility_tags)
       click_link "注文 ##{order.id}"
       expect(page).to have_select("注文状態", selected: "注文済")
@@ -43,6 +44,7 @@ RSpec.describe "管理者の注文・日別リスト・請求額の確認", type
       within("nav[aria-label='パンくず']") { click_link "管理画面" }
       click_link "利用者一覧"
       expect(page).to have_css("h1", text: "利用者一覧")
+      expect(page.evaluate_script("document.documentElement.scrollWidth")).to be <= width
       expect(page).to be_axe_clean.according_to(*accessibility_tags)
       click_link order.user.name
       page.execute_script("arguments[0].value = arguments[1]", find_field("請求月"), "2028-02")

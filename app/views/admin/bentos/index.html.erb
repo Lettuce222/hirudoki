@@ -1,33 +1,16 @@
-<% content_for :title, "弁当｜管理画面｜ひるどき" %>
-<%= render "admin/shared/breadcrumbs", current: "弁当" %>
-<div class="admin-list-heading">
-  <h1>弁当</h1>
-  <%= link_to "弁当登録", new_admin_bento_path, class: "primary" %>
-</div>
-<div class="admin-table" role="region" aria-label="弁当一覧" tabindex="0">
-  <table>
-    <thead>
+<% primary_action = primary_action_link("弁当登録", new_admin_bento_path) %>
+<%= render layout: "admin/shared/page", locals: { title: "弁当", primary_action: } do %>
+  <%= render layout: "shared/table", locals: { label: "弁当一覧", columns: [ "画像", "弁当名", "タイプ", "税抜価格", "販売", "操作" ] } do %>
+    <% @bentos.each do |bento| %>
       <tr>
-        <th scope="col">画像</th>
-        <th scope="col">弁当名</th>
-        <th scope="col">タイプ</th>
-        <th scope="col">税抜価格</th>
-        <th scope="col">販売</th>
-        <th scope="col">操作</th>
+        <td><% if bento.image.attached? %><%= image_tag bento.image, class: "bento-thumbnail", alt: "" %><% else %><span class="bento-thumbnail bento-image-placeholder" role="img" aria-label="画像なし">—</span><% end %></td>
+        <td><%= bento.name %></td>
+        <td><%= bento.bento_type %></td>
+        <td><%= number_with_delimiter(bento.price) %>円</td>
+        <td><%= bento.on_sale? ? "販売中" : "非販売" %></td>
+        <td><%= link_to "編集", edit_admin_bento_path(bento), aria: { label: "#{bento.name}の編集" } %></td>
       </tr>
-    </thead>
-    <tbody>
-      <% @bentos.each do |bento| %>
-        <tr>
-          <td><% if bento.image.attached? %><%= image_tag bento.image, class: "bento-thumbnail", alt: "" %><% else %><span class="bento-thumbnail bento-image-placeholder" role="img" aria-label="画像なし">—</span><% end %></td>
-          <td><%= bento.name %></td>
-          <td><%= bento.bento_type %></td>
-          <td><%= number_with_delimiter(bento.price) %>円</td>
-          <td><%= bento.on_sale? ? "販売中" : "非販売" %></td>
-          <td><%= link_to "編集", edit_admin_bento_path(bento), aria: { label: "#{bento.name}の編集" } %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-<% if @bentos.empty? %><p>弁当はまだ登録されていません。</p><% end %>
+    <% end %>
+  <% end %>
+  <% if @bentos.empty? %><p>弁当はまだ登録されていません。</p><% end %>
+<% end %>

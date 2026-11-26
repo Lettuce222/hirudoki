@@ -1,0 +1,12 @@
+<%# locals: (items:) %>
+<nav class="ui-breadcrumbs" aria-label="パンくず">
+  <ol>
+    <% items.each do |label, path| %>
+      <% if path %>
+        <li><%= link_to label, path %></li>
+      <% else %>
+        <li aria-current="page"><%= label %></li>
+      <% end %>
+    <% end %>
+  </ol>
+</nav>

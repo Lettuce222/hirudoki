@@ -1,15 +1,13 @@
 <% title = @setting.persisted? ? "定期注文設定の編集" : "定期注文設定の登録" %>
-<%= render layout: "shared/customer_page", locals: { title:, back: [ "定期注文設定一覧", recurring_order_settings_path ], width: :form } do %>
-  <%= render "shared/customer_form_errors", record: @setting %>
-  <%= form_with model: @setting, class: "customer-form" do |form| %>
+<%= render layout: "shared/page", locals: { title:, navigation: link_to("定期注文設定一覧", recurring_order_settings_path), width: :form } do %>
+  <%= render "shared/form_errors", record: @setting %>
+  <%= form_with model: @setting, class: "ui-form" do |form| %>
     <%= form.select :weekday, weekday_options, { prompt: "曜日を選択" }, label: "曜日", required: true %>
     <%= form.select :bento_type, Bento::BENTO_TYPES, { prompt: "タイプを選択" }, label: "弁当タイプ", required: true %>
     <%= form.select :quantity, 1..Order::DAILY_LIMIT, {}, label: "個数", required: true %>
     <%= form.select :delivery_area_id, delivery_area_options(@areas), { prompt: "配達エリアを選択" }, label: "配達エリア", required: true %>
-    <div class="customer-form-wide">
-      <%= form.text_field :delivery_address, label: "配達先住所", required: true, autocomplete: "street-address" %>
-    </div>
+    <%= form.text_field :delivery_address, label: "配達先住所", required: true, autocomplete: "street-address", wrapper: { class: "ui-form-wide" } %>
     <%= form.select :active, [ [ "有効", true ], [ "無効", false ] ], {}, label: "設定の状態" %>
-    <div class="customer-form-actions"><%= form.submit "保存" %></div>
+    <div class="ui-form-actions"><%= form.submit "保存" %></div>
   <% end %>
 <% end %>

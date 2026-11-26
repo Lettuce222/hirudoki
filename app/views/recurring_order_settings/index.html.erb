@@ -1,7 +1,7 @@
-<% primary_action = customer_primary_link("定期設定登録", new_recurring_order_setting_path) %>
-<%= render layout: "shared/customer_page", locals: { title: "定期注文設定", back: [ "マイページ", profile_path ], primary_action: } do %>
+<% primary_action = primary_action_link("定期設定登録", new_recurring_order_setting_path) %>
+<%= render layout: "shared/page", locals: { title: "定期注文設定", navigation: link_to("マイページ", profile_path), primary_action: } do %>
   <% if @settings.any? %>
-    <%= render layout: "shared/customer_table", locals: { label: "定期注文設定一覧", columns: [ "曜日", "弁当タイプ", "個数", "配達先", "状態" ] } do %>
+    <%= render layout: "shared/table", locals: { label: "定期注文設定一覧", columns: [ "曜日", "弁当タイプ", "個数", "配達先", "状態" ] } do %>
       <% @settings.each do |setting| %>
         <% weekday = weekday_name(setting.weekday) %>
         <tr>
@@ -10,8 +10,8 @@
           </th>
           <td><%= setting.bento_type %></td>
           <td><%= setting.quantity %>個</td>
-          <td class="customer-table-address"><strong><%= setting.delivery_area.name %></strong><br><%= setting.delivery_address %></td>
-          <td><span class="customer-status <%= "customer-status--active" if setting.active? %>"><%= setting.active? ? "有効" : "無効" %></span></td>
+          <td class="ui-address"><strong><%= setting.delivery_area.name %></strong><br><%= setting.delivery_address %></td>
+          <td><span class="ui-status <%= "ui-status--active" if setting.active? %>"><%= setting.active? ? "有効" : "無効" %></span></td>
         </tr>
       <% end %>
     <% end %>

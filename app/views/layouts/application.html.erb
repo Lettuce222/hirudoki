@@ -9,6 +9,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <% if response.cache_control[:no_store] %>
+      <meta name="turbo-cache-control" content="no-cache">
+    <% end %>
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
@@ -23,7 +26,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="<%= content_for(:body_class) %>">
+  <body>
     <header class="site-header">
       <% if controller_path.start_with?("admin/") %>
         <%= link_to "ひるどき　管理画面", admin_root_path %>
