@@ -15,6 +15,7 @@ class DailyMenusController < ApplicationController
   def show
     @filters = filter_params
     @menu = DailyMenu.on_sale.find(params[:id])
+    @reviews = @menu.reviews.desc_by_created_at
   end
 
   private

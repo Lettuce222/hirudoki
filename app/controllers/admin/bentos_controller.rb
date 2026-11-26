@@ -1,5 +1,6 @@
 class Admin::BentosController < Admin::BaseController
   before_action :set_bento, only: %i[edit update destroy]
+  before_action :set_registered_image, only: %i[edit update]
 
   def index
     @bentos = paginate(Bento.with_attached_image.asc_by_display_order)
@@ -52,6 +53,9 @@ class Admin::BentosController < Admin::BaseController
 
   def set_bento
     @bento = Bento.find(params[:id])
+  end
+
+  def set_registered_image
     @registered_image = @bento.image.blob
   end
 

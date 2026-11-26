@@ -1,6 +1,6 @@
 class Admin::DailyMenusController < Admin::BaseController
   before_action :set_daily_menu, only: %i[edit update destroy]
-  before_action :load_bentos, only: %i[new create edit update]
+  before_action :set_bentos, only: %i[new create edit update]
 
   def index
     @daily_menus = paginate(DailyMenu.includes(:bento).desc_by_served_on)
@@ -61,7 +61,7 @@ class Admin::DailyMenusController < Admin::BaseController
     @daily_menu = DailyMenu.find(params[:id])
   end
 
-  def load_bentos
+  def set_bentos
     @bentos = Bento.asc_by_display_order.to_a
   end
 

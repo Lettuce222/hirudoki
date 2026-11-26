@@ -33,7 +33,6 @@
 }
 
 .ui-table a.menu-order-action {
-  min-height: 2.75rem;
   color: var(--action-color);
   text-decoration: none;
 }
@@ -51,4 +50,17 @@
 
 @media (max-width: 360px) {
   .ui-table:has(.menu-order-cell) :is(th, td) { padding-inline: .25rem; }
+}
+
+.review-layout { grid-template-areas: "input menu" "existing existing"; }
+.review-input { grid-area: input; }
+.review-menu { grid-area: menu; display: grid; align-content: start; gap: .75rem; }
+.review-menu .menu-facts h2 { margin: 0 0 .25rem; }
+.review-menu .menu-facts p, .review-menu .menu-description { margin: 0; }
+.review-existing { grid-area: existing; }
+
+@media (max-width: 720px) {
+  .review-layout { grid-template-areas: "menu" "input" "existing"; }
+  .review-menu { grid-template-columns: minmax(0, 7rem) minmax(0, 1fr); align-items: start; }
+  .review-menu .menu-description { grid-column: 1 / -1; }
 }

@@ -1,0 +1,9 @@
+<%# locals: (menu:, remaining:, show_name: false) %>
+<div class="menu-facts">
+  <% if show_name %><h2><%= menu.bento.name %></h2><% end %>
+  <p><%= menu.served_on %>・<%= menu.bento.bento_type %></p>
+  <p><strong><%= menu.bento.price %>円（税抜）</strong>　残り<%= remaining %>個</p>
+</div>
+<% if menu.bento.description.present? %>
+  <p class="menu-description"><%= menu.bento.description %></p>
+<% end %>

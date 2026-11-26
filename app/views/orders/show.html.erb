@@ -1,0 +1,31 @@
+<% navigation = render "shared/breadcrumbs", items: [ [ "マイページ", profile_path ], [ "注文詳細" ] ] %>
+<%= render layout: "shared/page", locals: { title: "注文詳細", navigation:, width: :form } do %>
+  <section class="ui-panel">
+    <h2><%= @order.daily_menu.bento.name %></h2>
+    <dl class="order-details">
+      <div><dt>提供日</dt><dd><%= @order.daily_menu.served_on.iso8601 %></dd></div>
+      <div><dt>状態</dt><dd><%= Order.statuses.fetch(@order.status) %></dd></div>
+      <div><dt>個数</dt><dd><%= @order.quantity %>個</dd></div>
+      <div><dt>合計</dt><dd>税込<%= number_with_delimiter(@order.total_amount) %>円</dd></div>
+      <div class="order-details-wide"><dt>配達先</dt><dd><%= @order.delivery_area.name %> <%= @order.delivery_address %></dd></div>
+      <div class="order-details-wide"><dt>注文区分</dt><dd><%= @order.recurring? ? "定期" : "手動" %></dd></div>
+    </dl>
+    <% if @order.changeable? %>
+      <p>個数変更・キャンセルは<%= DailyMenu.order_cutoff_at(@order.daily_menu.served_on).strftime("%Y-%m-%d %H:%M") %>より前に受け付けます。</p>
+      <div class="ui-links">
+        <%= primary_action_link "個数変更", edit_order_path(@order) %>
+        <%= button_to "注文キャンセル", order_cancellation_path(@order), class: "btn btn-white",
+          form: { data: { turbo_confirm: "この注文をキャンセルしますか？" } } %>
+      </div>
+    <% elsif @order.ordered? %>
+      <p>個数変更とキャンセルの受付は終了しました。</p>
+    <% elsif @order.reviewable? %>
+      <p><%= primary_action_link "評価投稿", new_order_review_path(@order) %></p>
+    <% elsif @order.review %>
+      <p>評価済み（<%= @order.review.rating %>点）</p>
+    <% end %>
+    <% if @order.received? && @order.daily_menu.bento.on_sale? %>
+      <p><%= link_to "献立の評価を見る", daily_menu_path(@order.daily_menu, anchor: "reviews") %></p>
+    <% end %>
+  </section>
+<% end %>
