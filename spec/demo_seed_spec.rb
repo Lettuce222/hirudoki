@@ -31,7 +31,25 @@ RSpec.describe "動作確認用のシード" do
     expect(user.valid_password?("hirudoki-local-user")).to be(true)
     expect(user.recurring_order_settings.active.asc_by_weekday.pluck(:weekday)).to eq([ 1, 2, 3, 4, 5 ])
     expect(DailyMenu.count).to eq(days.count * Bento::BENTO_TYPES.size)
-    expect(Bento.find_by!(name: "焼き鮭のり弁当").image).to be_attached
+    expect(Bento.with_attached_image.all).to all(have_attributes(image: be_attached))
+  end
+
+  context "確認用の弁当が既にある場合" do
+    let(:existing_image) { Rails.root.join("app/assets/images/salmon-bento.jpg").binread }
+    let(:bento_with_image) { create(:bento, name: "デミグラスハンバーグ弁当", bento_type: "洋食") }
+    let!(:bento_without_image) { create(:bento, name: "麻婆茄子弁当", bento_type: "中華") }
+
+    before do
+      bento_with_image.image.attach(io: StringIO.new(existing_image), filename: "existing.jpg", content_type: "image/jpeg")
+    end
+
+    it "既にある写真を使い続け、写真のない弁当に確認用写真を添付する" do
+      2.times { load Rails.root.join("db/seeds/demo.rb") }
+
+      expect(bento_with_image.reload.image.filename.to_s).to eq("existing.jpg")
+      expect(bento_with_image.image.download).to eq(existing_image)
+      expect(bento_without_image.reload.image.filename.to_s).to eq("mapo-eggplant.jpg")
+    end
   end
 
   context "既存のアカウントやデータと重なる場合" do
