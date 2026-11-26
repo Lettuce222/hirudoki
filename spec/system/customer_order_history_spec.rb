@@ -74,9 +74,18 @@ RSpec.describe "利用者の注文履歴と評価", type: :system do
       earlier_order.create_review!(rating: 4, comment: "また注文したいです。")
       page.current_window.resize_to(width, height)
       visit profile_path
+      read_columns = <<~JS
+        (() => {
+          const grid = getComputedStyle(document.querySelector(".ui-split"));
+          return [grid.gridTemplateColumns, grid.columnGap];
+        })()
+      JS
+      profile_columns = page.evaluate_script(read_columns)
+
       click_link menu.bento.name, href: order_path(order)
       click_link "評価投稿"
       expect(page).to have_css(".review-menu img[alt='日替わり弁当']")
+      expect(page.evaluate_script(read_columns)).to eq(profile_columns)
       expect(page).to have_text("だし巻き卵を添えたのり弁当です。")
       expect(page).to have_text("#{served_on}・和食")
       expect(page).to have_text("650円（税抜）")
