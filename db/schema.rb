@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_25_000200) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_211000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -115,6 +115,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_000200) do
     t.index ["user_id"], name: "index_registration_invitations_on_user_id", unique: true
   end
 
+  create_table "reviews", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.integer "rating", null: false, comment: "利用者が受取済み注文に付けた1から5の評価"
+    t.text "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_reviews_on_order_id", unique: true
+    t.check_constraint "rating >= 1 AND rating <= 5", name: "reviews_rating_range"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false, comment: "利用者ログイン用のメールアドレス。利用者内で一意"
@@ -132,4 +142,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_000200) do
   add_foreign_key "orders", "delivery_areas"
   add_foreign_key "orders", "users"
   add_foreign_key "registration_invitations", "users"
+  add_foreign_key "reviews", "orders"
 end

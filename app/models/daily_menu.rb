@@ -3,6 +3,7 @@ class DailyMenu < ApplicationRecord
 
   belongs_to :bento
   has_many :orders, dependent: :restrict_with_error
+  has_many :reviews, through: :orders
 
   scope :with_bento_type, ->(bento_type) { joins(:bento).where(bentos: { bento_type: }) }
 
@@ -29,7 +30,15 @@ class DailyMenu < ApplicationRecord
 
   def accepting_orders?
     today = Date.current
-    served_on.between?(today, today + 14) && Time.current < served_on.in_time_zone.change(hour: 10)
+    served_on.between?(today, today + 14) && before_order_cutoff?
+  end
+
+  def before_order_cutoff?
+    Time.current < served_on.in_time_zone.change(hour: 10)
+  end
+
+  def average_rating
+    reviews.average(:rating)
   end
 
   def remaining_quantity(ordered: orders.not_cancelled.sum(:quantity))
