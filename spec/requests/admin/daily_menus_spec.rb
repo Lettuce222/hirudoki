@@ -39,5 +39,7 @@ RSpec.describe Admin::DailyMenusController, type: :request do
 
     expect { delete admin_daily_menu_path(menu) }.not_to change(DailyMenu, :count)
     expect(response).to redirect_to(admin_daily_menus_path)
+    follow_redirect!
+    expect(response.body).to include("注文履歴があるため削除できません。", "注文一覧で提供日と弁当名を確認してください。")
   end
 end

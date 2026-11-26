@@ -31,7 +31,7 @@ RSpec.describe Admin::BentosController, type: :request do
       expect { delete admin_bento_path(bento) }.not_to change(Bento, :count)
       expect(response).to redirect_to(admin_bentos_path)
       follow_redirect!
-      expect(response.body).to include("削除できません")
+      expect(response.body).to include("日別献立で使われているため、この弁当は削除できません。", "「販売中」のチェックを外してください。")
     end
 
     it "キャンセル済み注文の献立が参照する弁当は削除できない" do
@@ -48,6 +48,17 @@ RSpec.describe Admin::BentosController, type: :request do
       unreferenced_bento = create(:bento)
 
       expect { delete admin_bento_path(unreferenced_bento) }.to change(Bento, :count).by(-1)
+    end
+
+    it "削除できなかった理由が不明な場合は弁当を削除できなかった旨を表示する" do
+      allow(Bento).to receive(:find).with(bento.id.to_s).and_return(bento)
+      allow(bento).to receive(:destroy).and_return(false)
+
+      delete admin_bento_path(bento)
+
+      expect(response).to redirect_to(admin_bentos_path)
+      follow_redirect!
+      expect(response.body).to include("弁当を削除できませんでした。")
     end
 
     it "画像以外の添付を拒否し、登録済みの弁当画像を保持する" do

@@ -7,6 +7,23 @@ ja:
       not_an_integer: "は整数で入力してください"
       required: "を選択してください"
   activerecord:
+    errors:
+      models:
+        bento:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                has_many: "%{record}で使われているため、この弁当は削除できません。販売を終了するには、弁当の編集画面で「販売中」のチェックを外してください。"
+        daily_menu:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                has_many: "この日別献立には%{record}があるため削除できません。注文一覧で提供日と弁当名を確認してください。"
+        delivery_area:
+          attributes:
+            base:
+              restrict_dependent_destroy:
+                has_many: "%{record}に使われているため、この配達エリアは削除できません。受付を終了するには、配達エリアの編集画面で「有効」のチェックを外してください。"
     attributes:
       bento:
         name: 弁当名
@@ -15,11 +32,15 @@ ja:
         display_order: 表示順
         image: 弁当画像
         on_sale: 販売状態
+        daily_menus: 日別献立
       daily_menu:
         served_on: 提供日
         bento: 弁当
         capacity: 提供数上限
+        orders: 注文履歴
       delivery_area:
         name: エリア名
         postal_code: 郵便番号
         active: 有効状態
+        orders: 注文履歴
+        recurring_order_settings: 定期注文設定
