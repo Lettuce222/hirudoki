@@ -1,7 +1,7 @@
 <% content_for :title, "製造・配達リスト｜管理画面｜ひるどき" %>
 <%= render "admin/shared/breadcrumbs", current: "製造・配達リスト" %>
 <h1>製造・配達リスト</h1>
-<%= form_with url: admin_daily_report_path, method: :get, class: "admin-form" do |form| %>
+<%= form_with url: admin_production_and_delivery_list_path, method: :get, class: "admin-form" do |form| %>
   <%= form.label :served_on, "提供日" %>
   <%= form.date_field :served_on, value: @served_on, required: true %>
   <%= form.submit "表示", class: "primary" %>

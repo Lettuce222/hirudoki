@@ -2,13 +2,13 @@ class Admin::OrdersController < Admin::BaseController
   before_action :set_order, only: %i[show update]
 
   def index
-    @orders = Order.for_administration
+    @orders = Order.desc_by_created_at.preload(:user, daily_menu: :bento)
   end
 
   def show; end
 
   def update
-    if @order.change_status_by_administrator(order_params[:status])
+    if @order.change_status(order_params[:status])
       redirect_to admin_order_path(@order), notice: "注文状態を保存しました。", status: :see_other
     else
       render :show, status: :unprocessable_content
@@ -18,7 +18,7 @@ class Admin::OrdersController < Admin::BaseController
   private
 
   def set_order
-    @order = Order.for_administration.find(params[:id])
+    @order = Order.find(params.expect(:id))
   end
 
   def order_params

@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Admin::DailyReportsController, type: :request do
+RSpec.describe Admin::ProductionAndDeliveryListsController, type: :request do
   include Devise::Test::IntegrationHelpers
 
   let(:served_on) { Date.new(2028, 2, 29) }
@@ -9,7 +9,7 @@ RSpec.describe Admin::DailyReportsController, type: :request do
     before { sign_in create(:user) }
 
     it "配達先を見られない" do
-      get admin_daily_report_path
+      get admin_production_and_delivery_list_path
 
       expect(response).to redirect_to(new_administrator_session_path)
     end
@@ -28,7 +28,7 @@ RSpec.describe Admin::DailyReportsController, type: :request do
         create(:order, daily_menu: menu, quantity: 2)
       end
 
-      get admin_daily_report_path(served_on:)
+      get admin_production_and_delivery_list_path(served_on:)
 
       page = Nokogiri::HTML(response.body)
       expect(page.at_css("[aria-label='製造リスト']").text).to include(menu.bento.name, "3個")
@@ -39,14 +39,20 @@ RSpec.describe Admin::DailyReportsController, type: :request do
     end
 
     it "指定日の製造と配達が0件であることを表示する" do
-      get admin_daily_report_path(served_on:)
+      get admin_production_and_delivery_list_path(served_on:)
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("製造する弁当はありません。", "配達する注文はありません。")
     end
 
+    it "日付の代わりに配列が送られた場合は不正なリクエストとして扱う" do
+      get admin_production_and_delivery_list_path(served_on: [ served_on.iso8601 ])
+
+      expect(response).to have_http_status(:bad_request)
+    end
+
     it "不正な日付の場合は入力し直せる" do
-      get admin_daily_report_path(served_on: "2028-02-30")
+      get admin_production_and_delivery_list_path(served_on: "2028-02-30")
 
       expect(response).to have_http_status(:unprocessable_content)
       expect(response.body).to include("有効な提供日を指定してください。")

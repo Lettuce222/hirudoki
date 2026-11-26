@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboards#show"
     resources :orders, only: %i[index show update]
-    resource :daily_report, only: :show
+    resource :production_and_delivery_list, only: :show
     resources :users, only: %i[index show]
     resources :bentos, :delivery_areas, :daily_menus, except: :show
   end

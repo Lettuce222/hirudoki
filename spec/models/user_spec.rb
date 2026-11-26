@@ -12,10 +12,10 @@ RSpec.describe User, type: :model do
 
   it "注文日ではなく提供月で利用者の保存済み合計を請求する" do
     cancelled = create(:order, user:, daily_menu: menu)
-    cancelled.change_status_by_administrator(:cancelled)
+    cancelled.change_status(:cancelled)
     create(:order, user:, daily_menu: menu)
     received = create(:order, user:, daily_menu: other_menu, quantity: 2)
-    received.change_status_by_administrator(:received)
+    received.change_status(:received)
     create(:order, daily_menu: menu)
     next_menu = create(:daily_menu, served_on: served_on.next_day)
     next_month_order = create(:order, user:, daily_menu: next_menu)

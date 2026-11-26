@@ -4,8 +4,8 @@ class Admin::UsersController < Admin::BaseController
   end
 
   def show
-    @user = User.find(params[:id])
-    @month = params[:month].present? ? Date.iso8601("#{params[:month]}-01") : Date.current.beginning_of_month
+    @user = User.find(params.expect(:id))
+    @month = params.key?(:month) ? Date.iso8601("#{params.expect(:month)}-01") : Date.current.beginning_of_month
     @monthly_bill = @user.monthly_bill(@month)
   rescue Date::Error
     flash.now[:alert] = "有効な請求月を指定してください。"

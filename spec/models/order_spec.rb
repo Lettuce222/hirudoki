@@ -270,33 +270,33 @@ RSpec.describe Order, type: :model do
       order = create(:order, daily_menu: menu, user:, quantity: 2)
       travel(1.day + 1.hour)
 
-      expect(order.change_status_by_administrator(:received)).to be(true)
+      expect(order.change_status(:received)).to be(true)
       expect(order.reload).to be_received
       expect(menu.remaining_quantity).to eq(3)
 
-      expect(order.change_status_by_administrator(:cancelled)).to be(true)
+      expect(order.change_status(:cancelled)).to be(true)
       expect(order.reload).to be_cancelled
       expect(menu.remaining_quantity).to eq(5)
     end
 
     it "管理者がキャンセル済み注文を戻しても残数と同日上限を超えない" do
       order = create(:order, daily_menu: menu, user:, quantity: 3)
-      order.change_status_by_administrator(:cancelled)
+      order.change_status(:cancelled)
       replacement = create(:order, daily_menu: menu, user:, quantity: 3)
 
-      expect(order.change_status_by_administrator(:ordered)).to be(false)
+      expect(order.change_status(:ordered)).to be(false)
       expect(order.errors[:base]).to include("残数が足りません。", "同じ提供日には合計3個まで注文できます。")
       expect(Order.find(order.id)).to be_cancelled
 
-      replacement.change_status_by_administrator(:cancelled)
-      expect(order.change_status_by_administrator(:ordered)).to be(true)
+      replacement.change_status(:cancelled)
+      expect(order.change_status(:ordered)).to be(true)
       expect(order.reload).to be_ordered
     end
 
     it "管理者が未知の状態を指定しても現在の状態が保たれる" do
       order = create(:order, daily_menu: menu)
 
-      expect(order.change_status_by_administrator("無効な状態")).to be(false)
+      expect(order.change_status("無効な状態")).to be(false)
       expect(order.errors[:status]).to be_present
       expect(order.reload).to be_ordered
     end
@@ -304,9 +304,9 @@ RSpec.describe Order, type: :model do
     it "指定日の製造数を弁当ごとに合計し、配達にはキャンセル以外の各注文を載せる" do
       first = create(:order, daily_menu: menu, quantity: 2)
       second = create(:order, daily_menu: menu, quantity: 1)
-      second.change_status_by_administrator(:received)
+      second.change_status(:received)
       cancelled = create(:order, daily_menu: menu, quantity: 1)
-      cancelled.change_status_by_administrator(:cancelled)
+      cancelled.change_status(:cancelled)
       other = create(:order, daily_menu: other_menu, quantity: 2)
       tomorrow = served_on.next_day
       create(:order, daily_menu: create(:daily_menu, served_on: tomorrow))

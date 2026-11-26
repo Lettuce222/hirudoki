@@ -47,6 +47,12 @@ RSpec.describe Admin::UsersController, type: :request do
       expect(response.body).to include("2028年02月の請求額", "税込0円")
     end
 
+    it "請求月の代わりにオブジェクトが送られた場合は不正なリクエストとして扱う" do
+      get admin_user_path(create(:user), month: { value: "2028-02" })
+
+      expect(response).to have_http_status(:bad_request)
+    end
+
     it "不正な月の場合は入力し直せる" do
       get admin_user_path(create(:user), month: "2028-13")
 

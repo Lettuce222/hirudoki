@@ -16,8 +16,6 @@ class Order < ApplicationRecord
   validates :quantity, numericality: { only_integer: true, in: 1..DAILY_LIMIT }
   validate :order_availability, on: :create
 
-  scope :for_administration, -> { includes(:user, :delivery_area, daily_menu: :bento).desc_by_created_at }
-
   def self.production_quantities(date)
     not_cancelled.served_on(date).joins(daily_menu: :bento)
       .group("bentos.id", "bentos.name").order("bentos.name", "bentos.id").sum(:quantity)
@@ -81,7 +79,7 @@ class Order < ApplicationRecord
     false
   end
 
-  def change_status_by_administrator(new_status)
+  def change_status(new_status)
     with_order_change_lock do
       errors.clear
       unless Order.statuses.key?(new_status)

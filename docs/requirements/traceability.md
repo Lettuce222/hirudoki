@@ -181,7 +181,7 @@ PDFの仕様から実装担当チケットを探し、期待する振る舞い�
 | F-005（注文後の残数）・F-007〜012・D-006（残数算出）・D-007（手動注文）・B-001〜002（手動注文）・B-004〜006・B-020〜028（手動） | spec/models/order_spec.rb、spec/requests/orders_spec.rb、spec/system/manual_orders_spec.rbと [CI全4件](https://github.com/Lettuce222/hirudoki/actions/runs/45604797262)。税込額、締切、競合、直近住所、マイページへの反映を検証 | [Renderデプロイ](https://dashboard.render.com/web/srv-dbtcth0ae00c73acmsm0/deploys/dep-dc3cdfk9v7es73ftuc80)後、テスト利用者が1個を注文し、マイページに注文済・税込702円・指定の配達先が表示された。献立一覧と詳細の残数は12個から11個に減った。定期注文との合算はLET-39、注文の変更とキャンセルはLET-36で確認 | 2026-11-25 / 1e7b285 | [LET-32]・[LET-33]・[LET-34] |
 | B-031〜033（注文参照時） | `spec/requests/admin/bentos_spec.rb`、`spec/requests/admin/daily_menus_spec.rb`、`spec/requests/admin/delivery_areas_spec.rb`。キャンセル済み注文だけが残る場合も弁当・献立・配達エリアの削除を拒否する。分割後の全RSpecは129件成功 | 注文参照時の削除制限は本番未確認 | 2026-11-25 / LET-34 | [LET-34] |
 | F-030・B-030（状態変更） | `spec/requests/admin/orders_spec.rb`、`spec/models/order_spec.rb`、`spec/system/admin/order_operations_spec.rb`。一覧・詳細、認可、締切後のキャンセル、残数と評価可否の更新を確認 | 本番未確認。定期注文の表示確認はLET-39の反映後 | 2026-11-26 / PR #29 | [LET-41] |
-| F-031〜033 | `spec/requests/admin/daily_reports_spec.rb`、`spec/models/order_spec.rb`、`spec/system/admin/order_operations_spec.rb`。提供日別の製造数と配達先、キャンセル除外、0件の日を確認 | 本番未確認 | 2026-11-26 / PR #29 | [LET-42] |
+| F-031〜033 | `spec/requests/admin/production_and_delivery_lists_spec.rb`、`spec/models/order_spec.rb`、`spec/system/admin/order_operations_spec.rb`。提供日別の製造数と配達先、キャンセル除外、0件の日を確認 | 本番未確認 | 2026-11-26 / PR #29 | [LET-42] |
 | F-034〜035・B-029〜030（請求） | `spec/requests/admin/users_spec.rb`、`spec/models/user_spec.rb`、`spec/system/admin/order_operations_spec.rb`。一覧・詳細、提供月ごとの保存済み金額の合算、締切後のキャンセル除外を確認 | 本番未確認 | 2026-11-26 / PR #29 | [LET-43] |
 
 ## チケット索引
