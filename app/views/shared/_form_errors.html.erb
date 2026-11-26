@@ -1,0 +1,10 @@
+<%# locals: (record:) %>
+<% if record.errors.any? %>
+  <div class="ui-form-errors" role="alert">
+    <ul>
+      <% record.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

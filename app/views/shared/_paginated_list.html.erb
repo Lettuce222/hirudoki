@@ -1,0 +1,20 @@
+<%# locals: (pagination:) %>
+<p class="ui-list-count">
+  <% if pagination.total_count.positive? %>
+    <%= pagination.first_item %>〜<%= pagination.last_item %>件 / 全<%= pagination.total_count %>件
+  <% else %>
+    全0件
+  <% end %>
+</p>
+<%= yield %>
+<% if pagination.total_pages > 1 %>
+  <nav class="ui-pagination" aria-label="ページ送り">
+    <% if pagination.page > 1 %>
+      <%= link_to "前へ", pagination_path(pagination, pagination.page - 1), class: "btn btn-white", rel: "prev" %>
+    <% end %>
+    <span aria-current="page"><%= pagination.page %> / <%= pagination.total_pages %> ページ</span>
+    <% if pagination.page < pagination.total_pages %>
+      <%= link_to "次へ", pagination_path(pagination, pagination.page + 1), class: "btn btn-white", rel: "next" %>
+    <% end %>
+  </nav>
+<% end %>

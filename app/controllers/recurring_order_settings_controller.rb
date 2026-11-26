@@ -1,12 +1,10 @@
 class RecurringOrderSettingsController < ApplicationController
-  default_form_builder Railsui::FormBuilder
-
   before_action :no_store
   before_action :require_user
   before_action :load_setting, only: %i[edit update]
 
   def index
-    @settings = current_user.recurring_order_settings.asc_by_weekday.preload(:delivery_area)
+    @settings = paginate(current_user.recurring_order_settings.asc_by_weekday.preload(:delivery_area))
   end
 
   def new

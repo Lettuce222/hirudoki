@@ -3,7 +3,7 @@ class Admin::DailyMenusController < Admin::BaseController
   before_action :load_bentos, only: %i[new create edit update]
 
   def index
-    @daily_menus = DailyMenu.includes(:bento).desc_by_served_on
+    @daily_menus = paginate(DailyMenu.includes(:bento).desc_by_served_on)
   end
 
   def new

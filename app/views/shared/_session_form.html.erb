@@ -1,7 +1,5 @@
-<%= form_with model: resource, url: session_path(resource_name) do |form| %>
-  <%= form.label :email, "メールアドレス" %>
-  <%= form.email_field :email, required: true, autocomplete: "username" %>
-  <%= form.label :password, "パスワード" %>
-  <%= form.password_field :password, required: true, autocomplete: "current-password" %>
-  <%= form.submit "ログイン", class: "primary" %>
+<%= form_with model: resource, url: session_path(resource_name), class: "ui-form ui-form--stacked" do |form| %>
+  <%= form.email_field :email, label: "メールアドレス", required: true, autocomplete: "username" %>
+  <%= form.password_field :password, label: "パスワード", required: true, autocomplete: "current-password" %>
+  <div class="ui-form-actions"><%= form.submit "ログイン" %></div>
 <% end %>

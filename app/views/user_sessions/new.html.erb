@@ -1,4 +1,4 @@
-<% content_for :title, "ログイン｜ひるどき" %>
-<h1>ログイン</h1>
-<p>登録したメールアドレスとパスワードを入力してください。</p>
-<%= render "shared/session_form", resource: resource, resource_name: resource_name %>
+<%= render layout: "shared/page", locals: { title: "ログイン", width: :narrow } do %>
+  <p>登録したメールアドレスとパスワードを入力してください。</p>
+  <%= render "shared/session_form", resource: resource, resource_name: resource_name %>
+<% end %>

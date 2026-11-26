@@ -1,4 +1,4 @@
-<% content_for :title, "管理者ログイン｜ひるどき" %>
-<h1>管理者ログイン</h1>
-<p>管理者のメールアドレスとパスワードを入力してください。</p>
-<%= render "shared/session_form", resource: resource, resource_name: resource_name %>
+<%= render layout: "shared/page", locals: { title: "管理者ログイン", width: :narrow } do %>
+  <p>管理者のメールアドレスとパスワードを入力してください。</p>
+  <%= render "shared/session_form", resource: resource, resource_name: resource_name %>
+<% end %>

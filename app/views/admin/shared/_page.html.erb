@@ -1,0 +1,7 @@
+<%# locals: (title:, width: :wide, current: title, section: nil, index_path: nil, primary_action: nil, document_title: title) %>
+<% items = [ [ "管理画面", admin_root_path ], [ section, index_path ], [ current ] ] %>
+<% navigation = render("shared/breadcrumbs", items: items.select { |label, _| label.present? }) if current %>
+<% title_suffix = current ? "管理画面｜ひるどき" : "ひるどき" %>
+<%= render layout: "shared/page", locals: { title:, width:, navigation:, primary_action:, document_title:, title_suffix: } do %>
+  <%= yield %>
+<% end %>

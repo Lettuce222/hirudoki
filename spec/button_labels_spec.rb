@@ -5,7 +5,7 @@ require "rubocop"
 
 RSpec.describe "ボタンの文言" do
   # 新しい操作を追加するときに、その名詞形をここでレビューする。
-  let(:labels) { %w[利用者登録 確認メール送信 登録 保存 確認メール再送 ログイン ログアウト 表示 絞り込み 献立登録 弁当登録 配達エリア登録 削除 注文手続き 注文確定 定期設定登録 定期注文生成] }
+  let(:labels) { %w[利用者登録 確認メール送信 登録 保存 確認メール再送 ログイン ログアウト 表示 絞り込み 献立登録 弁当登録 配達エリア登録 削除 注文手続き 注文確定 定期設定登録 定期注文生成 献立一覧 定期注文設定 前へ 次へ] }
   let(:root) { Pathname.new(__dir__).parent }
 
   it "ビューのHTMLボタンには承認した名詞を表示する" do
@@ -25,7 +25,7 @@ RSpec.describe "ボタンの文言" do
       source = RuboCop::ProcessedSource.new(ruby, RUBY_VERSION.to_f)
       expect(source.valid_syntax?).to be(true), file.to_s
       source.ast&.each_node(:send) do |call|
-        next unless %i[button_tag button_to submit submit_tag button customer_primary_link].include?(call.method_name) || button_link?(call)
+        next unless %i[button_tag button_to submit submit_tag button primary_action_link].include?(call.method_name) || button_link?(call)
 
         argument = call.first_argument
         label = argument&.str_type? ? argument.value : nil

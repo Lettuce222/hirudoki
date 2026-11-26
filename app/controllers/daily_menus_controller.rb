@@ -3,10 +3,12 @@ class DailyMenusController < ApplicationController
 
   def index
     @filters = filter_params
-    @menus = DailyMenu.on_sale
-                      .filtered_by(served_on: @filters[:served_on], bento_type: @filters[:bento_type])
-                      .in_display_order
-                      .preload(bento: { image_attachment: :blob })
+    entries = DailyMenu.on_sale
+                       .filtered_by(served_on: @filters[:served_on], bento_type: @filters[:bento_type])
+                       .in_display_order
+                       .preload(bento: { image_attachment: :blob })
+    @menus = paginate(entries, filters: @filters.slice(:served_on, :bento_type).to_h)
+    @filters = @filters.merge(page: @pagination.page > 1 ? @pagination.page : nil)
     @ordered_by_menu = Order.not_cancelled.where(daily_menu_id: @menus.map(&:id)).group(:daily_menu_id).sum(:quantity)
   end
 
@@ -18,6 +20,6 @@ class DailyMenusController < ApplicationController
   private
 
   def filter_params
-    params.permit(:served_on, :bento_type)
+    params.permit(:served_on, :bento_type, :page)
   end
 end

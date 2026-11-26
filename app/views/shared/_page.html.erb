@@ -1,0 +1,14 @@
+<%# locals: (title:, width: :wide, navigation: nil, primary_action: nil, hide_heading: false, document_title: title, title_suffix: "ひるどき") %>
+<% content_for :title, "#{document_title}｜#{title_suffix}" if document_title %>
+<section class="ui-page ui-page--<%= width %>">
+  <% if navigation %>
+    <div class="ui-page-navigation"><%= navigation %></div>
+  <% end %>
+  <% if title %>
+    <div class="<%= class_names("ui-page-heading", "visually-hidden" => hide_heading) %>">
+      <h1><%= title %></h1>
+      <%= primary_action %>
+    </div>
+  <% end %>
+  <%= yield %>
+</section>

@@ -1,19 +1,14 @@
 <% action = @delivery_area.persisted? ? "編集" : "登録" %>
-<% content_for :title, "配達エリアの#{action}｜管理画面｜ひるどき" %>
-<%= render "admin/shared/breadcrumbs", section: "配達エリア", index_path: admin_delivery_areas_path, current: action %>
-<h1>配達エリアの<%= action %></h1>
-<%= render "admin/shared/errors", record: @delivery_area %>
-<%= form_with model: [:admin, @delivery_area], class: "admin-form" do |form| %>
-  <%= form.label :name, "エリア名" %>
-  <%= form.text_field :name, required: true %>
-  <div class="admin-field-with-hint">
-    <%= form.label :postal_code, "郵便番号" %>
-    <%= form.text_field :postal_code, inputmode: "numeric", pattern: "[0-9]{7}", maxlength: 7, required: true, aria: { describedby: "postal-format" } %>
-    <p id="postal-format">ハイフンを除く半角数字7桁で入力してください。</p>
-  </div>
-  <%= form.label :active do %>
-    <%= form.check_box :active %> 有効
+<% delete_action = render("admin/shared/delete", record: @delivery_area) if @delivery_area.persisted? %>
+<%= render layout: "admin/shared/page", locals: { title: "配達エリアの#{action}", section: "配達エリア", index_path: admin_delivery_areas_path, current: action, width: :form, primary_action: delete_action } do %>
+  <%= render "shared/form_errors", record: @delivery_area %>
+  <%= form_with model: [:admin, @delivery_area], class: "ui-form" do |form| %>
+    <%= form.text_field :name, label: "エリア名", required: true %>
+    <div>
+      <%= form.text_field :postal_code, label: "郵便番号", inputmode: "numeric", pattern: "[0-9]{7}", maxlength: 7, required: true, aria: { describedby: "postal-format" } %>
+      <p id="postal-format" class="ui-hint">ハイフンを除く半角数字7桁で入力してください。</p>
+    </div>
+    <%= form.check_box :active, label: "有効" %>
+    <div class="ui-form-actions"><%= form.submit "保存" %></div>
   <% end %>
-  <%= form.submit "保存", class: "primary" %>
 <% end %>
-<%= render "admin/shared/delete", record: @delivery_area %>

@@ -1,23 +1,17 @@
-<% content_for :title, "注文手続き｜ひるどき" %>
-<% content_for :head do %><meta name="turbo-cache-control" content="no-cache"><% end %>
-<nav aria-label="パンくず"><%= link_to "献立一覧", daily_menus_path %> ／ <%= link_to @menu.bento.name, daily_menu_path(@menu) %></nav>
-<h1>注文手続き</h1>
-<% remaining = @menu.remaining_quantity %>
-<p><strong><%= @menu.bento.name %></strong><br><%= @menu.served_on %> 提供・残り<%= remaining %>個</p>
-<% if @order.errors.any? %>
-  <ul role="alert"><% @order.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul>
-<% end %>
-<% if @menu.accepting_orders? && remaining.positive? && @areas.any? %>
-  <p>個数と配達先を指定してください。代金は月末締めの請求書払いです。</p>
-  <%= form_with model: [@menu, @order], class: "order-form" do |form| %>
-    <%= form.label :quantity, "個数" %>
-    <%= form.select :quantity, order_quantity_options(@menu, remaining) %>
-    <%= form.label :delivery_area_id, "配達エリア" %>
-    <%= form.collection_select :delivery_area_id, @areas, :id, :name, { include_blank: "選択してください" }, required: true %>
-    <%= form.label :delivery_address, "配達先住所" %>
-    <%= form.text_field :delivery_address, required: true, autocomplete: "street-address" %>
-    <%= form.submit "注文確定", class: "primary" %>
+<% navigation = render "shared/breadcrumbs", items: [ [ "献立一覧", daily_menus_path ], [ @menu.bento.name, daily_menu_path(@menu) ] ] %>
+<%= render layout: "shared/page", locals: { title: "注文手続き", navigation:, width: :form } do %>
+  <% remaining = @menu.remaining_quantity %>
+  <p><strong><%= @menu.bento.name %></strong><br><%= @menu.served_on %> 提供・残り<%= remaining %>個</p>
+  <%= render "shared/form_errors", record: @order %>
+  <% if @menu.accepting_orders? && remaining.positive? && @areas.any? %>
+    <p>個数と配達先を指定してください。代金は月末締めの請求書払いです。</p>
+    <%= form_with model: [@menu, @order], class: "ui-form" do |form| %>
+      <%= form.select :quantity, order_quantity_options(@menu, remaining), {}, label: "個数" %>
+      <%= form.select :delivery_area_id, @areas.map { |area| [ area.name, area.id ] }, { include_blank: "選択してください" }, label: "配達エリア", required: true %>
+      <%= form.text_field :delivery_address, label: "配達先住所", required: true, autocomplete: "street-address", wrapper: { class: "ui-form-wide" } %>
+      <div class="ui-form-actions"><%= form.submit "注文確定" %></div>
+    <% end %>
+  <% else %>
+    <p>現在、この献立の注文を受け付けていません。</p>
   <% end %>
-<% else %>
-  <p>現在、この献立の注文を受け付けていません。</p>
 <% end %>

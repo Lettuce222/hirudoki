@@ -1,20 +1,7 @@
-<% content_for :title, "配達エリア｜管理画面｜ひるどき" %>
-<%= render "admin/shared/breadcrumbs", current: "配達エリア" %>
-<div class="admin-list-heading">
-  <h1>配達エリア</h1>
-  <%= link_to "配達エリア登録", new_admin_delivery_area_path, class: "primary" %>
-</div>
-<div class="admin-table" role="region" aria-label="配達エリア一覧" tabindex="0">
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">エリア名</th>
-        <th scope="col">郵便番号</th>
-        <th scope="col">状態</th>
-        <th scope="col">操作</th>
-      </tr>
-    </thead>
-    <tbody>
+<% primary_action = primary_action_link("配達エリア登録", new_admin_delivery_area_path) %>
+<%= render layout: "admin/shared/page", locals: { title: "配達エリア", primary_action: } do %>
+  <%= render layout: "shared/paginated_list", locals: { pagination: @pagination } do %>
+    <%= render layout: "shared/table", locals: { label: "配達エリア一覧", columns: [ "エリア名", "郵便番号", "状態", "操作" ] } do %>
       <% @delivery_areas.each do |delivery_area| %>
         <tr>
           <td><%= delivery_area.name %></td>
@@ -23,7 +10,7 @@
           <td><%= link_to "編集", edit_admin_delivery_area_path(delivery_area), aria: { label: "#{delivery_area.name}の編集" } %></td>
         </tr>
       <% end %>
-    </tbody>
-  </table>
-</div>
-<% if @delivery_areas.empty? %><p>配達エリアはまだ登録されていません。</p><% end %>
+    <% end %>
+    <% if @delivery_areas.empty? %><p>配達エリアはまだ登録されていません。</p><% end %>
+  <% end %>
+<% end %>

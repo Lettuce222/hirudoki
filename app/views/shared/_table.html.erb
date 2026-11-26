@@ -1,0 +1,16 @@
+<%# locals: (label:, columns:) %>
+<div class="ui-table" role="region" aria-label="<%= label %>" tabindex="0">
+  <table>
+    <caption class="visually-hidden"><%= label %></caption>
+    <thead>
+      <tr>
+        <% columns.each do |column, css_class| %>
+          <%= tag.th column, scope: "col", class: css_class %>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%= yield %>
+    </tbody>
+  </table>
+</div>

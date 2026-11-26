@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::BaseController
   def index
-    @users = User.asc_by_name
+    @users = paginate(User.asc_by_name)
   end
 
   def show

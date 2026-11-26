@@ -1,21 +1,7 @@
-<% content_for :title, "日別献立｜管理画面｜ひるどき" %>
-<%= render "admin/shared/breadcrumbs", current: "日別献立" %>
-<div class="admin-list-heading">
-  <h1>日別献立</h1>
-  <%= link_to "献立登録", new_admin_daily_menu_path, class: "primary" %>
-</div>
-<div class="admin-table" role="region" aria-label="日別献立一覧" tabindex="0">
-  <table>
-    <thead>
-      <tr>
-        <th scope="col">提供日</th>
-        <th scope="col">弁当</th>
-        <th scope="col">タイプ</th>
-        <th scope="col">提供数上限</th>
-        <th scope="col">操作</th>
-      </tr>
-    </thead>
-    <tbody>
+<% primary_action = primary_action_link("献立登録", new_admin_daily_menu_path) %>
+<%= render layout: "admin/shared/page", locals: { title: "日別献立", primary_action: } do %>
+  <%= render layout: "shared/paginated_list", locals: { pagination: @pagination } do %>
+    <%= render layout: "shared/table", locals: { label: "日別献立一覧", columns: [ "提供日", "弁当", "タイプ", "提供数上限", "操作" ] } do %>
       <% @daily_menus.each do |daily_menu| %>
         <tr>
           <td><%= daily_menu.served_on.iso8601 %></td>
@@ -25,7 +11,7 @@
           <td><%= link_to "編集", edit_admin_daily_menu_path(daily_menu), aria: { label: "#{daily_menu.served_on}の#{daily_menu.bento.name}の編集" } %></td>
         </tr>
       <% end %>
-    </tbody>
-  </table>
-</div>
-<% if @daily_menus.empty? %><p>日別献立はまだ登録されていません。</p><% end %>
+    <% end %>
+    <% if @daily_menus.empty? %><p>日別献立はまだ登録されていません。</p><% end %>
+  <% end %>
+<% end %>
